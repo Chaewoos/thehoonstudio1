@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTACT - THE HOON STUDIO</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 현재 페이지 메뉴 활성화
+            const currentPage = 'contact.html';
+            const menuLinks = document.querySelectorAll('.menu-link');
+            menuLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</head>
+<body class="contact-page" style="background: #fff;">
+    <!-- 여기에 CONTACT 페이지 내용을 작성하세요 -->
+
+    <div class="overlay" onclick="toggleMenu()"></div>
+
+    <div class="fixed-header-bar">
+        <a href="index.html" class="logo-text-link"><div class="logo-text">THE HOON STUDIO</div></a>
+        <img src="image/logo/Logo.png" alt="메뉴 닫기 로고" class="menu-active-logo-icon" id="menuLogoIcon" style="display:block;cursor:pointer;">
+    </div>
+
+    <div class="header">
+        <!-- CONTACT 페이지는 서브메뉴 없음 -->
+    </div>
+    <div class="menu-overlay-ex" onclick="closeMenuByBg(event)">
+        <div class="menu-list" id="menuList">
+            <div class="menu-link-wrap">
+                <a href="about.html" class="menu-link" data-menu="ABOUT">ABOUT</a>
+                <span class="menu-underline"></span>
+            </div>
+            <div class="menu-link-wrap">
+                <a href="projects.html" class="menu-link" data-menu="PROJECTS">PROJECTS</a>
+                <span class="menu-underline"></span>
+            </div>
+            <div class="menu-link-wrap">
+                <a href="contact.html" class="menu-link" data-menu="CONTACT">CONTACT</a>
+                <span class="menu-underline"></span>
+            </div>
+            <div class="menu-social-wrap">
+                <a href="https://www.instagram.com/the_hoon_studio/" target="_blank" class="menu-social-link">INSTAGRAM</a>
+                <span class="menu-social-divider">|</span>
+                <a href="https://www.linkedin.com/in/chang-hoon-jeong-219159304" target="_blank" class="menu-social-link">LINKEDIN</a>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <!-- 이미지와 같은 구성의 컨택트 페이지 레이아웃 -->
+        <div class="contact-container" style="display: flex; flex-direction: column; max-width: 1400px; margin: 120px auto; padding: 0 20px; font-family: 'Syncopate-Regular', Arial, Helvetica, sans-serif; font-weight: normal; min-height: 60vh;">
+            <!-- 중앙 제목 영역 -->
+            <div class="contact-title-section" style="text-align: center; margin-bottom: 60px;">
+                <h1 class="contact-main-title" style="font-family: 'Syncopate-Bold', Arial, Helvetica, sans-serif; font-weight: bold; font-size: 36px; margin-bottom: 40px; letter-spacing: 1px;">GET IN TOUCH</h1>
+            </div>
+
+            <!-- 연락처 정보 영역 -->
+            <div class="contact-info-section" style="text-align: center; margin-bottom: 60px;">
+                <!-- 주소 정보 -->
+                <div class="contact-address" style="margin-bottom: 20px;">
+                    <p style="font-size: 16px; margin-bottom: -8px; color: #333; font-family: 'Syncopate-Regular', Arial, Helvetica, sans-serif; letter-spacing: 0.5px; line-height: 1;">Bergstraße 12A</p>
+                    <p style="font-size: 16px; margin-bottom: -8px; color: #333; font-family: 'Syncopate-Regular', Arial, Helvetica, sans-serif; letter-spacing: 0.5px; line-height: 1;">82131 Gauting</p>
+                    <p style="font-size: 16px; margin-bottom: 12px; color: #333; font-family: 'Syncopate-Regular', Arial, Helvetica, sans-serif; letter-spacing: 0.5px; line-height: 1;">Germany</p>
+                </div>
+
+                <!-- 전화번호 -->
+                <div class="contact-phone" style="margin-bottom: 60px;">
+                    <p style="font-size: 16px; color: #333; font-family: 'Syncopate-Bold', Arial, Helvetica, sans-serif; font-weight: 900; text-shadow: 0.6px 0 0 #333, 0.2px 0 0 #333; letter-spacing: 0.5px;">+49 176 3032 0029</p>
+                </div>
+
+                <!-- 이메일 정보 -->
+                <div class="contact-email-section" style="margin-bottom: 40px;">
+                    <p style="font-size: 13px; margin-bottom: 0px; color: #333; font-family: 'Syncopate-Regular', Arial, Helvetica, sans-serif; letter-spacing: 0.3px;">Interested in working with us?</p>
+                    <p style="font-size: 16px; margin-bottom: 40px; color: #333; font-family: 'Syncopate-Bold', Arial, Helvetica, sans-serif; font-weight: 900; text-shadow: 0.6px 0 0 #333, 0.2px 0 0 #333; letter-spacing: 0.5px;">hr@thehoonstudio.com</p>
+                </div>
+
+                <div class="contact-email-section">
+                    <p style="font-size: 13px; margin-bottom: 0px; color: #333; font-family: 'Syncopate-Regular', Arial, Helvetica, sans-serif; letter-spacing: 0.3px;">Have a project in mind? We'd love to hear from you.</p>
+                    <p style="font-size: 16px; color: #333; font-family: 'Syncopate-Bold', Arial, Helvetica, sans-serif; font-weight: 900; text-shadow: 0.6px 0 0 #333, 0.2px 0 0 #333; letter-spacing: 0.5px;">info@thehoonstudio.com</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (공통 스타일 재사용) -->
+    <footer class="about-footer">
+        <div class="about-footer-inner">
+            <div class="footer-left">
+                <div class="footer-left-top">
+                    <h3 class="footer-title">THE HOON STUDIO</h3>
+                    <p class="footer-address">BERGSTRASSE 12A</p>
+                    <p class="footer-address">GAUTING 82131</p>
+                </div>
+                <p class="footer-copyright">@2025 THE HOON STUDIO</p>
+            </div>
+            <div class="footer-right">
+                <p class="footer-email-label">EMAIL</p>
+                <p class="footer-email">INFO@THEHOONSTUDIO.COM</p>
+                <div class="footer-social-links">
+                    <a href="https://www.instagram.com/the_hoon_studio/" target="_blank" class="footer-social">INSTAGRAM</a>
+                    <span class="social-divider">|</span>
+                    <a href="https://www.linkedin.com/in/chang-hoon-jeong-219159304" target="_blank" class="footer-social">LINKEDIN</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 메뉴 토글 기능 (index, projects와 동일)
+        function toggleMenu() {
+            document.body.classList.toggle('menu-active');
+            
+            const logoIcon = document.getElementById('menuLogoIcon');
+            
+            if(document.body.classList.contains('menu-active')) {
+                // 메뉴가 열리면 흰색 로고로 변경
+                logoIcon.src = 'image/logo/Logo2.png';
+            } else {
+                // 메뉴가 닫히면 다시 검은색 로고로 복원
+                logoIcon.src = 'image/logo/Logo.png';
+            }
+        }
+
+        // 메뉴 오버레이 배경 클릭 시 닫기 (index, projects와 동일)
+        function closeMenuByBg(e) {
+            if (e.target.classList.contains('menu-overlay-ex')) {
+                toggleMenu();
+            }
+        }
+        
+        // 메뉴 오버레이 로고 클릭 시 닫기 (index, projects와 동일)
+        const menuLogoIcon = document.getElementById('menuLogoIcon');
+        if(menuLogoIcon) {
+            menuLogoIcon.onclick = function(e) {
+                e.stopPropagation();
+                toggleMenu();
+            };
+        }
+
+        // 현재 페이지 메뉴 링크 활성화 (style.css에서 body 클래스로 제어)
+        // 이 페이지에서는 별도의 JavaScript 로직 없이 body 클래스 "contact-page"와 CSS로 처리합니다.
+
+    </script>
+</body>
+</html> 

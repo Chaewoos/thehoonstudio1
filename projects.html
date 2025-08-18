@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECTS - THE HOON STUDIO</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="projects-page">
+    <div class="overlay" onclick="toggleMenu()"></div>
+
+    <div class="fixed-header-bar">
+        <a href="index.html" class="logo-text-link"><div class="logo-text">THE HOON STUDIO</div></a>
+        <img src="image/logo/Logo.png" alt="메뉴 닫기 로고" class="menu-active-logo-icon" id="menuLogoIcon" style="display:block;cursor:pointer;">
+    </div>
+
+    <div class="header">
+        <nav class="sub-menu project-sub-menu" id="project-main-menu">
+            <a href="#highlights-section" onclick="showHighlightsSection(event)">HIGHLIGHTS</a>
+            <span class="sub-menu-divider">|</span>
+            <a href="#other-projects-section" onclick="showAllProjectsSection(event)">ALL PROJECTS</a>
+        </nav>
+        <button class="filter-toggle-btn" onclick="toggleAlphabetFilter()">FILTER</button>
+    </div>
+    <div style="height: 10px;"></div>
+
+    <div class="menu-overlay-ex" onclick="closeMenuByBg(event)">
+        <div class="menu-list" id="menuList">
+            <div class="menu-link-wrap">
+                <a href="about.html" class="menu-link" data-menu="ABOUT">ABOUT</a>
+                <span class="menu-underline"></span>
+            </div>
+            <div class="menu-link-wrap">
+                <a href="projects.html" class="menu-link" data-menu="PROJECTS">PROJECTS</a>
+                <span class="menu-underline"></span>
+        </div>
+            <div class="menu-link-wrap">
+                <a href="contact.html" class="menu-link" data-menu="CONTACT">CONTACT</a>
+                <span class="menu-underline"></span>
+            </div>
+            <div class="menu-social-wrap">
+                <a href="https://www.instagram.com/the_hoon_studio/" target="_blank" class="menu-social-link">INSTAGRAM</a>
+                <span class="menu-social-divider">|</span>
+                <a href="https://www.linkedin.com/in/chang-hoon-jeong-219159304" target="_blank" class="menu-social-link">LINKEDIN</a>
+            </div>
+        </div>
+    </div>
+
+    <main class="projects-main-content">
+        <section id="highlights-section" class="highlights-section">
+            <nav class="category-menu">
+                <a href="#all" class="active">ALL</a>
+                <span class="category-divider"></span>
+                <a href="#architecture">ARCHITECTURE</a>
+                <span class="category-divider"></span>
+                <a href="#interior">INTERIOR</a>
+                <span class="category-divider"></span>
+                <a href="#visualization">VISUALIZATION</a>
+                <!-- <button class="filter-toggle-btn" onclick="toggleHighlightsAlphabetFilter()">FILTER</button> -->
+            </nav>
+            <div class="alphabet-filter-container highlights-alphabet-filter" id="highlightsAlphabetFilterContainer" style="display: none;">
+                <div class="alphabet-filter">
+                    <button class="alphabet-btn" data-letter="new-construction" onclick="filterHighlightsByAlphabet('new-construction')">New Construction</button>
+                    <button class="alphabet-btn" data-letter="renovation-conversion" onclick="filterHighlightsByAlphabet('renovation-conversion')">Renovation/Conversion</button>
+                    <button class="alphabet-btn" data-letter="heritage-building" onclick="filterHighlightsByAlphabet('heritage-building')">Heritage Building</button>
+                    <button class="alphabet-btn" data-letter="competition" onclick="filterHighlightsByAlphabet('competition')">Competition</button>
+                    <button class="alphabet-btn" data-letter="design-development" onclick="filterHighlightsByAlphabet('design-development')">Design Development</button>
+                    <button class="alphabet-btn" data-letter="building-permit" onclick="filterHighlightsByAlphabet('building-permit')">Building Permit</button>
+                    <button class="alphabet-btn" data-letter="execution-planning" onclick="filterHighlightsByAlphabet('execution-planning')">Execution Planning</button>
+                    <button class="alphabet-btn" data-letter="interior-design" onclick="filterHighlightsByAlphabet('interior-design')">Interior Design</button>
+                    <button class="alphabet-btn" data-letter="visualization" onclick="filterHighlightsByAlphabet('visualization')">Visualization</button>
+                </div>
+            </div>
+            <div class="project-carousel-container">
+                <button class="slide-arrow prev-arrow" aria-label="Previous">&#10094;</button>
+                <div class="project-grid all-projects-grid">
+                    <!--
+                    <div class="project-item" data-category="all architecture" data-project-name="abc.def">
+                        <img src="image/logod.jpg" alt="Project 1 Title" loading="lazy">
+                        <div class="project-info">
+                            <h4>abc.def</h4>
+                            <p>A</p>
+                        </div>
+                    </div>
+                    <div class="project-item" data-category="all interior" data-project-name="ghi.jkl">
+                        <img src="image/logod.jpg" alt="Project 2 Title" loading="lazy">
+                        <div class="project-info">
+                            <h4>ghi.jkl</h4>
+                            <p>I</p>
+                        </div>
+                    </div>
+                    <div class="project-item" data-category="all architecture" data-project-name="mno.pqr">
+                        <img src="image/logod.jpg" alt="Project 3 Title" loading="lazy">
+                        <div class="project-info">
+                            <h4>mno.pqr</h4>
+                            <p>A</p>
+                        </div>
+                    </div>
+                    <div class="project-item" data-category="all interior" data-project-name="stu.vwx">
+                        <img src="image/logod.jpg" alt="Project 4 Title" loading="lazy">
+                        <div class="project-info">
+                            <h4>stu.vwx</h4>
+                            <p>I</p>
+                        </div>
+                    </div>
+                    <div class="project-item" data-category="all architecture" data-project-name="yza.bcd">
+                        <img src="image/logod.jpg" alt="Project 5 Title" loading="lazy">
+                        <div class="project-info">
+                            <h4>yza.bcd</h4>
+                            <p>A</p>
+                        </div>
+                    </div>
+                    <div class="project-item" data-category="all interior" data-project-name="efg.hij">
+                        <img src="image/logod.jpg" alt="Project 6 Title" loading="lazy">
+                        <div class="project-info">
+                            <h4>efg.hij</h4>
+                            <p>I</p>
+                        </div>
+                    </div>
+                    <div class="project-item" data-category="all architecture" data-project-name="klm.nop">
+                        <img src="image/logod.jpg" alt="Project 7 Title" loading="lazy">
+                        <div class="project-info">
+                            <h4>klm.nop</h4>
+                            <p>A</p>
+                        </div>
+                    </div>
+                    <div class="project-item" data-category="all interior" data-project-name="qrs.tuv">
+                        <img src="image/logod.jpg" alt="Project 8 Title" loading="lazy">
+                        <div class="project-info">
+                            <h4>qrs.tuv</h4>
+                            <p>I</p>
+                        </div>
+                    </div>
+                    -->
+                </div>
+                <button class="slide-arrow next-arrow" aria-label="Next">&#10095;</button>
+            </div>
+        </section>
+
+        <section id="other-projects-section" class="other-projects-section" style="display: none;">
+            <h2>OTHER PROJECTS</h2>
+            <nav class="category-menu other-projects-category-menu">
+                <a href="#all-other" class="active">ALL</a>
+                <span class="category-divider"></span>
+                <a href="#architecture-other">ARCHITECTURE</a>
+                <span class="category-divider"></span>
+                <a href="#interior-other">INTERIOR</a>
+                <span class="category-divider"></span>
+                <a href="#visualization-other">VISUALIZATION</a>
+            </nav>
+            <div class="alphabet-filter-container other-projects-alphabet-filter" id="otherProjectsAlphabetFilterContainer" style="display: none;">
+                <div class="alphabet-filter">
+                    <button class="alphabet-btn" data-letter="new-construction" onclick="filterByAlphabet('new-construction')">New Construction</button>
+                    <button class="alphabet-btn" data-letter="renovation-conversion" onclick="filterByAlphabet('renovation-conversion')">Renovation/Conversion</button>
+                    <button class="alphabet-btn" data-letter="heritage-building" onclick="filterByAlphabet('heritage-building')">Heritage Building</button>
+                    <button class="alphabet-btn" data-letter="competition" onclick="filterByAlphabet('competition')">Competition</button>
+                    <button class="alphabet-btn" data-letter="design-development" onclick="filterByAlphabet('design-development')">Design Development</button>
+                    <button class="alphabet-btn" data-letter="building-permit" onclick="filterByAlphabet('building-permit')">Building Permit</button>
+                    <button class="alphabet-btn" data-letter="execution-planning" onclick="filterByAlphabet('execution-planning')">Execution Planning</button>
+                    <button class="alphabet-btn" data-letter="interior-design" onclick="filterByAlphabet('interior-design')">Interior Design</button>
+                    <button class="alphabet-btn" data-letter="visualization" onclick="filterByAlphabet('visualization')">Visualization</button>
+                </div>
+            </div>
+
+            <div class="project-list-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PROJECT</th>
+                            <th>CATEGORY</th>
+                            <th>TYPE</th>
+                            <th>LOCATION</th>
+                            <th>YEAR</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- JS에서 동적으로 생성됩니다. -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- 프로젝트 세부사항 페이지 -->
+    <section id="project-detail-section" class="project-detail-section" style="display: none;">
+        <header class="headerabout">
+            <nav class="category-menu project-detail-category-menu">
+                <button class="back-to-list-btn" onclick="backToProjectList()"> << BACK TO </button>
+                <div class="category-center-group">
+                <a href="#all" id="detail-all-link">ALL</a>
+                    <span class="category-divider"></span>
+                <a href="#architecture" id="detail-architecture-link">ARCHITECTURE</a>
+                    <span class="category-divider"></span>
+                <a href="#interior" id="detail-interior-link">INTERIOR</a>
+                    <span class="category-divider"></span>
+                <a href="#visualization" id="detail-visualization-link">VISUALIZATION</a>
+                </div>
+            </nav>
+            <div class="navbar-toggle subpage-menu" onclick="toggleMenu()" role="button" tabindex="0">
+                <div class="burger-icon-container">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </div>
+                <div class="menu-items" id="menuItems">
+                    <a href="/thehoonstudio/index.html">HOME</a>
+                    <a href="/thehoonstudio/about.html">ABOUT</a>
+                    <a href="/thehoonstudio/projects.html">PROJECTS</a>
+                    <a href="/thehoonstudio/contact.html">CONTACT</a>
+                                    <a href="https://www.instagram.com/the_hoon_studio/" target="_blank" class="menu-social-link">INSTAGRAM</a>
+                <span class="menu-social-divider">|</span>
+                <a href="https://www.linkedin.com/in/chang-hoon-jeong-219159304" target="_blank" class="menu-social-link">LINKEDIN</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="project-detail-content">
+            <div class="project-detail-container">
+                <div class="project-info-section">
+                    <h1 id="project-detail-title">MAI STR.</h1>
+                    <p id="project-detail-category">INTERIOR DESIGN/RENDERING</p>
+                    <div class="project-details">
+                        <div class="detail-item">
+                            <h3>PROJECT</h3>
+                            <p id="project-name">ㅁ텍스트</p>
+                        </div>
+                        <div class="detail-item">
+                            <h3>CLIENT</h3>
+                            <p id="project-client">ㅁ텍스트</p>
+                        </div>
+                        <div class="detail-item">
+                            <h3>LOCATION</h3>
+                            <p id="project-location">ㅁ텍스트</p>
+                        </div>
+                        <div class="detail-item">
+                            <h3>PROVIDED SERVICE</h3>
+                            <p id="project-service">ㅁ텍스트</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-images-section">
+                    <div class="project-detail-slider">
+                        <div class="project-detail-slides" id="projectDetailSlides">
+                            <div class="project-detail-slide active">
+                                <img src="image/logod.jpg" alt="Project Image 1">
+                            </div>
+                            <div class="project-detail-slide">
+                                <img src="image/logod.jpg" alt="Project Image 2">
+                            </div>
+                            <div class="project-detail-slide">
+                                <img src="image/logod.jpg" alt="Project Image 3">
+                            </div>
+                        </div>
+                        <button class="detail-slide-arrow detail-prev-arrow" onclick="changeDetailSlide(-1)">&#10094;</button>
+                        <button class="detail-slide-arrow detail-next-arrow" onclick="changeDetailSlide(1)">&#10095;</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </main>
+    </section>
+
+    <footer class="about-footer">
+        <div class="about-footer-inner">
+            <div class="footer-left">
+                <div class="footer-left-top">
+                    <h3 class="footer-title">THE HOON STUDIO</h3>
+                    <p class="footer-address">BERGSTRASSE 12A</p>
+                    <p class="footer-address">GAUTING 82131</p>
+                </div>
+                <p class="footer-copyright">@2025 THE HOON STUDIO</p>
+            </div>
+            <div class="footer-right">
+                <p class="footer-email-label">EMAIL</p>
+                <p class="footer-email">INFO@THEHOONSTUDIO.COM</p>
+                <div class="footer-social-links">
+                                    <a href="https://www.instagram.com/the_hoon_studio/" target="_blank" class="footer-social">INSTAGRAM</a>
+                <span class="social-divider">|</span>
+                <a href="https://www.linkedin.com/in/chang-hoon-jeong-219159304" target="_blank" class="footer-social">LINKEDIN</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK 추가 -->
+    <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDUJrHXzQfZ2-FwaZcuMcLu-71gRTVO2b4",
+        authDomain: "the-hoon-studio.firebaseapp.com",
+        projectId: "the-hoon-studio",
+        storageBucket: "the-hoon-studio.appspot.com",
+        messagingSenderId: "857575526697",
+        appId: "1:857575526697:web:43d66881a72f96e5a6e738"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.getProjectsFromFirestore = async function() {
+        console.log('Firebase에서 프로젝트 데이터 로드 시작...');
+        
+        // 캐시된 데이터가 있으면 먼저 반환
+        if (window.cachedProjects) {
+            console.log('캐시된 프로젝트 데이터 사용');
+            return window.cachedProjects;
+        }
+        
+        try {
+            // 타임아웃 설정 (5초)
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Firebase 타임아웃')), 5000)
+            );
+            
+            const queryPromise = getDocs(collection(db, "projects"));
+            const querySnapshot = await Promise.race([queryPromise, timeoutPromise]);
+            
+            const projects = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                console.log(`프로젝트 "${data.name}": mainImage = ${data.mainImage ? '있음' : '없음'}`);
+                projects.push({ id: doc.id, ...data });
+            });
+            
+            // 캐시에 저장
+            window.cachedProjects = projects;
+            console.log('총 로드된 프로젝트 수:', projects.length);
+            return projects;
+            
+        } catch (error) {
+            console.error('Firebase 로딩 실패:', error);
+            // 에러 시 빈 배열 반환
+            return [];
+        }
+    };
+    </script>
+
+    <script>
+        function toggleMenu() {
+            document.body.classList.toggle('menu-active');
+            
+            const logoIcon = document.getElementById('menuLogoIcon');
+            
+            if(document.body.classList.contains('menu-active')) {
+                // 메뉴가 열리면 흰색 로고로 변경
+                logoIcon.src = 'image/logo/Logo2.png';
+            } else {
+                // 메뉴가 닫히면 다시 검은색 로고로 복원
+                logoIcon.src = 'image/logo/Logo.png';
+            }
+        }
+
+        const toggleOtherProjectsLink = document.getElementById('toggle-other-projects-link');
+        const otherProjectsSection = document.getElementById('other-projects-section');
+        const highlightsLink = document.querySelector('.project-sub-menu a[href="#highlights-section"]');
+        const projectSubMenuItems = document.querySelectorAll('.project-sub-menu a');
+        const highlightsSection = document.getElementById('highlights-section');
+
+        console.log('Elements found:', {
+            toggleOtherProjectsLink: toggleOtherProjectsLink,
+            highlightsLink: highlightsLink,
+            otherProjectsSection: otherProjectsSection,
+            highlightsSection: highlightsSection
+        });
+
+        // 초기 상태 설정: HIGHLIGHTS 섹션 표시, OTHER PROJECTS 섹션 숨김
+        if (highlightsLink) {
+            projectSubMenuItems.forEach(a => a.classList.remove('active-sub-menu'));
+            highlightsLink.classList.add('active-sub-menu');
+        }
+        if (highlightsSection) {
+            highlightsSection.style.display = 'block';
+        }
+        if (otherProjectsSection) {
+             otherProjectsSection.style.display = 'none'; // OTHER PROJECTS 섹션 초기 숨김
+        }
+        
+        // "OTHER PROJECTS" 링크 클릭 이벤트
+        if (toggleOtherProjectsLink && otherProjectsSection && highlightsSection && highlightsLink) {
+            console.log('Adding event listener to OTHER PROJECTS link.');
+            toggleOtherProjectsLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('OTHER PROJECTS link clicked.');
+                // OTHER PROJECTS 섹션 표시, HIGHLIGHTS 섹션 숨김
+                    otherProjectsSection.style.display = 'block';
+                    highlightsSection.style.display = 'none';
+
+                // 변경된 display 속성 값 콘솔 출력
+                console.log('After click: highlightsSection display =', highlightsSection.style.display);
+                console.log('After click: otherProjectsSection display =', otherProjectsSection.style.display);
+
+                // 활성 클래스 업데이트
+                    projectSubMenuItems.forEach(a => a.classList.remove('active-sub-menu'));
+                    this.classList.add('active-sub-menu');
+
+                // OTHER PROJECTS 섹션으로 스크롤
+                otherProjectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
+        
+        // "HIGHLIGHTS" 링크 클릭 이벤트
+        if (highlightsLink && highlightsSection && otherProjectsSection) {
+            console.log('Adding event listener to HIGHLIGHTS link.');
+            highlightsLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                console.log('HIGHLIGHTS link clicked.');
+                // HIGHLIGHTS 섹션 표시, OTHER PROJECTS 섹션 숨김
+                highlightsSection.style.display = 'block'; 
+                    otherProjectsSection.style.display = 'none'; 
+
+                // 변경된 display 속성 값 콘솔 출력
+                console.log('After click: highlightsSection display =', highlightsSection.style.display);
+                console.log('After click: otherProjectsSection display =', otherProjectsSection.style.display);
+
+                // 활성 클래스 업데이트
+                projectSubMenuItems.forEach(a => a.classList.remove('active-sub-menu'));
+                this.classList.add('active-sub-menu');
+                
+                // HIGHLIGHTS 섹션으로 스크롤
+                highlightsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
+
+        // HIGHLIGHTS 섹션 카테고리 필터링
+        const categoryLinks = document.querySelectorAll('.highlights-section .category-menu a');
+        const allProjectsGrid = document.querySelector('.all-projects-grid');
+        const projectItemsInAllGrid = allProjectsGrid ? allProjectsGrid.querySelectorAll('.project-item') : [];
+        const projectCarouselContainer = document.querySelector('.project-carousel-container');
+
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                categoryLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                const filter = this.getAttribute('href').substring(1);
+
+                if (highlightsSection) {
+                    highlightsSection.style.display = 'block'; 
+                }
+                if (otherProjectsSection) {
+                    otherProjectsSection.style.display = 'none';
+                }
+                if (highlightsLink) {
+                    projectSubMenuItems.forEach(a => a.classList.remove('active-sub-menu'));
+                    highlightsLink.classList.add('active-sub-menu');
+                }
+
+                if (projectCarouselContainer) {
+                    projectCarouselContainer.style.display = 'flex'; 
+                }
+                if (allProjectsGrid) {
+                    allProjectsGrid.style.display = 'flex'; 
+                }
+
+                // 새로운 필터링 시스템 사용
+                updateCategoryFiltering();
+            });
+        });
+
+        // OTHER PROJECTS 섹션 카테고리 필터링
+        const otherCategoryLinks = document.querySelectorAll('.other-projects-category-menu a');
+        const otherProjectRows = document.querySelectorAll('#other-projects-section tbody tr');
+
+        otherCategoryLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                otherCategoryLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                const filter = this.getAttribute('href').substring(1).replace('-other', '');
+
+                // OTHER PROJECTS 필터링 시스템 사용
+                updateOtherProjectsFiltering();
+            });
+        });
+
+        // 슬라이드 버튼 로직 (기존과 동일)
+        const prevArrow = document.querySelector('.prev-arrow');
+        const nextArrow = document.querySelector('.next-arrow');
+        
+        if (prevArrow && nextArrow && allProjectsGrid) {
+            prevArrow.addEventListener('click', () => {
+                allProjectsGrid.scrollBy({ left: -300, behavior: 'smooth' }); 
+            });
+            nextArrow.addEventListener('click', () => {
+                allProjectsGrid.scrollBy({ left: 300, behavior: 'smooth' }); 
+            });
+        }
+
+        // 알파벳 필터 토글 함수
+        function toggleAlphabetFilter() {
+            // 현재 활성화된 섹션 확인
+            const highlightsSection = document.getElementById('highlights-section');
+            const otherProjectsSection = document.getElementById('other-projects-section');
+            
+            let targetContainer;
+            let targetBtns;
+            let updateFunction;
+            
+            // 현재 어떤 섹션이 표시되고 있는지 확인 (더 정확한 방법)
+            const isHighlightsVisible = highlightsSection && getComputedStyle(highlightsSection).display !== 'none';
+            const isOtherProjectsVisible = otherProjectsSection && getComputedStyle(otherProjectsSection).display !== 'none';
+            
+            console.log('HIGHLIGHTS 섹션 표시 상태:', isHighlightsVisible);
+            console.log('OTHER PROJECTS 섹션 표시 상태:', isOtherProjectsVisible);
+            
+            if (isHighlightsVisible) {
+                // HIGHLIGHTS 섹션이 활성화된 경우
+                targetContainer = document.getElementById('highlightsAlphabetFilterContainer');
+                targetBtns = document.querySelectorAll('.highlights-alphabet-filter .alphabet-btn');
+                updateFunction = updateCategoryFiltering;
+                console.log('HIGHLIGHTS 필터 컨테이너 사용');
+            } else if (isOtherProjectsVisible) {
+                // OTHER PROJECTS 섹션이 활성화된 경우
+                targetContainer = document.getElementById('otherProjectsAlphabetFilterContainer');
+                targetBtns = document.querySelectorAll('.other-projects-alphabet-filter .alphabet-btn');
+                updateFunction = updateOtherProjectsFiltering;
+                console.log('OTHER PROJECTS 필터 컨테이너 사용');
+            }
+            
+            if (targetContainer) {
+                const isVisible = targetContainer.style.display === 'block';
+                // 알파벳 active 모두 해제
+                targetBtns.forEach(btn => btn.classList.remove('active'));
+                if (isVisible) {
+                    targetContainer.style.display = 'none';
+                } else {
+                    targetContainer.style.display = 'block';
+                }
+                // 필터링 업데이트 (active가 없으므로 전체 보임)
+                if (updateFunction) {
+                    updateFunction();
+                }
+            }
+        }
+        
+
+
+        // 알파벳별 필터링 함수 (OTHER PROJECTS 섹션용)
+        function filterByAlphabet(letter) {
+            console.log(`=== 알파벳 필터 "${letter}" 적용 시작 ===`);
+            
+            // 현재 활성화된 섹션 확인
+            const highlightsSection = document.getElementById('highlights-section');
+            const otherProjectsSection = document.getElementById('other-projects-section');
+            
+            let targetContainer;
+            let targetBtns;
+            let updateFunction;
+            
+            // 현재 어떤 섹션이 표시되고 있는지 확인 (더 정확한 방법)
+            const isHighlightsVisible = highlightsSection && getComputedStyle(highlightsSection).display !== 'none';
+            const isOtherProjectsVisible = otherProjectsSection && getComputedStyle(otherProjectsSection).display !== 'none';
+            
+            console.log('HIGHLIGHTS 섹션 표시 상태:', isHighlightsVisible);
+            console.log('OTHER PROJECTS 섹션 표시 상태:', isOtherProjectsVisible);
+            
+            if (isHighlightsVisible) {
+                // HIGHLIGHTS 섹션이 활성화된 경우
+                targetContainer = '#highlightsAlphabetFilterContainer';
+                targetBtns = '.highlights-alphabet-filter .alphabet-btn';
+                updateFunction = updateCategoryFiltering;
+                console.log('HIGHLIGHTS 필터 컨테이너 사용');
+            } else if (isOtherProjectsVisible) {
+                // OTHER PROJECTS 섹션이 활성화된 경우
+                targetContainer = '#otherProjectsAlphabetFilterContainer';
+                targetBtns = '.other-projects-alphabet-filter .alphabet-btn';
+                updateFunction = updateOtherProjectsFiltering;
+                console.log('OTHER PROJECTS 필터 컨테이너 사용');
+            }
+            
+            if (targetContainer) {
+                // 모든 알파벳 버튼의 active 클래스 제거
+                const alphabetBtns = document.querySelectorAll(targetBtns);
+                alphabetBtns.forEach(btn => btn.classList.remove('active'));
+                
+                // 클릭된 버튼에 active 클래스 추가
+                const clickedBtn = document.querySelector(`${targetContainer} [data-letter="${letter}"]`);
+                if (clickedBtn) {
+                    clickedBtn.classList.add('active');
+                    console.log(`"${letter}" 버튼 활성화됨`);
+                }
+                
+                // 적절한 필터링 함수 호출
+                if (updateFunction) {
+                    updateFunction();
+                }
+            }
+        }
+
+        // HIGHLIGHTS 알파벳별 필터링 함수 (HIGHLIGHTS 섹션용)
+        function filterHighlightsByAlphabet(letter) {
+            console.log(`=== HIGHLIGHTS 알파벳 필터 "${letter}" 적용 시작 ===`);
+            
+            // 하이라이트 섹션의 알파벳 버튼들만 대상으로 함
+            const highlightsAlphabetBtns = document.querySelectorAll('.highlights-alphabet-filter .alphabet-btn');
+            highlightsAlphabetBtns.forEach(btn => btn.classList.remove('active'));
+            
+            // 클릭된 버튼에 active 클래스 추가
+            const clickedBtn = document.querySelector(`.highlights-alphabet-filter [data-letter="${letter}"]`);
+            if (clickedBtn) {
+                clickedBtn.classList.add('active');
+            }
+
+            // 새로운 HIGHLIGHTS 필터링 시스템 사용
+            updateCategoryFiltering();
+        }
+
+        // 프로젝트 데이터
+        const projectData = {
+         
+        };
+
+        let currentDetailSlide = 0;
+        let detailSlideInterval;
+        let currentProjectSource = 'highlights'; // 'highlights' 또는 'other-projects'
+
+        // 프로젝트 아이템 클릭 이벤트 추가
+        function addProjectClickEvents() {
+            // 하이라이트 프로젝트 아이템들
+            projectItemsInAllGrid.forEach(item => {
+                item.style.cursor = 'pointer';
+                item.addEventListener('click', function() {
+                    const projectName = this.dataset.projectName;
+                    if (projectData[projectName]) {
+                        currentProjectSource = 'highlights';
+                        showProjectDetail(projectName);
+                    }
+                });
+            });
+
+            // OTHER PROJECTS 테이블 행들
+            otherProjectRows.forEach(row => {
+                row.style.cursor = 'pointer';
+                row.addEventListener('click', function() {
+                    const projectName = this.dataset.projectName;
+                    if (projectData[projectName]) {
+                        currentProjectSource = 'other-projects';
+                        showProjectDetail(projectName);
+                    }
+                });
+            });
+        }
+
+        // 프로젝트 세부사항 표시 (Firebase 데이터 사용)
+        function showProjectDetail(projectName) {
+            console.log('프로젝트 상세페이지 호출:', projectName);
+            
+            // Firebase에서 가져온 프로젝트 데이터에서 찾기
+            let project = null;
+            
+            // DOMContentLoaded에서 로드된 프로젝트 데이터를 사용
+            if (window.loadedProjects && Array.isArray(window.loadedProjects)) {
+                project = window.loadedProjects.find(p => p.name === projectName);
+                console.log('Firebase에서 프로젝트 찾음:', project);
+            }
+            
+            // 기존 projectData에서도 찾기 (하드코딩된 프로젝트들)
+            if (!project) {
+                project = projectData[projectName];
+                console.log('기존 데이터에서 프로젝트 찾음:', project);
+            }
+            
+            if (!project) {
+                console.log('프로젝트를 찾을 수 없습니다:', projectName);
+                return;
+            }
+            
+            console.log('표시할 프로젝트:', project);
+            
+            // 현재 활성화된 카테고리 저장
+            let currentCategory = 'all';
+            const activeCategoryLink = document.querySelector('.highlights-section .category-menu a.active');
+            if (activeCategoryLink) {
+                currentCategory = activeCategoryLink.getAttribute('href').substring(1);
+            }
+            
+            // 브라우저 히스토리에 프로젝트 상세 페이지 상태 추가
+            window.history.pushState({
+                page: 'project-detail',
+                projectName: projectName,
+                source: currentProjectSource,
+                previousCategory: currentCategory
+            }, '', `#project-${projectName}`);
+            
+            // 기존 섹션들 숨기기
+            document.getElementById('highlights-section').style.display = 'none';
+            document.getElementById('other-projects-section').style.display = 'none';
+            document.querySelector('.projects-main-content').style.display = 'none';
+            // HIGHLIGHTS/OTHER PROJECTS 메뉴 숨기기
+            var mainMenu = document.getElementById('project-main-menu');
+            if (mainMenu) mainMenu.style.display = 'none';
+            // 세부사항 섹션 표시
+            document.getElementById('project-detail-section').style.display = 'block';
+            
+            // 프로젝트 정보 업데이트
+            document.getElementById('project-detail-title').textContent = project.name || project.title;
+            document.getElementById('project-detail-category').textContent = project.category || 'UNKNOWN';
+            document.getElementById('project-name').textContent = project.name || '';
+            document.getElementById('project-client').textContent = project.client || '';
+            document.getElementById('project-location').textContent = project.location || '';
+            document.getElementById('project-service').textContent = project.service || '';
+            
+            // 뒤로가기 버튼 텍스트 업데이트
+            const backBtn = document.querySelector('.back-to-list-btn');
+            backBtn.textContent = `<< BACK TO`;
+            
+            // 세부사항 페이지의 탭 활성화
+            const detailAllLink = document.getElementById('detail-all-link');
+            const detailArchitectureLink = document.getElementById('detail-architecture-link');
+            const detailInteriorLink = document.getElementById('detail-interior-link');
+            
+            detailAllLink.classList.remove('active');
+            detailArchitectureLink.classList.remove('active');
+            detailInteriorLink.classList.remove('active');
+            
+            // 프로젝트 카테고리에 따라 적절한 탭 활성화 (ALL은 절대 active를 추가하지 않음)
+            if (project.category && project.category.toLowerCase().includes('architecture')) {
+                detailArchitectureLink.classList.add('active');
+            } else if (project.category && project.category.toLowerCase().includes('interior')) {
+                detailInteriorLink.classList.add('active');
+            }
+            
+            // 슬라이드 이미지 업데이트 - 메인 이미지를 첫 번째로 배치
+            let slidesToUse = [];
+            
+            // 1. 메인 이미지를 첫 번째에 추가
+            if (project.mainImage) {
+                slidesToUse.push(project.mainImage);
+                console.log('메인 이미지를 첫 번째 슬라이드로 추가:', project.mainImage);
+            }
+            
+            // 2. 상세 슬라이드 이미지들을 그 다음에 추가
+            if (project.images && Array.isArray(project.images)) {
+                slidesToUse = slidesToUse.concat(project.images);
+                console.log('상세 슬라이드 이미지들 추가:', project.images.length + '개');
+            }
+            
+            // 3. 이미지가 없으면 기본 이미지 사용
+            if (slidesToUse.length === 0) {
+                slidesToUse = ['image/logod.jpg', 'image/logod.jpg', 'image/logod.jpg'];
+                console.log('기본 이미지 사용');
+            }
+            
+            console.log('최종 슬라이드 이미지 배열:', slidesToUse);
+            updateDetailSlides(slidesToUse);
+            
+            // 추가 갤러리 이미지 업데이트
+            updateHorizontalGallery(project.additionalImages || []);
+            
+            // 자동 슬라이드 시작
+            startDetailSlideshow();
+            
+            // 가로 스크롤 화살표 클릭 이벤트 리스너 추가
+            setupHorizontalScrollEvents();
+            
+            // 프로젝트 상세페이지 버튼 이벤트 설정
+            setupProjectDetailButtons();
+        }
+
+        // 세부사항 슬라이드 업데이트
+        function updateDetailSlides(images) {
+            const slidesContainer = document.getElementById('projectDetailSlides');
+            slidesContainer.innerHTML = '';
+            
+            images.forEach((imageSrc, index) => {
+                const slide = document.createElement('div');
+                slide.className = `project-detail-slide ${index === 0 ? 'active' : ''}`;
+                slide.innerHTML = `<img src="${imageSrc}" alt="Project Image ${index + 1}">`;
+                slidesContainer.appendChild(slide);
+            });
+            
+            currentDetailSlide = 0;
+        }
+
+        // 세부사항 슬라이드 변경
+        function changeDetailSlide(direction) {
+            const slidesContainer = document.getElementById('projectDetailSlides');
+            const slides = slidesContainer.querySelectorAll('.project-detail-slide');
+            if (!slides.length) return;
+
+            // 현재 보이는 첫 번째 이미지 인덱스 계산
+            let currentScroll = slidesContainer.scrollLeft;
+            let nextIndex = 0;
+            let found = false;
+            for (let i = 0; i < slides.length; i++) {
+                if (slides[i].offsetLeft >= currentScroll - 2) { // 오차 허용
+                    nextIndex = i;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) nextIndex = 0;
+
+            // 이동할 인덱스 계산
+            let targetIndex = direction > 0 ? nextIndex + 1 : nextIndex - 1;
+            if (targetIndex < 0) targetIndex = 0;
+            if (targetIndex >= slides.length) targetIndex = slides.length - 1;
+
+            // 해당 이미지로 스크롤
+            slidesContainer.scrollTo({ left: slides[targetIndex].offsetLeft, behavior: 'smooth' });
+        }
+
+        // 자동 슬라이드쇼 시작
+        function startDetailSlideshow() {
+            clearInterval(detailSlideInterval);
+            detailSlideInterval = setInterval(() => {
+                changeDetailSlide(1);
+            }, 5000);
+        }
+
+        // 자동 슬라이드쇼 중지
+        function stopDetailSlideshow() {
+            clearInterval(detailSlideInterval);
+        }
+
+        // 가로 스크롤 화살표 클릭 이벤트 설정
+        function setupHorizontalScrollEvents() {
+            // 이 함수는 현재 사용되지 않으므로 빈 함수로 정의
+            console.log('setupHorizontalScrollEvents 함수 호출됨');
+        }
+
+        // 리스트로 돌아가기
+        function backToProjectList() {
+            // 브라우저 히스토리에서 뒤로가기
+            window.history.back();
+        }
+        
+        // 실제로 프로젝트 목록으로 돌아가는 함수
+        function goToProjectList() {
+            // 세부사항 섹션 숨기기
+            document.getElementById('project-detail-section').style.display = 'none';
+            // 자동 슬라이드쇼 중지
+            stopDetailSlideshow();
+            // 기존 섹션들 표시
+            document.querySelector('.projects-main-content').style.display = 'block';
+            // HIGHLIGHTS/OTHER PROJECTS 메뉴 다시 보이기
+            var mainMenu = document.getElementById('project-main-menu');
+            if (mainMenu) mainMenu.style.display = 'flex';
+            
+            if (currentProjectSource === 'highlights') {
+                document.getElementById('highlights-section').style.display = 'block';
+                document.getElementById('other-projects-section').style.display = 'none';
+                
+                // HIGHLIGHTS 탭 활성화
+                projectSubMenuItems.forEach(a => a.classList.remove('active-sub-menu'));
+                if (highlightsLink) highlightsLink.classList.add('active-sub-menu');
+            } else {
+                document.getElementById('highlights-section').style.display = 'none';
+                document.getElementById('other-projects-section').style.display = 'block';
+                
+                // OTHER PROJECTS 탭 활성화
+                projectSubMenuItems.forEach(a => a.classList.remove('active-sub-menu'));
+                if (toggleOtherProjectsLink) toggleOtherProjectsLink.classList.add('active-sub-menu');
+            }
+        }
+        
+        // 소스에 따라 프로젝트 목록으로 돌아가는 함수
+        function goToProjectListWithSource() {
+            // 세부사항 섹션 숨기기
+            document.getElementById('project-detail-section').style.display = 'none';
+            // 자동 슬라이드쇼 중지
+            stopDetailSlideshow();
+            // 기존 섹션들 표시
+            document.querySelector('.projects-main-content').style.display = 'block';
+            // HIGHLIGHTS/OTHER PROJECTS 메뉴 다시 보이기
+            var mainMenu = document.getElementById('project-main-menu');
+            if (mainMenu) mainMenu.style.display = 'flex';
+            
+            // 현재 프로젝트 소스에 따라 적절한 섹션 표시
+            if (currentProjectSource === 'highlights') {
+                document.getElementById('highlights-section').style.display = 'block';
+                document.getElementById('other-projects-section').style.display = 'none';
+                
+                // HIGHLIGHTS 탭 활성화
+                projectSubMenuItems.forEach(a => a.classList.remove('active-sub-menu'));
+                if (highlightsLink) highlightsLink.classList.add('active-sub-menu');
+                
+                // 이전에 활성화된 카테고리 복원
+                restorePreviousCategoryState();
+            } else if (currentProjectSource === 'other-projects') {
+                document.getElementById('highlights-section').style.display = 'none';
+                document.getElementById('other-projects-section').style.display = 'block';
+                
+                // OTHER PROJECTS 탭 활성화
+                projectSubMenuItems.forEach(a => a.classList.remove('active-sub-menu'));
+                if (toggleOtherProjectsLink) toggleOtherProjectsLink.classList.add('active-sub-menu');
+                
+                // 이전에 활성화된 카테고리 복원
+                restorePreviousCategoryState();
+            }
+        }
+        
+        // 이전 카테고리 상태 복원 함수
+        function restorePreviousCategoryState() {
+            // 브라우저 히스토리에서 이전 상태 확인
+            if (window.history.state && window.history.state.previousCategory) {
+                const previousCategory = window.history.state.previousCategory;
+                activateCategoryOnMainPage(previousCategory);
+            } else {
+                // 기본적으로 ALL 카테고리 활성화
+                activateCategoryOnMainPage('all');
+            }
+        }
+
+        // 프로젝트 썸네일 이미지 업데이트 함수 (Firebase 데이터 사용)
+        function updateProjectThumbnails(projects = []) {
+            console.log('썸네일 업데이트용 프로젝트 데이터:', projects);
+            
+            // HIGHLIGHTS 섹션의 프로젝트 아이템들 업데이트
+            const projectItems = document.querySelectorAll('.project-item');
+            console.log('찾은 프로젝트 아이템 수:', projectItems.length);
+            
+            projectItems.forEach((item, index) => {
+                const projectName = item.getAttribute('data-project-name');
+                console.log(`아이템 ${index + 1}: projectName = "${projectName}"`);
+                
+                if (projectName) {
+                    // Firebase에서 가져온 프로젝트에서 해당 프로젝트 찾기
+                    const project = projects.find(p => p.name === projectName || p.id === projectName);
+                    
+                    if (project) {
+                        console.log(`프로젝트 "${projectName}" 찾음:`, project);
+                        
+                        const img = item.querySelector('img');
+                        if (img) {
+                            if (project.mainImage) {
+                                console.log(`${projectName} 썸네일 업데이트:`, project.mainImage);
+                                img.src = project.mainImage;
+                                img.alt = project.name + ' - 대표 이미지';
+                                // 이미지 로딩 실패 시 대체 이미지 사용
+                                img.onerror = function() {
+                                    console.warn(`이미지 로딩 실패: ${project.mainImage}, 대체 이미지 사용`);
+                                    this.src = 'image/logod.jpg';
+                                };
+                            } else {
+                                console.warn(`프로젝트 "${projectName}": mainImage가 없어서 기본 이미지 사용`);
+                                img.src = 'image/logod.jpg';
+                                img.alt = project.name + ' - 기본 이미지';
+                            }
+                            
+                            // 프로젝트 정보도 업데이트
+                            const projectInfo = item.querySelector('.project-info h4');
+                            if (projectInfo && project.name) {
+                                projectInfo.textContent = project.name;
+                            }
+                            
+                            // 프로젝트 타입 업데이트
+                            const projectTypeElement = item.querySelector('.project-info p');
+                            if (projectTypeElement) {
+                                let projectType = 'A'; // 기본값
+                                if (project.category === 'interior') {
+                                    projectType = 'I';
+                                } else if (project.category === 'visualization') {
+                                    projectType = 'V';
+                                } else if (project.category === 'architecture') {
+                                    projectType = 'A';
+                                }
+                                projectTypeElement.textContent = projectType;
+                            }
+                            
+                            // 프로젝트 카테고리 정보 설정 (필터링용)
+                            if (project.categoryDetail && Array.isArray(project.categoryDetail)) {
+                                item.setAttribute('data-project-category', project.categoryDetail.join(' '));
+                            } else if (project.category) {
+                                item.setAttribute('data-project-category', project.category);
+                            }
+                            
+                            // 이미지 로딩 최적화 적용
+                            img.loading = 'lazy';
+                            img.addEventListener('load', function() {
+                                this.classList.add('loaded');
+                            });
+                            img.addEventListener('error', function() {
+                                this.classList.add('loaded');
+                            });
+                        } else {
+                            console.warn(`${projectName}: img 태그를 찾을 수 없음`);
+                        }
+                    } else {
+                        console.warn(`프로젝트 "${projectName}": Firebase 데이터에서 찾을 수 없음`);
+                    }
+                }
+            });
+            
+            console.log('프로젝트 썸네일 업데이트 완료');
+        }
+
+        // 기존 loadAdminProjects 함수 제거 (Firebase 사용으로 대체)
+
+        // 새로운 프로젝트를 HIGHLIGHTS 섹션에 추가하는 함수 (Firebase 데이터 사용)
+        function updateProjectUI(projects = []) {
+            const allProjectsGrid = document.querySelector('.all-projects-grid');
+            if (!allProjectsGrid) return;
+            
+            console.log('updateProjectUI 시작, 프로젝트 수:', projects.length);
+            
+            // 기존 동적으로 추가된 프로젝트들 제거 (data-dynamic 속성으로 구분)
+            const dynamicItems = allProjectsGrid.querySelectorAll('.project-item[data-dynamic="true"]');
+            dynamicItems.forEach(item => item.remove());
+            
+            // Firebase에서 가져온 프로젝트들 추가
+            projects.forEach((project, index) => {
+                console.log(`프로젝트 ${index + 1}: "${project.name}", mainImage: ${project.mainImage ? '있음' : '없음'}`);
+                
+                // 기존 하드코딩된 프로젝트와 중복되지 않는 새로운 프로젝트만 추가
+                const existingItem = allProjectsGrid.querySelector(`[data-project-name="${project.name}"]`);
+                
+                if (!existingItem) {
+                    // 프로젝트 아이템 생성
+                    const projectItem = document.createElement('div');
+                    projectItem.className = 'project-item';
+                    projectItem.setAttribute('data-dynamic', 'true'); // 동적 생성된 항목 표시
+                    
+                    // ⭐ 필터링을 위한 핵심 속성들 설정
+                    projectItem.setAttribute('data-project-name', project.name); // 알파벳 필터용
+                    
+                    // 카테고리 설정
+                    let categoryClasses = 'all ';
+                    if (project.category === 'architecture') {
+                        categoryClasses += 'architecture';
+                    } else if (project.category === 'interior') {
+                        categoryClasses += 'interior';
+                    } else if (project.category === 'visualization') {
+                        categoryClasses += 'visualization';
+                    }
+                    projectItem.setAttribute('data-category', categoryClasses);
+                    
+                    // 메인 이미지 사용 (대체 이미지 포함)
+                    let imageUrl = project.mainImage;
+                    if (!imageUrl || imageUrl === '') {
+                        console.warn(`프로젝트 "${project.name}": mainImage가 없어서 기본 이미지 사용`);
+                        imageUrl = 'image/logod.jpg';
+                    }
+                    
+                    // 프로젝트 타입 결정 (A, I, V)
+                    let projectType = 'A'; // 기본값
+                    if (project.category === 'interior') {
+                        projectType = 'I';
+                    } else if (project.category === 'visualization') {
+                        projectType = 'V';
+                    } else if (project.category === 'architecture') {
+                        projectType = 'A';
+                    }
+                    
+                    projectItem.innerHTML = `
+                        <img src="${imageUrl}" alt="${project.name}" loading="lazy" onerror="this.src='image/logod.jpg'; console.warn('이미지 로딩 실패: ${imageUrl}')">
+                        <div class="project-info">
+                            <h4>${project.name}</h4>
+                            <p>${projectType}</p>
+                        </div>
+                    `;
+                    
+                    // 클릭 이벤트 추가
+                    projectItem.style.cursor = 'pointer';
+                    projectItem.addEventListener('click', function() {
+                        currentProjectSource = 'highlights';
+                        showProjectDetail(project.name);
+                    });
+                    
+                    // 이미지 로딩 완료 시 opacity 변경
+                    const img = projectItem.querySelector('img');
+                    if (img) {
+                        img.addEventListener('load', function() {
+                            this.classList.add('loaded');
+                        });
+                        img.addEventListener('error', function() {
+                            this.classList.add('loaded'); // 에러 시에도 로딩 완료로 처리
+                        });
+                    }
+                    
+                    allProjectsGrid.appendChild(projectItem);
+                    console.log(`프로젝트 "${project.name}" 추가 완료`);
+                }
+            });
+            
+            // 기존 프로젝트들도 이미지 업데이트
+            updateProjectThumbnails(projects);
+            
+            // ⭐ 새로 추가된 프로젝트들을 포함하여 필터링 함수들 업데이트
+            updateFilteringSystem();
+        }
+
+        // 전체 프로젝트 개수 계산 함수
+        function getAllProjectsCount() {
+            const allProjectItems = document.querySelectorAll('.all-projects-grid .project-item:not([data-dynamic="true"])');
+            return allProjectItems.length;
+        }
+
+        // 필터링 시스템 업데이트 함수 (새로 추가)
+        function updateFilteringSystem() {
+            // 모든 프로젝트 아이템을 다시 가져오기 (기존 + 새로 추가된 것들)
+            const allProjectItems = document.querySelectorAll('.all-projects-grid .project-item');
+            
+            console.log('필터링 시스템 업데이트:', allProjectItems.length + '개 프로젝트');
+            
+            // 각 프로젝트 아이템의 속성 확인 (디버깅용)
+            allProjectItems.forEach((item, index) => {
+                const projectName = item.getAttribute('data-project-name');
+                const category = item.getAttribute('data-category');
+                console.log(`프로젝트 ${index + 1}: name="${projectName}", category="${category}"`);
+            });
+        }
+
+        // OTHER PROJECTS 테이블 업데이트 함수 (Firebase 데이터 사용)
+        function updateOtherProjectsUI(projects = []) {
+            const otherProjectsTable = document.querySelector('#other-projects-section tbody');
+            if (!otherProjectsTable) return;
+            
+            // 기존 동적으로 추가된 행들 제거
+            const dynamicRows = otherProjectsTable.querySelectorAll('tr[data-dynamic="true"]');
+            dynamicRows.forEach(row => row.remove());
+            
+            // Firebase에서 가져온 프로젝트들 추가
+            projects.forEach(project => {
+                // 기존 하드코딩된 프로젝트와 중복되지 않는 새로운 프로젝트만 추가
+                const existingRow = otherProjectsTable.querySelector(`[data-project-name="${project.name}"]`);
+                
+                if (!existingRow) {
+                    const row = document.createElement('tr');
+                    row.setAttribute('data-dynamic', 'true'); // 동적 생성된 항목 표시
+                    row.setAttribute('data-project-name', project.name);
+                    
+                    // 카테고리 설정 (data-category-other)
+                    let categoryOther = '';
+                    if (Array.isArray(project.category)) {
+                        if (project.category.some(c => c.toLowerCase().includes('architecture'))) {
+                        categoryOther = 'architecture';
+                        } else if (project.category.some(c => c.toLowerCase().includes('interior'))) {
+                        categoryOther = 'interior';
+                        } else if (project.category.some(c => c.toLowerCase().includes('visualization'))) {
+                        categoryOther = 'visualization';
+                        }
+                    } else if (typeof project.category === 'string') {
+                        if (project.category.toLowerCase().includes('architecture')) {
+                            categoryOther = 'architecture';
+                        } else if (project.category.toLowerCase().includes('interior')) {
+                            categoryOther = 'interior';
+                        } else if (project.category.toLowerCase().includes('visualization')) {
+                            categoryOther = 'visualization';
+                        }
+                    }
+                    // 세부카테고리로도 분류
+                    if (!categoryOther && Array.isArray(project.categoryDetail)) {
+                        if (project.categoryDetail.includes('A')) categoryOther = 'architecture';
+                        if (project.categoryDetail.includes('I')) categoryOther = 'interior';
+                        if (project.categoryDetail.includes('V')) categoryOther = 'visualization';
+                    }
+                    row.setAttribute('data-project-category', categoryOther);
+                    
+                    // 타입 필터링을 위한 data-type 속성 추가
+                    let type = '';
+                    if (project.category === 'architecture') type = 'A';
+                    else if (project.category === 'interior') type = 'I';
+                    else if (project.category === 'visualization') type = 'V';
+                    row.setAttribute('data-type', type);
+                    
+                    // 필터 카테고리 자동 할당 (프로젝트 이름의 첫 글자 기반)
+                    let filterCategory = 'Unknown';
+                    const cleanName = project.name.replace(/[^a-zA-Z]/g, '');
+                    if (cleanName.length > 0) {
+                        const firstLetter = cleanName.charAt(0).toUpperCase();
+                        // 필터 카테고리 매핑
+                        const filterMapping = {
+                            'A': 'Design Development (D)',
+                            'B': 'Bildingpermit (P)',
+                            'C': 'Execution Planning (E)',
+                            'D': 'Heritage Preservation (H)',
+                            'E': 'New Construction (N)',
+                            'F': 'Renovation (R)',
+                            'G': 'Marketing/Graphic Design',
+                            'H': 'Interior Design/Rendering',
+                            'I': 'Competition',
+                            'J': 'Design Development (D)',
+                            'K': 'Bildingpermit (P)',
+                            'L': 'Execution Planning (E)',
+                            'M': 'Heritage Preservation (H)',
+                            'N': 'New Construction (N)',
+                            'O': 'Renovation (R)',
+                            'P': 'Marketing/Graphic Design',
+                            'Q': 'Interior Design/Rendering',
+                            'R': 'Competition',
+                            'S': 'Design Development (D)',
+                            'T': 'Bildingpermit (P)',
+                            'U': 'Execution Planning (E)',
+                            'V': 'Heritage Preservation (H)',
+                            'W': 'New Construction (N)',
+                            'X': 'Renovation (R)',
+                            'Y': 'Marketing/Graphic Design',
+                            'Z': 'Interior Design/Rendering'
+                        };
+                        filterCategory = filterMapping[firstLetter] || 'Competition';
+                    }
+                    
+                    // CATEGORY(세부 카테고리) 표시
+                    let categoryDetail = '';
+                    if (Array.isArray(project.categoryDetail)) {
+                        categoryDetail = project.categoryDetail.join(' / ');
+                    } else if (Array.isArray(project.category)) {
+                        categoryDetail = project.category.join(' / ');
+                    } else if (typeof project.categoryDetail === 'string' && project.categoryDetail.includes('/')) {
+                        // 문자열이지만 이미 구분자로 연결된 경우
+                        categoryDetail = project.categoryDetail;
+                    } else if (typeof project.categoryDetail === 'string' && project.categoryDetail.trim() !== '') {
+                        // 문자열이지만 단일 값인 경우
+                        categoryDetail = project.categoryDetail;
+                    } else {
+                        // category(architecture/interior-rendering)는 TYPE에서만 사용, CATEGORY는 빈 칸
+                        categoryDetail = '';
+                    }
+                    
+                    // TYPE 컬럼 값 결정
+                    let typeValue = '';
+                    if (project.category === 'architecture') typeValue = 'A';
+                    else if (project.category === 'interior') typeValue = 'I';
+                    else if (project.category === 'visualization') typeValue = 'V';
+                    
+                    row.innerHTML = `
+                        <td>${project.name || ''}</td>
+                        <td>${categoryDetail}</td>
+                        <td>${typeValue}</td>
+                        <td>${project.location || 'Unknown'}</td>
+                        <td>${project.year || 'Unknown'}</td>
+                        <td>${project.status || 'Unknown'}</td>
+                    `;
+                    
+                    // 클릭 이벤트 추가
+                    row.style.cursor = 'pointer';
+                    row.addEventListener('click', function() {
+                        currentProjectSource = 'other-projects';
+                        showProjectDetail(project.name);
+                    });
+                    
+                    otherProjectsTable.appendChild(row);
+                }
+            });
+        }
+
+        // 추가 갤러리 업데이트 함수 (새로 추가)
+        function updateHorizontalGallery(additionalImages) {
+            const horizontalContainer = document.querySelector('.horizontal-scroll-images');
+            
+            if (!horizontalContainer) {
+                console.log('horizontal-scroll-images 컨테이너를 찾을 수 없습니다.');
+                return;
+            }
+            
+            // 기존 이미지 제거
+            horizontalContainer.innerHTML = '';
+            
+            if (additionalImages && additionalImages.length > 0) {
+                // 추가 갤러리 이미지들 생성
+                additionalImages.forEach((imageUrl, index) => {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = `추가 이미지 ${index + 1}`;
+                    horizontalContainer.appendChild(img);
+                });
+                console.log('추가 갤러리 이미지 업데이트 완료:', additionalImages.length + '개');
+            } else {
+                // 기본 이미지들로 채우기
+                for (let i = 0; i < 5; i++) {
+                    const img = document.createElement('img');
+                    img.src = 'image/logod.jpg';
+                    img.alt = `기본 이미지 ${i + 1}`;
+                    horizontalContainer.appendChild(img);
+                }
+                console.log('기본 이미지로 갤러리 설정 완료');
+            }
+        }
+
+
+
+        // 카테고리 필터링 시스템 업데이트 함수 (새로 추가)
+        function updateCategoryFiltering() {
+            console.log('카테고리 필터링 시스템을 업데이트합니다.');
+            
+            // 현재 활성화된 카테고리 필터 확인
+            const activeCategory = document.querySelector('.highlights-section .category-menu a.active');
+            const categoryFilter = activeCategory ? activeCategory.getAttribute('href').substring(1) : 'all';
+            
+            // 현재 활성화된 알파벳 필터 확인
+            const activeAlphabetBtn = document.querySelector('.highlights-alphabet-filter .alphabet-btn.active');
+            const alphabetFilter = activeAlphabetBtn ? activeAlphabetBtn.dataset.letter : null;
+            
+            console.log(`현재 필터: 카테고리="${categoryFilter}", 알파벳="${alphabetFilter}"`);
+            
+            // 모든 프로젝트 아이템에 필터 적용
+            const allProjectItems = document.querySelectorAll('.all-projects-grid .project-item');
+            let visibleCount = 0;
+            
+            allProjectItems.forEach((item, index) => {
+                const projectName = item.getAttribute('data-project-name') || '';
+                const categories = item.getAttribute('data-category') ? item.getAttribute('data-category').split(' ') : [];
+                
+                // 카테고리 필터 확인
+                const categoryMatch = (function() {
+                    if (categoryFilter === 'all') return true;
+                    let categoryValue = '';
+                    if (item.dataset && item.dataset.category) {
+                        categoryValue = item.dataset.category.toLowerCase().replace(/[\s_-]/g, '');
+                    }
+                    // 배열 지원 및 유연한 비교
+                    return (
+                        (categoryFilter === 'architecture' && categoryValue.includes('architecture')) ||
+                        (categoryFilter === 'interior' && categoryValue.includes('interior')) ||
+                        (categoryFilter === 'visualization' && categoryValue.includes('visualization'))
+                    );
+                })();
+                
+                // 카테고리 필터 확인 (새로운 필터 시스템)
+                let categoryFilterMatch = true;
+                if (alphabetFilter) {
+                    // 프로젝트의 카테고리 정보를 확인
+                    const projectCategory = item.getAttribute('data-project-category') || '';
+                    categoryFilterMatch = projectCategory.toLowerCase().includes(alphabetFilter.toLowerCase());
+                }
+                
+                console.log(`프로젝트 "${projectName}": 카테고리="${categories.join(' ')}", 카테고리매치=${categoryMatch}, 필터매치=${categoryFilterMatch}`);
+                
+                // 둘 다 만족하는 경우에만 표시
+                if (categoryMatch && categoryFilterMatch) {
+                    item.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            console.log(`카테고리 필터링 완료: ${visibleCount}개 프로젝트 표시됨`);
+            
+            // OTHER PROJECTS 테이블도 업데이트
+            updateOtherProjectsFiltering();
+        }
+        
+        // OTHER PROJECTS 필터링 업데이트 함수 (새로 추가)
+        function updateOtherProjectsFiltering() {
+            const activeOtherCategory = document.querySelector('.other-projects-category-menu a.active');
+            const otherCategoryFilter = activeOtherCategory ? activeOtherCategory.getAttribute('href').substring(1).replace('-other', '').toLowerCase().trim() : 'all';
+            
+            const activeOtherAlphabetBtn = document.querySelector('#alphabetFilterContainer .alphabet-btn.active');
+            const otherAlphabetFilter = activeOtherAlphabetBtn ? activeOtherAlphabetBtn.dataset.letter : 'all';
+            
+            const otherProjectRows = document.querySelectorAll('#other-projects-section tbody tr');
+            let visibleOtherCount = 0;
+            
+            otherProjectRows.forEach((row) => {
+                const projectName = row.getAttribute('data-project-name') || '';
+                
+                // 카테고리 필터 확인 (ALL, ARCHITECTURE, INTERIOR, VISUALIZATION)
+                const categoryMatch = (function() {
+                    if (otherCategoryFilter === 'all') return true;
+                    const projectCategory = row.getAttribute('data-project-category') || '';
+                    const categoryValue = projectCategory.toLowerCase().replace(/[\s_-]/g, '');
+                    
+                    return (
+                        (otherCategoryFilter === 'architecture' && categoryValue.includes('architecture')) ||
+                        (otherCategoryFilter === 'interior' && categoryValue.includes('interior')) ||
+                        (otherCategoryFilter === 'visualization' && categoryValue.includes('visualization'))
+                    );
+                })();
+                
+                // 알파벳 필터 확인 (새로운 필터 시스템)
+                let alphabetFilterMatch = true;
+                if (otherAlphabetFilter !== 'all') {
+                    const projectCategory = row.getAttribute('data-project-category') || '';
+                    alphabetFilterMatch = projectCategory.toLowerCase().includes(otherAlphabetFilter.toLowerCase());
+                }
+                
+                // 둘 다 만족하는 경우에만 표시
+                if (categoryMatch && alphabetFilterMatch) {
+                    row.style.display = '';
+                    visibleOtherCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            console.log(`OTHER PROJECTS 필터링 완료: ${visibleOtherCount}개 프로젝트 표시됨`);
+        }
+
+        // 관리자 페이지에서 프로젝트가 업데이트되었을 때 호출되는 함수
+        window.onProjectUpdate = function() {
+            console.log('관리자 페이지에서 프로젝트가 업데이트되었습니다.');
+            // Firebase에서 데이터를 다시 로드하는 로직은 DOMContentLoaded에서 처리됨
+        };
+
+        // 프로젝트 썸네일 업데이트 함수 (Firebase 데이터 사용)
+        window.updateProjectThumbnailsFromAdmin = function(projects) {
+            updateProjectThumbnails(projects);
+        };
+
+        // 브라우저 뒤로가기/앞으로가기 처리
+        window.addEventListener('popstate', function(event) {
+            console.log('브라우저 히스토리 변경:', event.state);
+            
+            if (event.state && event.state.page === 'project-detail') {
+                // 프로젝트 상세 페이지로 이동
+                const projectName = event.state.projectName;
+                const source = event.state.source;
+                currentProjectSource = source;
+                showProjectDetail(projectName);
+            } else {
+                // 프로젝트 목록으로 돌아가기 (이전 카테고리 상태 복원)
+                goToProjectListWithSource();
+            }
+        });
+
+        // Intersection Observer를 사용한 고급 지연 로딩
+        function setupLazyLoading() {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            img.classList.add('loaded');
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px', // 50px 전에 미리 로딩
+                threshold: 0.1
+            });
+
+            // 모든 lazy loading 이미지 관찰
+            document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        // 페이지 로드 시 클릭 이벤트 추가 수정
+        document.addEventListener('DOMContentLoaded', function() {
+            // 현재 페이지 메뉴 활성화
+            const currentPage = 'projects.html';
+            const menuLinks = document.querySelectorAll('.menu-link');
+            menuLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // 즉시 UI 초기화 (기본 상태)
+            addProjectClickEvents();
+            updateCategoryFiltering();
+            setupLazyLoading();
+            
+            // 초기 히스토리 상태 설정
+            if (!window.history.state) {
+                window.history.replaceState({
+                    page: 'project-list',
+                    section: 'highlights'
+                }, '', window.location.pathname);
+            }
+            
+            // 비동기로 Firebase 데이터 로드
+            loadProjectsAsync();
+        });
+        
+        // 비동기 프로젝트 로딩
+        async function loadProjectsAsync() {
+            console.log('비동기 프로젝트 로딩 시작...');
+            
+            // Firestore에서 프로젝트 데이터 불러오기 (백그라운드에서)
+            if (window.getProjectsFromFirestore) {
+                try {
+                    const projects = await window.getProjectsFromFirestore();
+                    console.log('Firebase에서 로드된 프로젝트:', projects);
+                    window.loadedProjects = projects;
+                    
+                    // UI 업데이트
+                    updateOtherProjectsUI(projects);
+                    updateProjectUI(projects);
+                    updateProjectThumbnails(projects);
+                    
+                    console.log('프로젝트 로딩 완료');
+                } catch (e) {
+                    console.error('Firestore에서 프로젝트 불러오기 실패:', e);
+                    // 에러 시에도 기본 UI는 유지
+                }
+            }
+        }
+
+        // 프로젝트 상세페이지 버튼 이벤트 설정
+        function setupProjectDetailButtons() {
+            // 기존 이벤트 리스너 제거
+            const backToBtn = document.querySelector('.back-to-list-btn');
+            if (backToBtn) {
+                // 기존 클릭 이벤트 제거
+                const newBackToBtn = backToBtn.cloneNode(true);
+                backToBtn.parentNode.replaceChild(newBackToBtn, backToBtn);
+                
+                // 새로운 클릭 이벤트 추가
+                newBackToBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('BACK TO 버튼 클릭됨');
+                    goToProjectListWithSource();
+                });
+            }
+            
+            // 카테고리 버튼들 이벤트 (기존 이벤트 제거 후 새로 추가)
+            const detailCategoryLinks = document.querySelectorAll('.project-detail-category-menu a:not(.back-to-list-btn)');
+            detailCategoryLinks.forEach(link => {
+                // 기존 클릭 이벤트 제거
+                const newLink = link.cloneNode(true);
+                link.parentNode.replaceChild(newLink, link);
+                
+                // 새로운 클릭 이벤트 추가
+                newLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const category = this.getAttribute('href').substring(1);
+                    console.log('카테고리 버튼 클릭됨:', category);
+                    
+                    // 프로젝트 리스트 페이지로 이동하면서 해당 카테고리 활성화
+                    goToProjectList();
+                    
+                    // 카테고리 활성화를 위한 지연 처리
+                    setTimeout(() => {
+                        activateCategoryOnMainPage(category);
+                    }, 100);
+                });
+            });
+        }
+        
+        // 메인 페이지에서 카테고리 활성화
+        function activateCategoryOnMainPage(category) {
+            // 프로젝트 리스트 페이지의 해당 카테고리 버튼 활성화
+            const mainCategoryLinks = document.querySelectorAll('.highlights-section .category-menu a');
+            mainCategoryLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${category}`) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // 필터링 업데이트
+            updateCategoryFiltering();
+        }
+        
+        // 메뉴 오버레이 닫기 함수 추가
+        function closeMenuByBg(e) {
+            if (e.target.classList.contains('menu-overlay-ex')) {
+                toggleMenu();
+            }
+        }
+        // 메뉴 오버레이 로고 클릭 시 닫기
+        const menuLogoIcon = document.getElementById('menuLogoIcon');
+        if(menuLogoIcon) {
+            menuLogoIcon.onclick = function(e) {
+                e.stopPropagation();
+                toggleMenu();
+            };
+        }
+
+        // HIGHLIGHTS 알파벳 필터 토글 함수
+        function toggleHighlightsAlphabetFilter() {
+            const highlightsAlphabetFilterContainer = document.getElementById('highlightsAlphabetFilterContainer');
+            const isVisible = highlightsAlphabetFilterContainer.style.display === 'block';
+            // 알파벳 active 모두 해제
+            const highlightsAlphabetBtns = document.querySelectorAll('.highlights-alphabet-filter .alphabet-btn');
+            highlightsAlphabetBtns.forEach(btn => btn.classList.remove('active'));
+            if (isVisible) {
+                highlightsAlphabetFilterContainer.style.display = 'none';
+            } else {
+                highlightsAlphabetFilterContainer.style.display = 'block';
+            }
+            // 필터링 업데이트 (active가 없으므로 전체 보임)
+            updateCategoryFiltering();
+        }
+
+        // OTHER PROJECTS 표에 랜덤 카테고리 할당 및 행 생성
+        const otherProjectsList = [
+          
+        ];
+        const filterCategories = [
+            'Design Development (D)',
+            'Bildingpermit (P)',
+            'Execution Planning (E)',
+            'Heritage Preservation (H)',
+            'New Construction (N)',
+            'Renovation (R)',
+            'Marketing/Graphic Design',
+            'Interior Design/Rendering',
+            'Competition'
+        ];
+        function renderOtherProjectsTable() {
+            const tbody = document.querySelector('.project-list-container tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            // 카테고리명 → 이니셜 매핑
+            const categoryInitialMap = {
+                'Design Development (D)': 'D',
+                'Bildingpermit (P)': 'P',
+                'Execution Planning (E)': 'E',
+                'Heritage Preservation (H)': 'H',
+                'New Construction (N)': 'N',
+                'Renovation (R)': 'R',
+                'Marketing/Graphic Design': 'M/G',
+                'Interior Design/Rendering': 'I/R',
+                'Competition': 'C'
+            };
+            otherProjectsList.forEach(project => {
+                // CATEGORY: 필터 리스트 중 1~3개 랜덤 할당
+                const categoryCount = Math.floor(Math.random() * 3) + 1; // 1~3개
+                const shuffled = filterCategories.sort(() => 0.5 - Math.random());
+                const randomCategories = shuffled.slice(0, categoryCount);
+                // 이니셜만 추출
+                const initials = randomCategories.map(cat => categoryInitialMap[cat] || cat).join(' / ');
+                // TYPE: A 또는 I/R
+                const type = project.category === 'ARCHITECTURE' ? 'A' : 'I/R';
+                const tr = document.createElement('tr');
+                tr.setAttribute('data-type', type); // 필터링을 위해 type 속성 추가
+                // projectData의 key를 data-project-name으로 사용
+                tr.setAttribute('data-project-name', project.key);
+                tr.style.cursor = 'pointer';
+                tr.innerHTML = `
+                    <td>${project.title}</td>
+                    <td>${initials}</td>
+                    <td>${type}</td>
+                    <td>${project.ort}</td>
+                    <td>${project.jahr}</td>
+                    <td>${project.status}</td>
+                `;
+                // 클릭 시 상세페이지로 이동
+                tr.addEventListener('click', function() {
+                    showProjectDetail(project.key);
+                });
+                tbody.appendChild(tr);
+            });
+        }
+        document.addEventListener('DOMContentLoaded', renderOtherProjectsTable);
+
+        // OTHER PROJECTS 카테고리 필터링 (TYPE 기준)
+        document.addEventListener('DOMContentLoaded', function() {
+            renderOtherProjectsTable();
+            const otherCategoryLinks = document.querySelectorAll('.other-projects-category-menu a');
+            otherCategoryLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    otherCategoryLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    const filter = this.getAttribute('href').substring(1).replace('-other', '');
+                    const rows = document.querySelectorAll('.project-list-container tbody tr');
+                    rows.forEach(row => {
+                        const type = row.getAttribute('data-type');
+                        if (filter === 'all') {
+                            row.style.display = '';
+                        } else if (filter === 'architecture' && type === 'A') {
+                            row.style.display = '';
+                        } else if (filter === 'interior' && type === 'I') {
+                            row.style.display = '';
+                        } else if (filter === 'visualization' && type === 'V') {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+
+
+
+        // HIGHLIGHTS 섹션 표시 함수
+        function showHighlightsSection(event) {
+            event.preventDefault();
+            console.log('HIGHLIGHTS 클릭됨'); // 디버깅용
+            
+            // 프로젝트 상세페이지 숨기기
+            const projectDetailSection = document.getElementById('project-detail-section');
+            if (projectDetailSection) {
+                projectDetailSection.style.display = 'none';
+                console.log('프로젝트 상세페이지 숨김');
+            }
+            
+            // 메인 콘텐츠 영역 표시
+            const mainContent = document.querySelector('.projects-main-content');
+            if (mainContent) {
+                mainContent.style.display = 'block';
+                console.log('메인 콘텐츠 영역 표시');
+            }
+            
+            // HIGHLIGHTS 섹션 표시
+            const highlightsSection = document.getElementById('highlights-section');
+            if (highlightsSection) {
+                highlightsSection.style.display = 'block';
+                console.log('HIGHLIGHTS 섹션 표시');
+            }
+            
+            // OTHER PROJECTS 섹션 숨기기
+            const otherProjectsSection = document.getElementById('other-projects-section');
+            if (otherProjectsSection) {
+                otherProjectsSection.style.display = 'none';
+                console.log('OTHER PROJECTS 섹션 숨김');
+            }
+            
+            // 서브메뉴 활성화 상태 업데이트
+            const highlightsLink = document.querySelector('#project-main-menu a[href="#highlights-section"]');
+            const allProjectsLink = document.querySelector('#project-main-menu a[href="#other-projects-section"]');
+            if (highlightsLink) highlightsLink.classList.add('active-sub-menu');
+            if (allProjectsLink) allProjectsLink.classList.remove('active-sub-menu');
+            
+            // 페이지 맨 위로 스크롤
+            window.scrollTo(0, 0);
+            
+            return false;
+        }
+
+        // ALL PROJECTS 섹션 표시 함수
+        function showAllProjectsSection(event) {
+            event.preventDefault();
+            console.log('ALL PROJECTS 클릭됨'); // 디버깅용
+            
+            // 프로젝트 상세페이지 숨기기
+            const projectDetailSection = document.getElementById('project-detail-section');
+            if (projectDetailSection) {
+                projectDetailSection.style.display = 'none';
+                console.log('프로젝트 상세페이지 숨김');
+            }
+            
+            // 메인 콘텐츠 영역 표시
+            const mainContent = document.querySelector('.projects-main-content');
+            if (mainContent) {
+                mainContent.style.display = 'block';
+                console.log('메인 콘텐츠 영역 표시');
+            }
+            
+            // HIGHLIGHTS 섹션 숨기기
+            const highlightsSection = document.getElementById('highlights-section');
+            if (highlightsSection) {
+                highlightsSection.style.display = 'none';
+                console.log('HIGHLIGHTS 섹션 숨김');
+            }
+            
+            // OTHER PROJECTS 섹션 표시
+            const otherProjectsSection = document.getElementById('other-projects-section');
+            if (otherProjectsSection) {
+                otherProjectsSection.style.display = 'block';
+                console.log('OTHER PROJECTS 섹션 표시');
+            }
+            
+            // 서브메뉴 활성화 상태 업데이트
+            const highlightsLink = document.querySelector('#project-main-menu a[href="#highlights-section"]');
+            const allProjectsLink = document.querySelector('#project-main-menu a[href="#other-projects-section"]');
+            if (highlightsLink) highlightsLink.classList.remove('active-sub-menu');
+            if (allProjectsLink) allProjectsLink.classList.add('active-sub-menu');
+            
+            // 페이지 맨 위로 스크롤
+            window.scrollTo(0, 0);
+            
+            return false;
+        }
+    </script>
+</body>
+</html>
+
