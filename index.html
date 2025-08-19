@@ -51,10 +51,10 @@
                     console.log('프로젝트가 없습니다. 기본 이미지 사용');
                                     // 기본 이미지들 사용 (고화질)
                 const defaultImages = [
-                    { image: 'image/240312_fch_perspektive1.jpg', color: 'white' },
-                    { image: 'image/241022_ms_vgb_v2.jpg', color: 'white' },
-                    { image: 'image/250522_km22_wz2.jpg', color: 'white' },
-                    { image: 'image/hochauflosend.jpg', color: 'black' }
+                    { image: './image/240312_fch_perspektive1.jpg', color: 'white' },
+                    { image: './image/241022_ms_vgb_v2.jpg', color: 'white' },
+                    { image: './image/250522_km22_wz2.jpg', color: 'white' },
+                    { image: './image/hochauflosend.jpg', color: 'black' }
                 ];
                     
                     defaultImages.forEach((item, i) => {
@@ -94,10 +94,10 @@
                 const mainBottomText = document.querySelector('.main-bottom-text');
                 
                 slidesContainer.innerHTML = `
-                    <div class="slide" style="background-image: url('image/240312_fch_perspektive1.jpg'); color: white;"></div>
-                    <div class="slide" style="background-image: url('image/241022_ms_vgb_v2.jpg'); color: white;"></div>
-                    <div class="slide" style="background-image: url('image/250522_km22_wz2.jpg'); color: white;"></div>
-                    <div class="slide" style="background-image: url('image/hochauflosend.jpg'); color: black;"></div>
+                    <div class="slide" style="background-image: url('./image/240312_fch_perspektive1.jpg'); color: white;"></div>
+                    <div class="slide" style="background-image: url('./image/241022_ms_vgb_v2.jpg'); color: white;"></div>
+                    <div class="slide" style="background-image: url('./image/250522_km22_wz2.jpg'); color: white;"></div>
+                    <div class="slide" style="background-image: url('./image/hochauflosend.jpg'); color: black;"></div>
                 `;
                 
                 window._mainSlideNames = ['MAI STR.', 'PROJECT 2', 'PROJECT 3', 'PROJECT 4'];
@@ -113,7 +113,7 @@
     <!-- 로고 애니메이션 오버레이 -->
     <div id="logoAnimation" class="logo-animation">
         <div class="logo-animation-container">
-            <img src="image/logo/Logo.png" alt="로고" class="logo-animation-image">
+            <img src="./image/logo/Logo.png" alt="로고" class="logo-animation-image">
             <div class="logo-animation-text">THE HOON STUDIO</div>
         </div>
     </div>
@@ -121,8 +121,8 @@
     <div class="overlay" onclick="toggleMenu()"></div>
 
     <div class="header">
-        <a href="index.html" class="logo-link" id="mainLogo">
-            <img src="image/logo/logo.png" alt="로고" class="logo">
+        <a href="./index.html" class="logo-link" id="mainLogo">
+            <img src="./image/logo/logo.png" alt="로고" class="logo">
         </a>
         <div class="navbar-toggle" onclick="toggleMenu()" role="button" tabindex="0" id="menuBurger">
             <div class="burger-icon-container">
@@ -311,17 +311,17 @@
 
     <div class="menu-overlay-ex" onclick="closeMenuByBg(event)">
         <div class="menu-list" id="menuList">
-            <img src="image/logo/Logo.png" alt="메뉴 닫기 로고" class="menu-active-logo-icon" id="menuLogoIcon" style="display:none;cursor:pointer;">
+            <img src="./image/logo/Logo.png" alt="메뉴 닫기 로고" class="menu-active-logo-icon" id="menuLogoIcon" style="display:none;cursor:pointer;">
             <div class="menu-link-wrap">
-                <a href="about.html" class="menu-link" data-menu="ABOUT">ABOUT</a>
+                <a href="./about.html" class="menu-link" data-menu="ABOUT">ABOUT</a>
                 <span class="menu-underline"></span>
             </div>
             <div class="menu-link-wrap">
-                <a href="projects.html" class="menu-link" data-menu="PROJECTS">PROJECTS</a>
+                <a href="./projects.html" class="menu-link" data-menu="PROJECTS">PROJECTS</a>
                 <span class="menu-underline"></span>
             </div>
             <div class="menu-link-wrap">
-                <a href="contact.html" class="menu-link" data-menu="CONTACT">CONTACT</a>
+                <a href="./contact.html" class="menu-link" data-menu="CONTACT">CONTACT</a>
                 <span class="menu-underline"></span>
             </div>
             <div class="menu-social-wrap">
@@ -343,7 +343,7 @@
         if(document.body.classList.contains('menu-active')) {
             burger.classList.add('hidden');
             logoIcon.style.display = 'block';
-            logoIcon.src = 'image/logo/Logo2.png'; // 흰색 로고로 지정
+            logoIcon.src = './image/logo/Logo2.png'; // 흰색 로고로 지정
             logoIcon.style.filter = '';
             logoIcon.style.background = '#ccc'; // 회색 원형 배경
             logoIcon.style.borderRadius = '50%';
@@ -362,7 +362,7 @@
         } else {
             burger.classList.remove('hidden');
             logoIcon.style.display = 'none';
-                            logoIcon.src = 'image/logo/Logo.png';
+                            logoIcon.src = './image/logo/Logo.png';
             logoIcon.style.filter = '';
             logoIcon.onclick = null;
         }

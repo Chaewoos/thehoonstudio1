@@ -1,26 +1,26 @@
 @font-face {
     font-family: 'Syncopate-Bold';
-    src: url('font/Syncopate-Bold.ttf') format('truetype');
+    src: url('./font/Syncopate-Bold.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Syncopate-Regular';
-    src: url('font/Syncopate-Regular.ttf') format('truetype');
+    src: url('./font/Syncopate-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Roboto-Medium';
-    src: url('font/Roboto-Medium.ttf') format('truetype');
+    src: url('./font/Roboto-Medium.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Roboto-Regular';
-    src: url('font/Roboto-Regular.ttf') format('truetype');
+    src: url('./font/Roboto-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Roboto-Light';
-    src: url('font/Roboto-Regular.ttf') format('truetype');
+    src: url('./font/Roboto-Regular.ttf') format('truetype');
 }
 
 /* 제일 큰 글자들 (Syncopate-Bold) */

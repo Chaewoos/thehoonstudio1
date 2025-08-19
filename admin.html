@@ -1,0 +1,2370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN - THE HOON STUDIO</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Firebase SDK 추가 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+        
+                // Firebase 설정 - 여기에 본인의 Firebase 설정값을 입력하세요
+        const firebaseConfig = {
+            apiKey: "AIzaSyDUJrHXzQfZ2-FwaZcuMcLu-71gRTVO2b4",
+            authDomain: "the-hoon-studio.firebaseapp.com",
+            projectId: "the-hoon-studio",
+            storageBucket: "the-hoon-studio.firebasestorage.app",
+            messagingSenderId: "857575526697",
+            appId: "1:857575526697:web:43d66881a72f96e5a6e738"
+        };
+
+        
+        // Firebase 초기화
+        console.log('Firebase 초기화 시작...');
+        const app = initializeApp(firebaseConfig);
+        console.log('Firebase 앱 초기화 완료');
+        
+        const db = getFirestore(app);
+        console.log('Firestore 초기화 완료');
+        
+        // 오프라인 지속성 비활성화 (문제 해결용)
+        try {
+            db._delegate._databaseId.projectId = firebaseConfig.projectId;
+            console.log('오프라인 설정 적용 완료');
+        } catch (error) {
+            console.log('오프라인 설정 스킵:', error);
+        }
+        
+        // Firebase Storage 초기화
+        const storage = getStorage(app);
+        console.log('Firebase Storage 초기화 완료');
+        
+        // 전역에서 사용할 수 있도록 설정
+        window.db = db;
+        window.storage = storage;
+        window.firestoreFunctions = {
+            collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy, getDoc
+        };
+        window.storageFunctions = {
+            ref, uploadBytes, getDownloadURL
+        };
+        
+        console.log('Firebase 초기화 완료');
+        console.log('window.db 설정됨:', !!window.db);
+        console.log('window.firestoreFunctions 설정됨:', !!window.firestoreFunctions);
+    </script>
+    
+    <style>
+        /* 토스 스타일 관리자 페이지 전용 스타일 */
+        body.admin-page {
+            background-color: #000000;
+            background-image: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .admin-header {
+            background: #111111;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            border: 1px solid #333333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px);
+        }
+
+        .admin-title {
+            font-family: 'Syncopate-Bold', sans-serif;
+            font-size: 28px;
+            color: #ffffff;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .logout-btn {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-1px);
+        }
+
+        /* Firebase 연결 상태 표시 */
+        .firebase-status {
+            padding: 16px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid;
+        }
+
+        .firebase-connected {
+            background: #0a0a0a;
+            color: #00ff88;
+            border-color: #00ff88;
+        }
+
+        .firebase-error {
+            background: #0a0a0a;
+            color: #ff4444;
+            border-color: #ff4444;
+        }
+
+        /* 로그인 폼 - 토스 스타일 */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #000000;
+        }
+
+        .login-form {
+            background: #111111;
+            padding: 50px;
+            border-radius: 20px;
+            border: 1px solid #333333;
+            width: 100%;
+            max-width: 450px;
+            backdrop-filter: blur(20px);
+        }
+
+        .login-form h2 {
+            font-family: 'Syncopate-Bold', sans-serif;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background: #0a0a0a;
+            color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #ffffff;
+            background: #111111;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .btn {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 600;
+            width: auto;
+            min-width: 150px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.2);
+        }
+
+        .btn:disabled {
+            background: #333333;
+            color: #666666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-success {
+            background: #00ff88;
+            color: #000000;
+        }
+
+        .btn-success:hover {
+            background: #00cc6a;
+        }
+
+        .btn-danger {
+            background: #ff4444;
+            color: #ffffff;
+            padding: 10px 20px;
+            font-size: 14px;
+            width: auto;
+        }
+
+        .btn-danger:hover {
+            background: #ff2222;
+        }
+
+        .btn-edit {
+            background: #ffffff;
+            color: #000000;
+            padding: 10px 20px;
+            font-size: 14px;
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .btn-edit:hover {
+            background: #f0f0f0;
+        }
+
+        /* 프로젝트 관리 영역 */
+        .admin-section {
+            background: #111111;
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            border: 1px solid #333333;
+            backdrop-filter: blur(20px);
+        }
+
+        .section-title {
+            font-family: 'Syncopate-Regular', sans-serif;
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #ffffff;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .project-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .project-table th,
+        .project-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #333333;
+        }
+
+        .project-table th {
+            background: #0a0a0a;
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .project-table td {
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .project-table tr:hover {
+            background: #1a1a1a;
+        }
+
+        .alert {
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #0a0a0a;
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        .alert-error {
+            background: #0a0a0a;
+            color: #ff4444;
+            border: 1px solid #ff4444;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* 슬라이드 이미지 관리 스타일 추가 */
+        .slide-images-container,
+        .additional-images-container {
+            margin-bottom: 20px;
+        }
+
+        .slide-preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+            min-height: 60px;
+            border: 2px dashed #333333;
+            padding: 20px;
+            border-radius: 12px;
+            background: #0a0a0a;
+        }
+
+        .slide-preview-item {
+            position: relative;
+            background: #111111;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333333;
+            cursor: move;
+            transition: all 0.2s ease;
+        }
+
+        .slide-preview-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.1);
+        }
+
+        .slide-preview-img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .slide-preview-controls {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .slide-control-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            background: rgba(0,0,0,0.8);
+            color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .delete-slide-btn {
+            color: #ff4444;
+        }
+
+        .delete-slide-btn:hover {
+            background: #ff4444;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .slide-preview-item.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .form-help {
+            color: #999999;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        /* 이미지 미리보기 스타일 추가 */
+        .image-preview-single {
+            margin-top: 15px;
+            max-width: 200px;
+        }
+
+        .image-preview-single img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid #333333;
+        }
+
+        .additional-preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            min-height: 50px;
+            border: 2px dashed #333333;
+            padding: 15px;
+            border-radius: 12px;
+            background: #0a0a0a;
+        }
+
+        .additional-preview-item {
+            position: relative;
+            background: #111111;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #333333;
+            transition: all 0.2s ease;
+        }
+
+        .additional-preview-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.1);
+        }
+
+        .additional-preview-img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 버튼 컨테이너 스타일 */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px; /* 버튼 사이 간격 */
+            margin-top: 30px;
+            flex-wrap: wrap; /* 화면이 작을 때 줄바꿈 */
+        }
+        
+        /* 취소 버튼 스타일 */
+        .btn-secondary {
+            background: #333333;
+            color: #ffffff;
+        }
+        
+        .btn-secondary:hover {
+            background: #444444;
+        }
+
+        /* 로그인 폼의 버튼은 예외적으로 전체 너비 유지 */
+        .login-form .btn {
+            width: 100%;
+        }
+        
+        /* 테이블 내 버튼들은 기존 스타일 유지 */
+        .btn-edit,
+        .btn-danger {
+            width: auto;
+            min-width: auto;
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+
+        .file-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .custom-file-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .custom-file-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .file-name {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .button-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                min-width: auto;
+            }
+        }
+
+        /* 로딩 스피너 */
+        .loading {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #333333;
+            border-top: 3px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 추가 토스 스타일 요소들 */
+        .hidden {
+            display: none !important;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 25px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* 스크롤바 스타일링 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444444;
+        }
+    </style>
+</head>
+<body class="admin-page">
+    <!-- 로그인 화면 - placeholder 제거 -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-form">
+            <h2>ADMIN LOGIN</h2>
+            <div id="loginAlert" class="alert alert-error hidden"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">사용자명</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">로그인</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 관리자 대시보드 -->
+    <div id="adminDashboard" class="hidden">
+        <div class="admin-container">
+            <!-- Firebase 연결 상태 -->
+            <div id="firebaseStatus" class="firebase-status firebase-error">
+                🔥 Firebase 연결을 확인하는 중...
+            </div>
+
+            <!-- 헤더 -->
+                    <div class="admin-header">
+            <h1 class="admin-title">THE HOON STUDIO - Admin Panel</h1>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="migrateMemberImagesToStorage()" class="btn-success" style="font-size: 12px; padding: 8px 16px;">Member Migration</button>
+                <button id="logoutBtn" class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+            <!-- 알림 메시지 -->
+            <div id="alertMessage" class="alert hidden"></div>
+
+            <!-- 프로젝트 추가 폼 -->
+            <div class="admin-section">
+                <h2 class="section-title">Add New Project</h2>
+                <form id="projectForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="projectName">PROJECT NAME (e.g. abc.def)</label>
+                            <input type="text" id="projectName" required placeholder="abc.def">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="projectCategory">Category</label>
+                            <select id="projectCategory" required>
+                                <option value="architecture">ARCHITECTURE</option>
+                                <option value="interior">INTERIOR</option>
+                                <option value="visualization">VISUALIZATION</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Subcategory (Multiple selection available)</label>
+                            <div id="projectCategories" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 18px; justify-items: start; max-width: 600px; margin: 0 auto 8px auto;">
+                                <label style="display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 0.675em;"><input type="checkbox" name="projectCategories" value="D"> Design Development (D)</label>
+                                <label style="display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 0.675em;"><input type="checkbox" name="projectCategories" value="P"> Building Permit (P)</label>
+                                <label style="display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 0.675em;"><input type="checkbox" name="projectCategories" value="E"> Execution Planning (E)</label>
+                                <label style="display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 0.675em;"><input type="checkbox" name="projectCategories" value="H"> Heritage Preservation (H)</label>
+                                <label style="display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 0.675em;"><input type="checkbox" name="projectCategories" value="N"> New Construction (N)</label>
+                                <label style="display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 0.675em;"><input type="checkbox" name="projectCategories" value="R"> Renovation (R)</label>
+                                <label style="display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 0.675em;"><input type="checkbox" name="projectCategories" value="M/G"> Marketing/Graphic Design (M/G)</label>
+                                <label style="display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 0.675em;"><input type="checkbox" name="projectCategories" value="I/R"> Interior Design/Rendering (I/R)</label>
+                                <label style="display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 0.675em;"><input type="checkbox" name="projectCategories" value="C"> Competition (C)</label>
+                        </div>
+                        </div>
+                        <!--
+                        <div class="form-group">
+                            <label for="projectCategory">KATEGORIE</label>
+                            <select id="projectCategory" required>
+                                <option value="">KATEGORIE AUSWAHL</option>
+                                <option value="architecture">ARCHITECTURE</option>
+                                <option value="interior-rendering">INTERIOR DESIGN/RENDERING</option>
+                            </select>
+                        </div>
+                        -->
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="projectYear">YEAR</label>
+                            <input type="number" id="projectYear" placeholder="2024 (optional)">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectStatus">STATUS</label>
+                            <select id="projectStatus">
+                                <option value="In Planning">In Planning</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                                <option value="On Hold">On Hold</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="projectName">PROJECT</label>
+                            <input type="text" id="projectName" placeholder="Project Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectClient">CLIENT</label>
+                            <input type="text" id="projectClient" placeholder="Client Name">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="projectLocation">LOCATION</label>
+                            <input type="text" id="projectLocation" placeholder="Location">
+                        </div>
+                        <div class="form-group">
+                            <label for="projectService">PROVIDED SERVICE</label>
+                            <input type="text" id="projectService" placeholder="Service Type">
+                        </div>
+                    </div>
+
+                    <!-- 메인 이미지 섹션 -->
+                    <div class="form-group">
+                            <label for="projectImage">MAIN IMAGE (PROJECT REPRESENTATIVE IMAGE):</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="projectImage" name="projectImage" accept="image/*" required style="display: none;">
+                                <button type="button" class="custom-file-btn" onclick="document.getElementById('projectImage').click()">Choose File</button>
+                                <span id="projectImageName" class="file-name">No file selected</span>
+                            </div>
+                        <div id="mainImagePreview" class="image-preview-single"></div>
+                            <small class="form-help">This image will be displayed on the project list and at the top of the detail page. (Saved in original quality)<br>
+                            <strong>High quality recommended:</strong> Minimum 1920x1080px, JPG/PNG format, file size 1-10MB</small>
+                    </div>
+
+
+
+                    <!-- 추가 이미지 섹션 -->
+                    <div class="form-group">
+                            <label for="additionalImages">ADDITIONAL GALLERY IMAGES (FOR SUBSECTION):</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="additionalImages" name="additionalImages" accept="image/*" multiple style="display: none;">
+                                <button type="button" class="custom-file-btn" onclick="document.getElementById('additionalImages').click()">Choose Files</button>
+                                <span id="additionalImagesName" class="file-name">No files selected</span>
+                        </div>
+                        <div class="additional-preview-container" id="additionalPreviewContainer">
+                                <!-- Additional image preview -->
+                        </div>
+                            <small class="form-help">Images that will be displayed in the other section of the page. (Saved in original quality)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="button-container">
+                            <button type="submit" class="btn btn-success" id="submitBtn">ADD PROJECT</button>
+                            <button type="button" id="cancelEdit" class="btn btn-secondary hidden">CANCEL</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 프로젝트 목록 -->
+            <div class="admin-section">
+                <h2 class="section-title">REGISTERED PROJECTS</h2>
+                <div id="projectsLoader" class="hidden" style="text-align: center; padding: 20px;">
+                    <div class="loading"></div> LOADING PROJECTS...
+                </div>
+                <table class="project-table">
+                    <thead>
+                        <tr>
+                            <th>PROJECT NAME</th>
+                            <th>CATEGORY</th>
+                            <th>LOCATION</th>
+                            <th>YEAR</th>
+                            <th>STATUS</th>
+                            <th>MANAGE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="projectList">
+                        <!-- 프로젝트 목록이 여기에 동적으로 추가됩니다 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 멤버 추가 섹션 -->
+            <div class="admin-section">
+                <h2 class="section-title">Add Member</h2>
+                <form id="memberAddForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="memberName">Name</label>
+                            <input type="text" id="memberName" required placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="memberPosition">Position</label>
+                            <input type="text" id="memberPosition" required placeholder="Position">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="memberEmail">Email</label>
+                            <input type="email" id="memberEmail" required placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="memberImage">Profile Image</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="memberImage" accept="image/*" required style="display: none;">
+                                <button type="button" class="custom-file-btn" onclick="document.getElementById('memberImage').click()">Choose File</button>
+                                <span id="memberImageName" class="file-name">No file selected</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="button-container">
+                            <button type="submit" class="btn btn-success">Add Member</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 팀 멤버 목록 -->
+            <div class="admin-section">
+                <h2 class="section-title">Registered Team Members</h2>
+                <div id="membersLoader" class="hidden" style="text-align: center; padding: 20px;">
+                    <div class="loading"></div> Loading members...
+                </div>
+                <table class="project-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Email</th>
+                            <th>Image</th>
+                            <th>Manage</th>
+                        </tr>
+                    </thead>
+                    <tbody id="membersList">
+                        <!-- 팀 멤버 목록이 여기에 동적으로 추가됩니다 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 관리자 인증 정보 (실제 서비스에서는 서버에서 처리해야 함)
+        const ADMIN_CREDENTIALS = {
+            username: 'admin',
+            password: '1234'
+        };
+
+        let isLoggedIn = false;
+        let editingProjectId = null;
+        let editingProjectName = null;
+        
+        // Firebase 상태 체크
+        let isFirebaseReady = false;
+
+        // Firebase 준비 상태 확인
+        function checkFirebaseReady() {
+            return new Promise((resolve) => {
+                console.log('Firebase 준비 상태 확인 시작');
+                console.log('window.db:', window.db);
+                console.log('window.firestoreFunctions:', window.firestoreFunctions);
+                
+                // 즉시 확인
+                if (window.db && window.firestoreFunctions) {
+                    isFirebaseReady = true;
+                    console.log('Firebase 즉시 준비 완료!');
+                    updateFirebaseStatus(true);
+                    resolve(true);
+                    return;
+                }
+                
+                const checkInterval = setInterval(() => {
+                    if (window.db && window.firestoreFunctions) {
+                        clearInterval(checkInterval);
+                        isFirebaseReady = true;
+                        console.log('Firebase 준비 완료!');
+                        updateFirebaseStatus(true);
+                        resolve(true);
+                    }
+                }, 100);
+                
+                // 10초 후 타임아웃
+                setTimeout(() => {
+                    clearInterval(checkInterval);
+                    if (!isFirebaseReady) {
+                        console.log('Firebase 초기화 타임아웃');
+                        updateFirebaseStatus(false, 'Firebase 초기화 타임아웃');
+                        resolve(false);
+                    }
+                }, 10000);
+            });
+        }
+
+        // Firebase 상태 업데이트
+        function updateFirebaseStatus(connected, errorMsg = '') {
+            const statusElement = document.getElementById('firebaseStatus');
+            if (connected) {
+                statusElement.className = 'firebase-status firebase-connected';
+                statusElement.textContent = '🔥 Firebase 연결됨 - 온라인 데이터베이스 사용 중';
+            } else {
+                statusElement.className = 'firebase-status firebase-error';
+                statusElement.textContent = `❌ Firebase 연결 실패: ${errorMsg || 'Firebase 설정을 확인해주세요'}`;
+            }
+        }
+
+        // Firestore 보안 규칙 안내
+        function showFirestoreRulesHelp() {
+            const helpText = `
+Firestore 보안 규칙 문제일 수 있습니다. 
+Firebase Console > Firestore Database > Rules에서 다음 규칙을 설정해주세요:
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+
+⚠️ 주의: 이 규칙은 모든 접근을 허용합니다. 프로덕션에서는 더 엄격한 규칙을 사용하세요.
+            `;
+            console.log(helpText);
+            showAlert('Firestore 보안 규칙을 확인해주세요. 콘솔에서 자세한 안내를 확인하세요.', 'error');
+        }
+
+        // Firestore에서 프로젝트 데이터 가져오기 (간소화 버전)
+        async function getProjects() {
+            if (!isFirebaseReady) {
+                console.log('Firebase가 준비되지 않았습니다.');
+                return {};
+            }
+
+            try {
+                const { collection, getDocs } = window.firestoreFunctions;
+                
+                // 간단한 컬렉션 읽기로 변경 (orderBy 제거)
+                const querySnapshot = await getDocs(collection(window.db, "projects"));
+                
+                const projects = {};
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    projects[data.name] = {
+                        id: doc.id,
+                        ...data
+                    };
+                });
+                
+                console.log('Firestore에서 프로젝트 가져오기 성공:', Object.keys(projects).length + '개');
+                return projects;
+            } catch (error) {
+                console.error('Firestore 프로젝트 가져오기 실패:', error);
+                console.error('에러 세부사항:', error);
+                
+                // 에러가 권한 관련인지 확인
+                if (error.code === 'permission-denied') {
+                    showAlert('Firestore 접근 권한이 없습니다. 보안 규칙을 확인해주세요.', 'error');
+                } else {
+                    showAlert('프로젝트를 불러오는데 실패했습니다: ' + error.message, 'error');
+                }
+                return {};
+            }
+        }
+
+        // 개별 프로젝트 저장 (강화된 검증)
+        async function saveProjectToFirestore(projectData) {
+            if (!isFirebaseReady) {
+                throw new Error('Firebase가 준비되지 않았습니다.');
+            }
+
+            try {
+                const { collection, addDoc } = window.firestoreFunctions;
+                
+                // 생성 시간 추가
+                projectData.createdAt = new Date();
+                projectData.updatedAt = new Date();
+                
+                // 최종 데이터 검증
+                const finalData = { ...projectData };
+                
+                // base64 데이터 최종 제거
+                if (finalData.mainImage && finalData.mainImage.startsWith('data:')) {
+                    console.warn('Firestore 저장 전: 메인 이미지 base64 제거');
+                    finalData.mainImage = null;
+                }
+                if (finalData.images) {
+                    finalData.images = finalData.images.filter(url => !url.startsWith('data:'));
+                }
+                if (finalData.additionalImages) {
+                    finalData.additionalImages = finalData.additionalImages.filter(url => !url.startsWith('data:'));
+                }
+                
+                // 데이터 크기 확인
+                const dataSize = JSON.stringify(finalData).length;
+                console.log('Firestore 저장 시도 - 컬렉션: projects');
+                console.log('최종 데이터 크기:', dataSize, 'bytes');
+                console.log('네트워크 상태:', navigator.onLine);
+                console.log('Firebase 연결 상태:', isFirebaseReady);
+                
+                if (dataSize > 1000000) {
+                    throw new Error(`데이터 크기가 1MB를 초과합니다: ${(dataSize / 1024 / 1024).toFixed(2)}MB`);
+                }
+                
+                const docRef = await addDoc(collection(window.db, "projects"), finalData);
+                console.log('Firestore 프로젝트 저장 성공. 문서 ID:', docRef.id);
+                return docRef.id;
+            } catch (error) {
+                console.error('Firestore 프로젝트 저장 실패:', error);
+                console.error('에러 코드:', error.code);
+                console.error('에러 메시지:', error.message);
+                console.error('에러 스택:', error.stack);
+                
+                // 권한 관련 에러인지 확인
+                if (error.code === 'permission-denied') {
+                    showFirestoreRulesHelp();
+                    throw new Error('Firestore 접근 권한이 없습니다. 보안 규칙을 확인해주세요.');
+                } else if (error.code === 'resource-exhausted') {
+                    throw new Error('Firestore 저장 공간이 부족합니다.');
+                } else if (error.code === 'invalid-argument') {
+                    throw new Error('잘못된 데이터 형식입니다.');
+                } else if (error.code === 'unavailable') {
+                    throw new Error('Firestore 서비스가 일시적으로 사용할 수 없습니다.');
+                } else if (error.code === 'deadline-exceeded') {
+                    throw new Error('요청 시간이 초과되었습니다.');
+                }
+                
+                throw error;
+            }
+        }
+
+        // 프로젝트 업데이트
+        async function updateProjectInFirestore(projectId, projectData) {
+            if (!isFirebaseReady) {
+                throw new Error('Firebase가 준비되지 않았습니다.');
+            }
+
+            try {
+                const { doc, updateDoc } = window.firestoreFunctions;
+                
+                // 업데이트 시간 추가
+                projectData.updatedAt = new Date();
+                
+                await updateDoc(doc(window.db, "projects", projectId), projectData);
+                console.log('Firestore 프로젝트 업데이트 성공. 문서 ID:', projectId);
+            } catch (error) {
+                console.error('Firestore 프로젝트 업데이트 실패:', error);
+                throw error;
+            }
+        }
+
+        // 프로젝트 삭제
+        async function deleteProjectFromFirestore(projectId) {
+            if (!isFirebaseReady) {
+                throw new Error('Firebase가 준비되지 않았습니다.');
+            }
+
+            try {
+                const { doc, deleteDoc } = window.firestoreFunctions;
+                await deleteDoc(doc(window.db, "projects", projectId));
+                console.log('Firestore 프로젝트 삭제 성공. 문서 ID:', projectId);
+            } catch (error) {
+                console.error('Firestore 프로젝트 삭제 실패:', error);
+                throw error;
+            }
+        }
+
+        // 알림 메시지 표시
+        function showAlert(message, type = 'success') {
+            const alertElement = document.getElementById('alertMessage');
+            alertElement.textContent = message;
+            alertElement.className = `alert alert-${type}`;
+            alertElement.classList.remove('hidden');
+            
+            setTimeout(() => {
+                alertElement.classList.add('hidden');
+            }, 5000);
+        }
+
+        // 로딩 상태 토글 (간소화)
+        function toggleSubmitLoading(loading) {
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (loading) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = '처리 중...';
+            } else {
+                submitBtn.disabled = false;
+                submitBtn.textContent = editingProjectName ? 'Modify Project' : 'Add Project';
+            }
+        }
+
+        // 로그인 처리
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                isLoggedIn = true;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                
+                // Firebase 준비 확인 후 프로젝트와 멤버 로드
+                checkFirebaseReady().then(() => {
+                    loadProjects();
+                    loadMembers(); // 팀 멤버 목록도 함께 로드
+                });
+            } else {
+                const loginAlert = document.getElementById('loginAlert');
+                loginAlert.textContent = 'Invalid username or password.';
+                loginAlert.classList.remove('hidden');
+            }
+        });
+
+        // 로그아웃 처리
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            isLoggedIn = false;
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('adminDashboard').classList.add('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginAlert').classList.add('hidden');
+        });
+
+        // 추가 이미지 관리 변수
+        let additionalImages = []; // 추가 이미지 배열 추가
+        let draggedElement = null;
+
+        // 사용하지 않는 base64 함수 제거됨
+
+        // Firebase Storage에 이미지 업로드 함수 (최적화된 방식)
+        async function uploadImageToStorage(file, folder = 'images') {
+            try {
+                // 파일 크기 확인
+                const fileSizeMB = file.size / (1024 * 1024);
+                console.log(`업로드 시작: ${file.name} (${fileSizeMB.toFixed(2)}MB)`);
+                
+                // 파일 크기 제한 (100MB)
+                if (fileSizeMB > 100) {
+                    throw new Error(`파일 크기가 너무 큽니다: ${fileSizeMB.toFixed(2)}MB (최대 100MB)`);
+                }
+                
+                // 이미지 품질 검사
+                const imageQuality = await checkImageQuality(file);
+                if (imageQuality.isLowQuality) {
+                    console.warn(`⚠️ 이미지 품질이 낮습니다: ${imageQuality.width}x${imageQuality.height}px`);
+                    console.warn(`💡 권장: 최소 1920x1080px, 현재: ${imageQuality.width}x${imageQuality.height}px`);
+                } else {
+                    console.log(`✅ 이미지 품질 양호: ${imageQuality.width}x${imageQuality.height}px`);
+                }
+                
+                // 파일명 생성 (타임스탬프 + 원본 파일명)
+                const timestamp = Date.now();
+                const fileName = `${folder}/${timestamp}_${file.name}`;
+                
+                // Firebase Storage 참조 생성
+                const { ref, uploadBytes, getDownloadURL } = window.storageFunctions;
+                const storageRef = ref(window.storage, fileName);
+                
+                // 업로드 진행률 표시
+                console.log('Firebase Storage 업로드 시작...');
+                
+                // 원본 파일 그대로 업로드
+                const snapshot = await uploadBytes(storageRef, file);
+                console.log('Firebase Storage 업로드 완료:', fileName);
+                console.log('업로드된 바이트:', snapshot.bytesTransferred);
+                
+                // 다운로드 URL 가져오기
+                const downloadURL = await getDownloadURL(snapshot.ref);
+                console.log('다운로드 URL 생성 완료:', downloadURL);
+                
+                return downloadURL;
+            } catch (error) {
+                console.error('Firebase Storage 업로드 실패:', error);
+                
+                // 구체적인 에러 메시지
+                if (error.code === 'storage/unauthorized') {
+                    throw new Error('Firebase Storage 권한이 없습니다. 보안 규칙을 확인해주세요.');
+                } else if (error.code === 'storage/quota-exceeded') {
+                    throw new Error('Firebase Storage 용량이 부족합니다.');
+                } else if (error.code === 'storage/retry-limit-exceeded') {
+                    throw new Error('업로드 재시도 한도를 초과했습니다. 네트워크를 확인해주세요.');
+                } else if (error.code === 'storage/invalid-checksum') {
+                    throw new Error('파일이 손상되었습니다. 다시 시도해주세요.');
+                } else {
+                    throw new Error(`업로드 실패: ${error.message}`);
+                }
+            }
+        }
+
+        // 프로젝트 데이터 구조 분리 함수 (완전 새로운 방식)
+        function createCleanProjectData(projectInfo, imageUrls) {
+            // Firestore에 저장할 깨끗한 데이터만 생성
+            const cleanData = {
+                name: projectInfo.name,
+                category: projectInfo.category,
+                location: projectInfo.location,
+                year: projectInfo.year ? parseInt(projectInfo.year) : null,
+                status: projectInfo.status,
+                client: projectInfo.client,
+                service: projectInfo.service,
+                categoryDetail: projectInfo.categoryDetail,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            };
+            
+            // 이미지 URL들만 추가 (base64가 아닌 경우만)
+            if (imageUrls.mainImage && !imageUrls.mainImage.startsWith('data:')) {
+                cleanData.mainImage = imageUrls.mainImage;
+            }
+            
+            if (imageUrls.additionalImages && imageUrls.additionalImages.length > 0) {
+                cleanData.additionalImages = imageUrls.additionalImages.filter(url => !url.startsWith('data:'));
+            }
+            
+            // 데이터 크기 확인
+            const dataSize = JSON.stringify(cleanData).length;
+            console.log('깨끗한 프로젝트 데이터 크기:', dataSize, 'bytes');
+            
+            if (dataSize > 1000000) {
+                throw new Error(`데이터 크기가 1MB를 초과합니다: ${(dataSize / 1024 / 1024).toFixed(2)}MB`);
+            }
+            
+            return cleanData;
+        }
+
+
+
+        // 추가 이미지 파일명 표시
+        document.getElementById('additionalImages').addEventListener('change', function() {
+            const files = this.files;
+            const fileNameSpan = document.getElementById('additionalImagesName');
+            if (files.length > 0) {
+                if (files.length === 1) {
+                    fileNameSpan.textContent = files[0].name;
+                } else {
+                    fileNameSpan.textContent = `${files.length} files selected`;
+                }
+            } else {
+                fileNameSpan.textContent = 'No files selected';
+            }
+        });
+
+        // 추가 이미지 자동 추가 함수 수정 (Firebase Storage 사용)
+        document.getElementById('additionalImages').addEventListener('change', async function() {
+            const files = this.files;
+            
+            if (files.length === 0) return;
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const imageId = Date.now() + '-additional-' + i;
+                
+                try {
+                    // Firebase Storage에 업로드
+                    const downloadURL = await uploadImageToStorage(file, 'additional-images');
+                    
+                    additionalImages.push({
+                        id: imageId,
+                        file: file,
+                        url: downloadURL // Storage URL 저장
+                    });
+                    
+                    console.log('추가 이미지 원본 업로드 완료:', downloadURL);
+                } catch (error) {
+                    console.error('추가 이미지 처리 실패:', error);
+                    alert('Error processing image: ' + file.name);
+                }
+            }
+            
+            renderAdditionalPreview();
+            this.value = ''; // 같은 파일을 다시 선택할 수 있도록 초기화
+        });
+
+
+
+        // 드래그 앤 드롭 기능 (추가 이미지용)
+        function addDragDropEvents() {
+            const items = document.querySelectorAll('.additional-preview-item');
+            
+            items.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('drop', handleDrop);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+        }
+
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            
+            if (this !== draggedElement) {
+                const draggedIndex = parseInt(draggedElement.dataset.index);
+                const targetIndex = parseInt(this.dataset.index);
+                
+                // 배열에서 위치 변경
+                const draggedItem = additionalImages[draggedIndex];
+                additionalImages.splice(draggedIndex, 1);
+                additionalImages.splice(targetIndex, 0, draggedItem);
+                
+                renderAdditionalPreview();
+            }
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            draggedElement = null;
+        }
+
+
+
+        // localStorage base64 데이터 정리 함수 (강화)
+        function cleanupLocalStorage() {
+            try {
+                console.log('localStorage base64 데이터 정리 시작...');
+                
+                // 기존 데이터 백업
+                const adminProjects = localStorage.getItem('adminProjects');
+                const projects = localStorage.getItem('projects');
+                
+                if (adminProjects) {
+                    const parsed = JSON.parse(adminProjects);
+                    const cleaned = {};
+                    
+                    Object.keys(parsed).forEach(key => {
+                        const project = parsed[key];
+                        cleaned[key] = {
+                            ...project,
+                            mainImage: project.mainImage && project.mainImage.startsWith('data:') ? null : project.mainImage,
+                            images: project.images ? project.images.filter(img => !img.startsWith('data:')) : [],
+                            additionalImages: project.additionalImages ? project.additionalImages.filter(img => !img.startsWith('data:')) : []
+                        };
+                    });
+                    
+                    localStorage.setItem('adminProjects', JSON.stringify(cleaned));
+                    console.log('adminProjects base64 데이터 정리 완료');
+                }
+                
+                if (projects) {
+                    const parsed = JSON.parse(projects);
+                    const cleaned = parsed.map(project => ({
+                        ...project,
+                        mainImage: project.mainImage && project.mainImage.startsWith('data:') ? null : project.mainImage,
+                        images: project.images ? project.images.filter(img => !img.startsWith('data:')) : [],
+                        additionalImages: project.additionalImages ? project.additionalImages.filter(img => !img.startsWith('data:')) : []
+                    }));
+                    
+                    localStorage.setItem('projects', JSON.stringify(cleaned));
+                    console.log('projects base64 데이터 정리 완료');
+                }
+                
+                // 추가 정리: 모든 localStorage 키 확인
+                const allKeys = Object.keys(localStorage);
+                allKeys.forEach(key => {
+                    if (key.includes('project') || key.includes('admin')) {
+                        try {
+                            const data = JSON.parse(localStorage.getItem(key));
+                            if (typeof data === 'object' && data !== null) {
+                                // base64 데이터가 있는지 확인
+                                const hasBase64 = JSON.stringify(data).includes('data:image');
+                                if (hasBase64) {
+                                    console.log(`경고: ${key}에 base64 데이터가 포함되어 있습니다.`);
+                                }
+                            }
+                        } catch (e) {
+                            // JSON이 아닌 경우 무시
+                        }
+                    }
+                });
+                
+                console.log('localStorage base64 데이터 정리 완료');
+            } catch (error) {
+                console.error('localStorage 정리 실패:', error);
+            }
+        }
+
+
+
+        // localStorage 용량 확인 함수
+        function checkLocalStorageSize() {
+            const projects = localStorage.getItem('projects');
+            const adminProjects = localStorage.getItem('adminProjects');
+            
+            if (projects) {
+                const sizeKB = (projects.length / 1024).toFixed(2);
+                console.log(`projects 크기: ${sizeKB}KB`);
+            }
+            
+            if (adminProjects) {
+                const sizeKB = (adminProjects.length / 1024).toFixed(2);
+                console.log(`adminProjects 크기: ${sizeKB}KB`);
+            }
+            
+            // 전체 localStorage 사용량 확인
+            let totalSize = 0;
+            for (let key in localStorage) {
+                if (localStorage.hasOwnProperty(key)) {
+                    totalSize += localStorage[key].length;
+                }
+            }
+            console.log(`전체 localStorage 사용량: ${(totalSize / 1024).toFixed(2)}KB`);
+        }
+
+        // 페이지 로드 시 초기화 - 간소화
+        document.addEventListener('DOMContentLoaded', function() {
+            // localStorage 용량 확인
+            checkLocalStorageSize();
+            
+            // localStorage base64 데이터 정리
+            cleanupLocalStorage();
+            
+
+            renderAdditionalPreview();
+            
+            // Firebase 초기화 체크
+            checkFirebaseReady();
+            
+            console.log('Admin panel initialization completed'); // 디버깅용
+        });
+
+        // 수정 버튼 클릭 핸들러 (로딩 상태 관리)
+        async function handleEditProject(buttonElement, projectName) {
+            const originalText = buttonElement.textContent;
+            buttonElement.disabled = true;
+            buttonElement.textContent = 'Loading...';
+            
+            try {
+                await editProject(projectName);
+            } catch (error) {
+                console.error('프로젝트 수정 실패:', error);
+                showAlert('Failed to modify project.', 'error');
+            } finally {
+                buttonElement.disabled = false;
+                buttonElement.textContent = originalText;
+            }
+        }
+
+        // 프로젝트 수정 함수 수정 (로딩 문제 해결)
+        async function editProject(projectName) {
+            try {
+                // Firebase가 준비되지 않았으면 localStorage에서 가져오기
+                let firestoreProjects = {};
+                
+                if (isFirebaseReady) {
+                    // 타임아웃 설정 (3초)
+                    const timeoutPromise = new Promise((_, reject) => 
+                        setTimeout(() => reject(new Error('Timeout')), 3000)
+                    );
+                    
+                    try {
+                        firestoreProjects = await Promise.race([getProjects(), timeoutPromise]);
+                    } catch (error) {
+                        console.log('Failed to get from Firestore, using localStorage:', error.message);
+                        // Firestore 실패시 localStorage에서 가져오기
+                        const localProjects = localStorage.getItem('adminProjects');
+                        firestoreProjects = localProjects ? JSON.parse(localProjects) : {};
+                    }
+                } else {
+                    // Firebase가 준비되지 않았으면 localStorage에서 가져오기
+                    console.log('Firebase not ready, using localStorage');
+                    const localProjects = localStorage.getItem('adminProjects');
+                    firestoreProjects = localProjects ? JSON.parse(localProjects) : {};
+                }
+                
+                const project = firestoreProjects[projectName];
+                
+                if (!project) {
+                    console.log('프로젝트를 찾을 수 없습니다:', projectName);
+                    showAlert('Project not found.', 'error');
+                    return;
+                }
+
+                console.log('수정할 프로젝트 데이터:', project);
+
+                editingProjectId = project.id;
+                editingProjectName = projectName;
+                
+                // 기본 정보 입력
+                document.getElementById('projectName').value = project.name || '';
+                document.getElementById('projectCategory').value = project.category || '';
+                document.getElementById('projectLocation').value = project.location || '';
+                document.getElementById('projectYear').value = project.year || '';
+                document.getElementById('projectStatus').value = project.status || 'In Planning';
+                document.getElementById('projectName').value = project.name || '';
+                document.getElementById('projectClient').value = project.client || '';
+                document.getElementById('projectLocation').value = project.location || '';
+                document.getElementById('projectService').value = project.service || '';
+                
+                // 수정 모드에서는 메인 이미지 required 속성 제거
+                const mainImageInput = document.getElementById('projectImage');
+                mainImageInput.removeAttribute('required');
+                
+                // 메인 이미지 미리보기
+                const mainImagePreview = document.getElementById('mainImagePreview');
+                if (project.mainImage) {
+                    const img = document.createElement('img');
+                    img.src = project.mainImage;
+                    img.alt = '메인 이미지 미리보기';
+                    mainImagePreview.innerHTML = '';
+                    mainImagePreview.appendChild(img);
+                    
+                    // 기존 이미지를 dataset에 저장 (폼 제출 시 사용)
+                    mainImagePreview.dataset.storageUrl = project.mainImage;
+                } else {
+                    mainImagePreview.innerHTML = '';
+                    delete mainImagePreview.dataset.storageUrl;
+                }
+                
+                
+                
+                // 추가 이미지들 불러오기 (base64 제외)
+                additionalImages = [];
+                if (project.additionalImages && Array.isArray(project.additionalImages)) {
+                    project.additionalImages
+                        .filter(imageUrl => imageUrl && !imageUrl.startsWith('data:')) // base64 제외
+                        .forEach((imageUrl, index) => {
+                        additionalImages.push({
+                            id: 'existing-additional-' + index,
+                            file: null,
+                            url: imageUrl
+                        });
+                    });
+                }
+                console.log('수정 모드 - 추가 이미지 로드:', additionalImages.length, '개 (base64 제외)');
+                renderAdditionalPreview();
+                
+                // 카테고리 체크박스 채우기 (배열/문자열 모두 대응)
+                const checkboxes = document.querySelectorAll('input[name="projectCategories"]');
+                checkboxes.forEach(cb => cb.checked = false);
+                let categories = project.category;
+                if (!Array.isArray(categories)) {
+                    categories = categories ? [categories] : [];
+                }
+                categories.forEach(cat => {
+                    const checkbox = document.querySelector(`input[name="projectCategories"][value="${cat}"]`);
+                    if (checkbox) checkbox.checked = true;
+                });
+                
+                // 하이라이트 체크박스 제거됨
+
+                // 수정 모드 UI 표시
+                document.getElementById('cancelEdit').classList.remove('hidden');
+                
+                // 버튼 텍스트 변경
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.textContent = 'Modify Project';
+                
+                // 폼으로 스크롤
+                document.querySelector('.admin-section').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                console.error('프로젝트 수정 로드 실패:', error);
+                showAlert('Failed to load project information.', 'error');
+            }
+        }
+
+        // 수정 취소 버튼 수정
+        document.getElementById('cancelEdit').addEventListener('click', function() {
+            editingProjectId = null;
+            editingProjectName = null;
+            
+            // 폼 초기화
+            document.getElementById('projectForm').reset();
+            
+            // 새 프로젝트 추가 모드로 돌아갈 때 required 속성 다시 추가
+            const mainImageInput = document.getElementById('projectImage');
+            mainImageInput.setAttribute('required', 'required');
+            
+            // 이미지 배열 초기화
+            additionalImages = [];
+            
+            // 미리보기 초기화
+            renderAdditionalPreview();
+            document.getElementById('mainImagePreview').innerHTML = '';
+            
+            // UI 초기화
+            this.classList.add('hidden');
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = '프로젝트 추가';
+        });
+
+        // 프로젝트 폼 제출 처리 - Firebase 버전
+        document.getElementById('projectForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            toggleSubmitLoading(true);
+            
+            console.log('=== 프로젝트 저장 시작 ===');
+            console.log('Firebase 상태:', isFirebaseReady);
+            console.log('로그인 상태:', isLoggedIn);
+            console.log('window.db:', window.db);
+            console.log('window.firestoreFunctions:', window.firestoreFunctions);
+            
+            try {
+                // 폼 데이터 수집
+                const projectName = document.getElementById('projectName').value;
+                const projectCategory = document.getElementById('projectCategory').value;
+                const projectLocation = document.getElementById('projectLocation').value;
+                const projectYear = document.getElementById('projectYear').value;
+                const projectStatus = document.getElementById('projectStatus').value;
+                const projectClient = document.getElementById('projectClient').value;
+                const projectService = document.getElementById('projectService').value;
+                
+                // === 완전 새로운 방식: 단계별 처리 ===
+                console.log('=== 새로운 방식으로 프로젝트 저장 시작 ===');
+                
+                // 1단계: 기본 프로젝트 정보 수집
+                const projectInfo = {
+                    name: projectName,
+                    category: projectCategory,
+                    location: projectLocation,
+                    year: projectYear ? parseInt(projectYear) : null,
+                    status: projectStatus,
+                    client: projectClient,
+                    service: projectService,
+                    categoryDetail: Array.from(document.querySelectorAll('input[name="projectCategories"]:checked')).map(cb => cb.value)
+                };
+                
+                // 2단계: 이미지 업로드 처리
+                const imageUrls = {
+                    mainImage: null,
+                    additionalImages: []
+                };
+                
+                // 메인 이미지 처리
+                const mainImageFile = document.getElementById('projectImage').files[0];
+                const previewContainer = document.getElementById('mainImagePreview');
+                
+                if (mainImageFile) {
+                    // 새 이미지 업로드
+                    try {
+                        imageUrls.mainImage = await uploadImageToStorage(mainImageFile, 'main-images');
+                        console.log('메인 이미지 업로드 완료:', imageUrls.mainImage);
+                    } catch (error) {
+                        console.error('메인 이미지 업로드 실패:', error);
+                        throw new Error('메인 이미지 업로드에 실패했습니다.');
+                    }
+                } else if (previewContainer.dataset.storageUrl) {
+                    // 기존 이미지 사용
+                    const existingUrl = previewContainer.dataset.storageUrl;
+                    if (existingUrl && !existingUrl.startsWith('data:')) {
+                        imageUrls.mainImage = existingUrl;
+                        console.log('기존 메인 이미지 사용:', existingUrl);
+                    }
+                } else if (!editingProjectName) {
+                    throw new Error('메인 이미지를 선택해주세요.');
+                }
+                
+
+                
+                // 추가 이미지들 처리
+                for (const addImg of additionalImages) {
+                    if (addImg.url && !addImg.url.startsWith('data:')) {
+                        imageUrls.additionalImages.push(addImg.url);
+                    }
+                }
+                
+                console.log('이미지 URL 수집 완료:');
+                console.log('- 메인 이미지:', imageUrls.mainImage ? '있음' : '없음');
+                console.log('- 추가 이미지:', imageUrls.additionalImages.length, '개');
+                
+                // 3단계: 깨끗한 프로젝트 데이터 생성
+                const cleanProjectData = createCleanProjectData(projectInfo, imageUrls);
+
+                // 4단계: Firebase 또는 localStorage 저장
+                try {
+                    console.log('=== 저장 시도 ===');
+                    console.log('Firebase 준비:', isFirebaseReady);
+                    console.log('수정 모드:', editingProjectId);
+                    
+                    if (isFirebaseReady && editingProjectId) {
+                        // Firebase 수정 모드
+                        console.log('Firebase 수정 모드로 저장 시도');
+                        await updateProjectInFirestore(editingProjectId, cleanProjectData);
+                        showAlert('Project has been successfully modified!');
+                    } else if (isFirebaseReady) {
+                        // Firebase 새 프로젝트 추가
+                        console.log('Firebase 새 프로젝트 추가 시도');
+                        const docId = await saveProjectToFirestore(cleanProjectData);
+                        showAlert('Project has been successfully added!');
+                    } else {
+                        // Firebase 연결 안됨 - localStorage만 사용
+                        console.log('Firebase 연결 안됨, localStorage 사용');
+                        
+                        // localStorage에 저장 (가벼운 버전만)
+                        let localProjects = JSON.parse(localStorage.getItem('adminProjects') || '{}');
+                        let projectsArray = JSON.parse(localStorage.getItem('projects') || '[]');
+                        
+                        if (editingProjectName) {
+                            delete localProjects[editingProjectName];
+                            projectsArray = projectsArray.filter(p => p.name !== editingProjectName);
+                        }
+                        
+                        // 깨끗한 데이터만 저장
+                        localProjects[cleanProjectData.name] = cleanProjectData;
+                        projectsArray.push(cleanProjectData);
+                        
+                        // localStorage 크기 관리 (강화)
+                        const totalSize = JSON.stringify(projectsArray).length;
+                        console.log('localStorage 저장 크기:', (totalSize / 1024).toFixed(2), 'KB');
+                        
+                        // 용량 제한 체크 (3MB로 낮춤)
+                        if (totalSize > 3000000) { // 3MB 제한
+                            console.warn('localStorage 용량 초과, 오래된 데이터 제거');
+                            
+                            // 가장 오래된 프로젝트부터 제거
+                            while (totalSize > 2000000 && projectsArray.length > 1) {
+                                const removed = projectsArray.shift();
+                                console.log(`제거된 프로젝트: ${removed.name}`);
+                                
+                                // 새로운 크기 계산
+                                const newSize = JSON.stringify(projectsArray).length;
+                                if (newSize >= totalSize) {
+                                    console.warn('무한 루프 방지, 강제 중단');
+                                    break;
+                                }
+                                totalSize = newSize;
+                            }
+                            
+                            console.log('정리 후 크기:', (totalSize / 1024).toFixed(2), 'KB');
+                        }
+                        
+                        // 최종 용량 확인
+                        if (totalSize > 5000000) {
+                            throw new Error(`localStorage 용량이 여전히 초과됩니다: ${(totalSize / 1024 / 1024).toFixed(2)}MB`);
+                        }
+                        
+                        localStorage.setItem('adminProjects', JSON.stringify(localProjects));
+                        localStorage.setItem('projects', JSON.stringify(projectsArray));
+                        
+                        showAlert('Project saved locally! (Will sync when Firebase is connected)', 'success');
+                    }
+                } catch (error) {
+                    console.error('저장 실패:', error);
+                    showAlert('Failed to save project: ' + error.message, 'error');
+                }
+                
+                // 수정 모드 정리
+                if (editingProjectName) {
+                    editingProjectId = null;
+                    editingProjectName = null;
+                    document.getElementById('cancelEdit').classList.add('hidden');
+                    const submitBtn = document.getElementById('submitBtn');
+                    submitBtn.textContent = '프로젝트 추가';
+                    
+                    // required 속성 다시 추가
+                    const mainImageInput = document.getElementById('projectImage');
+                    mainImageInput.setAttribute('required', 'required');
+                }
+                
+                console.log('=== 프로젝트 저장 성공 ===');
+                
+                // 프로젝트 목록 새로고침
+                loadProjects();
+                
+                // 폼 초기화
+                document.getElementById('projectForm').reset();
+                additionalImages = [];
+                renderAdditionalPreview();
+                document.getElementById('mainImagePreview').innerHTML = '';
+                
+                // 실시간 반영
+                window.dispatchEvent(new Event('adminProjectsUpdated'));
+                
+            } catch (error) {
+                console.error('프로젝트 저장 실패:', error);
+                
+                if (error.message.includes('quota') || error.message.includes('storage')) {
+                    showAlert('Firestore storage is insufficient! Please reduce image size or delete existing projects.', 'error');
+                } else {
+                    showAlert('Error occurred while saving project: ' + error.message, 'error');
+                }
+            } finally {
+                toggleSubmitLoading(false);
+            }
+        });
+
+        // Firestore 데이터를 localStorage에 동기화 (용량 체크 강화)
+        async function syncToLocalStorage() {
+            try {
+                const firestoreProjects = await getProjects();
+                const projectsArray = Object.values(firestoreProjects);
+                
+                // base64 데이터 제거
+                const lightProjects = projectsArray.map(project => ({
+                    ...project,
+                    mainImage: project.mainImage && project.mainImage.startsWith('data:') ? null : project.mainImage,
+                    images: project.images ? project.images.filter(img => !img.startsWith('data:')) : [],
+                    additionalImages: project.additionalImages ? project.additionalImages.filter(img => !img.startsWith('data:')) : []
+                }));
+                
+                // 용량 체크
+                const dataSize = JSON.stringify(lightProjects).length;
+                console.log('동기화 데이터 크기:', (dataSize / 1024).toFixed(2), 'KB');
+                
+                if (dataSize > 3000000) { // 3MB 제한
+                    console.warn('localStorage 용량 초과, 동기화를 건너뜁니다.');
+                    return;
+                }
+                
+                localStorage.setItem('projects', JSON.stringify(lightProjects));
+                localStorage.setItem('adminProjects', JSON.stringify(lightProjects));
+                
+                // 프로젝트 페이지에 실시간 반영
+                window.dispatchEvent(new Event('adminProjectsUpdated'));
+                
+                console.log('localStorage 동기화 완료:', lightProjects.length + '개 프로젝트');
+            } catch (error) {
+                console.error('localStorage 동기화 실패:', error);
+            }
+        }
+
+        // 프로젝트 목록 로드 - Firebase/localStorage 하이브리드
+        async function loadProjects() {
+            const projectList = document.getElementById('projectList');
+            const loader = document.getElementById('projectsLoader');
+            
+            try {
+                loader.classList.remove('hidden');
+                projectList.innerHTML = '';
+
+                let projects = {};
+                
+                if (isFirebaseReady) {
+                    try {
+                        projects = await getProjects();
+                        console.log('Firebase에서 프로젝트 로드 성공');
+                    } catch (error) {
+                        console.log('Firebase 로드 실패, localStorage 사용:', error);
+                        const localProjects = localStorage.getItem('adminProjects');
+                        projects = localProjects ? JSON.parse(localProjects) : {};
+                    }
+                } else {
+                    console.log('Firebase 준비 안됨, localStorage 사용');
+                    const localProjects = localStorage.getItem('adminProjects');
+                    projects = localProjects ? JSON.parse(localProjects) : {};
+                }
+                
+                if (Object.keys(projects).length === 0) {
+                    projectList.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #999;">등록된 프로젝트가 없습니다.</td></tr>';
+                } else {
+                    // 프로젝트를 카테고리별로 정렬
+                    const sortedProjects = Object.entries(projects).sort((a, b) => {
+                        const categoryA = a[1].category.toLowerCase();
+                        const categoryB = b[1].category.toLowerCase();
+                        
+                        // 아키텍처가 먼저, 인테리어가 나중에 오도록 정렬
+                        if (categoryA === 'architecture' && categoryB !== 'architecture') {
+                            return -1;
+                        }
+                        if (categoryA !== 'architecture' && categoryB === 'architecture') {
+                            return 1;
+                        }
+                        
+                        // 같은 카테고리 내에서는 이름순 정렬
+                        return a[0].localeCompare(b[0]);
+                    });
+                    
+                    sortedProjects.forEach(([projectName, project]) => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${project.name}</td>
+                            <td>${project.category.toUpperCase()}</td>
+                            <td>${project.location}</td>
+                            <td>${project.year || '-'}</td>
+                            <td>${project.status}</td>
+                            <td>
+                                                        <button class="btn-edit" onclick="handleEditProject(this, '${projectName}')">Edit</button>
+                        <button class="btn-danger" onclick="deleteProject('${projectName}', '${project.id}')">Delete</button>
+                            </td>
+                        `;
+                        projectList.appendChild(row);
+                    });
+                }
+
+                // localStorage 동기화 (용량 체크 강화)
+                const projectsArray = Object.values(projects);
+                try {
+                    // 이미지 URL만 포함하여 localStorage에 저장 (base64 제외)
+                    const lightProjects = projectsArray.map(project => ({
+                        ...project,
+                        // base64 데이터는 제외하고 URL만 저장
+                        mainImage: project.mainImage && project.mainImage.startsWith('data:') ? null : project.mainImage,
+                        images: project.images ? project.images.filter(img => !img.startsWith('data:')) : [],
+                        additionalImages: project.additionalImages ? project.additionalImages.filter(img => !img.startsWith('data:')) : []
+                    }));
+                    
+                    // 용량 체크
+                    const dataSize = JSON.stringify(lightProjects).length;
+                    console.log('localStorage 동기화 크기:', (dataSize / 1024).toFixed(2), 'KB');
+                    
+                    if (dataSize > 3000000) { // 3MB 제한
+                        console.warn('localStorage 용량 초과, 동기화를 건너뜁니다.');
+                        return; // 동기화 중단
+                    }
+                    
+                    localStorage.setItem('projects', JSON.stringify(lightProjects));
+                    localStorage.setItem('adminProjects', JSON.stringify(lightProjects));
+                    console.log('localStorage 동기화 완료 (base64 제거됨)');
+                } catch (e) {
+                    console.warn('localStorage 용량 초과, 저장을 건너뜁니다.', e);
+                }
+                
+            } catch (error) {
+                console.error('프로젝트 로드 실패:', error);
+                projectList.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #dc3545;">프로젝트 로드에 실패했습니다.</td></tr>';
+                showAlert('Failed to load project list.', 'error');
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        // 프로젝트 삭제 - Firebase 버전
+        async function deleteProject(projectName, projectId) {
+            if (!isFirebaseReady) {
+                showAlert('Please check Firebase connection.', 'error');
+                return;
+            }
+
+            if (confirm(`Are you sure you want to delete the project "${projectName}"?`)) {
+                try {
+                    await deleteProjectFromFirestore(projectId);
+                    showAlert('Project has been deleted!');
+                    
+                    // 프로젝트 목록 새로고침
+                    await loadProjects();
+                    
+                } catch (error) {
+                    console.error('프로젝트 삭제 실패:', error);
+                    showAlert('Failed to delete project: ' + error.message, 'error');
+                }
+            }
+        }
+
+        // 파일 선택 시 파일명 표시
+        document.getElementById('projectImage').addEventListener('change', function() {
+            const file = this.files[0];
+            const fileNameSpan = document.getElementById('projectImageName');
+            if (file) {
+                fileNameSpan.textContent = file.name;
+            } else {
+                fileNameSpan.textContent = 'No file selected';
+            }
+        });
+
+        // 메인 이미지 미리보기
+        document.getElementById('projectImage').addEventListener('change', async function() {
+            const file = this.files[0];
+            const previewContainer = document.getElementById('mainImagePreview');
+            
+            if (file) {
+                try {
+                    // Firebase Storage에 업로드
+                    const downloadURL = await uploadImageToStorage(file, 'main-images');
+                    
+                    const img = document.createElement('img');
+                    img.src = downloadURL;
+                    img.alt = '메인 이미지 미리보기';
+                    previewContainer.innerHTML = '';
+                    previewContainer.appendChild(img);
+                    
+                    // Storage URL을 임시 저장 (폼 제출 시 사용)
+                    previewContainer.dataset.storageUrl = downloadURL;
+                    
+                    console.log('메인 이미지 원본 업로드 완료:', downloadURL);
+                } catch (error) {
+                    console.error('메인 이미지 처리 실패:', error);
+                    alert('Error occurred while processing main image.');
+                }
+            } else {
+                previewContainer.innerHTML = '';
+                delete previewContainer.dataset.storageUrl;
+            }
+        });
+
+        function renderAdditionalPreview() {
+            const container = document.getElementById('additionalPreviewContainer');
+            
+            if (additionalImages.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999; margin: 10px 0;">No additional images.</p>';
+                return;
+            }
+            
+            container.innerHTML = additionalImages.map((img, index) => `
+                <div class="additional-preview-item" data-id="${img.id}">
+                    <img src="${img.url}" alt="추가 이미지 ${index + 1}" class="additional-preview-img">
+                    <div class="slide-preview-controls">
+                        <button type="button" class="slide-control-btn delete-slide-btn" onclick="removeAdditionalImage('${img.id}')">×</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function removeAdditionalImage(imageId) {
+            additionalImages = additionalImages.filter(img => img.id !== imageId);
+            renderAdditionalPreview();
+        }
+
+        // 팀 멤버 목록 로드
+        async function loadMembers() {
+            const membersList = document.getElementById('membersList');
+            const loader = document.getElementById('membersLoader');
+            
+            try {
+                loader.classList.remove('hidden');
+                membersList.innerHTML = '';
+
+                if (!isFirebaseReady) {
+                    membersList.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999;">Please check Firebase connection.</td></tr>';
+                    return;
+                }
+
+                const { collection, getDocs, query, orderBy } = window.firestoreFunctions;
+                
+                // orderBy 없이 먼저 시도
+                let q;
+                try {
+                    q = query(collection(window.db, 'team'), orderBy('createdAt', 'desc'));
+                } catch (error) {
+                    q = query(collection(window.db, 'team'));
+                }
+                
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    membersList.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999;">등록된 멤버가 없습니다.</td></tr>';
+                } else {
+                    querySnapshot.forEach((doc) => {
+                        const member = doc.data();
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${member.name || 'No Name'}</td>
+                            <td>${member.position || 'No Position'}</td>
+                            <td>${member.email || 'No Email'}</td>
+                            <td>
+                                ${member.image && !member.image.startsWith('data:') ? `<img src="${member.image}" alt="${member.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">` : 'No Image'}
+                            </td>
+                            <td>
+                                <button class="btn-edit" onclick="handleEditMember(this, '${doc.id}')">Edit</button>
+                                <button class="btn-danger" onclick="deleteMember('${doc.id}', '${member.name}')">Delete</button>
+                            </td>
+                        `;
+                        membersList.appendChild(row);
+                    });
+                }
+                
+            } catch (error) {
+                console.error('멤버 로드 실패:', error);
+                membersList.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #dc3545;">멤버 목록을 불러오는데 실패했습니다.</td></tr>';
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        // 멤버 수정 처리
+        async function handleEditMember(button, memberId) {
+            try {
+                const { doc, getDoc } = window.firestoreFunctions;
+                const memberDoc = await getDoc(doc(window.db, 'team', memberId));
+                
+                if (memberDoc.exists()) {
+                    const member = memberDoc.data();
+                    
+                    // 폼에 기존 데이터 채우기
+                    document.getElementById('memberName').value = member.name || '';
+                    document.getElementById('memberPosition').value = member.position || '';
+                    document.getElementById('memberEmail').value = member.email || '';
+                    
+                    // 수정 모드 표시
+                    const submitBtn = document.querySelector('#memberAddForm button[type="submit"]');
+                    submitBtn.textContent = 'Modify Member';
+                    
+                    // 수정 완료 후 목록 새로고침을 위해 멤버 ID 저장
+                    submitBtn.dataset.editingMemberId = memberId;
+                    
+                    // 폼으로 스크롤
+                    document.querySelector('#memberAddForm').scrollIntoView({ behavior: 'smooth' });
+                }
+            } catch (error) {
+                console.error('멤버 수정 로드 실패:', error);
+                alert('Failed to load member information.');
+            }
+        }
+
+
+
+        // 멤버 삭제
+        async function deleteMember(memberId, memberName) {
+            if (confirm(`Are you sure you want to delete the member "${memberName}"?`)) {
+                try {
+                    const { doc, deleteDoc } = window.firestoreFunctions;
+                    await deleteDoc(doc(window.db, 'team', memberId));
+                    alert('Member has been deleted!');
+                    await loadMembers(); // 목록 새로고침
+                } catch (error) {
+                    console.error('멤버 삭제 실패:', error);
+                    alert('Failed to delete member: ' + error.message);
+                }
+            }
+        }
+
+        // 멤버 이미지 파일명 표시
+        document.getElementById('memberImage').addEventListener('change', function() {
+            const file = this.files[0];
+            const fileNameSpan = document.getElementById('memberImageName');
+            if (file) {
+                fileNameSpan.textContent = file.name;
+            } else {
+                fileNameSpan.textContent = 'No file selected';
+            }
+        });
+
+        // 멤버 이미지 마이그레이션 함수
+        async function migrateMemberImagesToStorage() {
+            if (!isFirebaseReady) {
+                showAlert('Firebase 연결을 확인해주세요.', 'error');
+                return;
+            }
+
+            try {
+                console.log('=== 멤버 이미지 마이그레이션 시작 ===');
+                
+                const { collection, getDocs, updateDoc, doc } = window.firestoreFunctions;
+                const querySnapshot = await getDocs(collection(window.db, 'team'));
+                
+                if (querySnapshot.empty) {
+                    showAlert('마이그레이션할 멤버가 없습니다.', 'info');
+                    return;
+                }
+
+                console.log(`총 ${querySnapshot.size}개 멤버 마이그레이션 시작`);
+                
+                let migratedCount = 0;
+                let skippedCount = 0;
+                let errorCount = 0;
+
+                for (const memberDoc of querySnapshot.docs) {
+                    try {
+                        const member = memberDoc.data();
+                        console.log(`마이그레이션 중: ${member.name}`);
+                        
+                        if (member.image && member.image.startsWith('data:')) {
+                            console.log(`- 멤버 이미지 마이그레이션: ${member.name}`);
+                            try {
+                                const imageBlob = await dataURLToBlob(member.image);
+                                const file = new File([imageBlob], `${member.name}_profile.jpg`, { type: 'image/jpeg' });
+                                const storageURL = await uploadImageToStorage(file, 'team-images');
+                                
+                                await updateDoc(doc(window.db, 'team', memberDoc.id), {
+                                    image: storageURL,
+                                    updatedAt: new Date().toISOString()
+                                });
+                                
+                                migratedCount++;
+                                console.log(`- 멤버 이미지 마이그레이션 완료: ${storageURL}`);
+                            } catch (error) {
+                                console.error(`- 멤버 이미지 마이그레이션 실패: ${error.message}`);
+                                errorCount++;
+                                continue;
+                            }
+                        } else {
+                            skippedCount++;
+                            console.log(`⏭️ 마이그레이션 불필요: ${member.name} (이미 Storage URL 사용 중)`);
+                        }
+
+                    } catch (error) {
+                        console.error(`❌ 멤버 마이그레이션 실패: ${member.name}`, error);
+                        errorCount++;
+                    }
+                }
+
+                console.log('=== 멤버 마이그레이션 완료 ===');
+                console.log(`성공: ${migratedCount}개`);
+                console.log(`건너뜀: ${skippedCount}개`);
+                console.log(`실패: ${errorCount}개`);
+
+                showAlert(`멤버 마이그레이션 완료!\n성공: ${migratedCount}개\n건너뜀: ${skippedCount}개\n실패: ${errorCount}개`, 'success');
+
+                await loadMembers();
+
+            } catch (error) {
+                console.error('멤버 마이그레이션 실패:', error);
+                showAlert('멤버 마이그레이션 중 오류가 발생했습니다: ' + error.message, 'error');
+            }
+        }
+
+        // 멤버 추가/수정 폼 Firestore 저장
+        document.getElementById('memberAddForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('memberName').value.trim();
+            const position = document.getElementById('memberPosition').value.trim();
+            const email = document.getElementById('memberEmail').value.trim();
+            const imageFile = document.getElementById('memberImage').files[0];
+            
+            if (!name || !position || !email) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            try {
+                let imageUrl = '';
+                
+                if (imageFile) {
+                    // 새 이미지가 선택된 경우 - Firebase Storage
+                    imageUrl = await uploadImageToStorage(imageFile, 'team-images');
+                }
+
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const editingMemberId = submitBtn.dataset.editingMemberId;
+
+                if (editingMemberId) {
+                    // 수정 모드
+                    const { doc, updateDoc } = window.firestoreFunctions;
+                    const updateData = {
+                        name, position, email,
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    if (imageUrl) {
+                        updateData.image = imageUrl;
+                    }
+                    
+                    await updateDoc(doc(window.db, 'team', editingMemberId), updateData);
+                    alert('Member has been successfully modified!');
+                    
+                    // 수정 모드 해제
+                    delete submitBtn.dataset.editingMemberId;
+                    submitBtn.textContent = 'Add Member';
+                } else {
+                    // 새 멤버 추가
+                    if (!imageFile) {
+                        alert('Please select an image.');
+                        return;
+                    }
+                    
+                    const { collection, addDoc } = window.firestoreFunctions;
+                    await addDoc(collection(window.db, 'team'), {
+                        name, position, email, image: imageUrl, createdAt: new Date().toISOString()
+                    });
+                    alert('Member has been successfully added!');
+                }
+                
+                this.reset();
+                await loadMembers(); // 목록 새로고침
+                
+            } catch (err) {
+                alert('Failed to save member: ' + err.message);
+            }
+        });
+
+        // 페이지 로드 시 Firebase 상태 체크
+        window.addEventListener('load', function() {
+            console.log('페이지 로드됨 - 로그인 상태:', isLoggedIn);
+            console.log('Firebase 초기 상태:', isFirebaseReady);
+            console.log('window.db:', window.db);
+            console.log('window.firestoreFunctions:', window.firestoreFunctions);
+            
+            if (isLoggedIn) {
+                console.log('로그인된 상태에서 Firebase 준비 확인 시작');
+                checkFirebaseReady().then((ready) => {
+                    console.log('Firebase 준비 확인 결과:', ready);
+                    if (ready) {
+                        loadProjects();
+                        loadMembers(); // 팀 멤버 목록도 함께 로드
+                    }
+                });
+            }
+        });
+
+        // Firebase 연결 상태 확인 후 멤버 로드 재시도
+        setTimeout(() => {
+            console.log('2초 후 Firebase 상태 재확인:', isFirebaseReady);
+            if (isFirebaseReady && isLoggedIn) {
+                console.log('2초 후 멤버 로드 재시도');
+                loadMembers();
+            }
+        }, 2000);
+
+        // 추가 안전장치: 5초 후에도 로드되지 않으면 재시도
+        setTimeout(() => {
+            console.log('5초 후 Firebase 상태 재확인:', isFirebaseReady);
+            if (isFirebaseReady && isLoggedIn) {
+                console.log('5초 후 멤버 로드 재시도');
+                loadMembers();
+            }
+        }, 5000);
+
+        // Firebase 연결 상태 확인 (페이지 로드 시)
+        setTimeout(() => {
+            console.log('5초 후 Firebase 연결 상태 최종 확인:', isFirebaseReady);
+            if (!isFirebaseReady) {
+                console.log('Firebase 연결 실패 - 상태 업데이트');
+                updateFirebaseStatus(false, 'Firebase 설정값을 확인해주세요');
+            }
+        }, 5000);
+
+
+
+        // 이미지 품질 검사 함수
+        function checkImageQuality(file) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = function() {
+                    const width = this.width;
+                    const height = this.height;
+                    const isLowQuality = width < 1920 || height < 1080;
+                    
+                    resolve({
+                        width: width,
+                        height: height,
+                        isLowQuality: isLowQuality,
+                        aspectRatio: (width / height).toFixed(2)
+                    });
+                };
+                img.onerror = function() {
+                    resolve({
+                        width: 0,
+                        height: 0,
+                        isLowQuality: true,
+                        aspectRatio: 0
+                    });
+                };
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+        // base64 데이터를 Blob으로 변환하는 함수
+        function dataURLToBlob(dataURL) {
+            return new Promise((resolve, reject) => {
+                try {
+                    const arr = dataURL.split(',');
+                    const mime = arr[0].match(/:(.*?);/)[1];
+                    const bstr = atob(arr[1]);
+                    let n = bstr.length;
+                    const u8arr = new Uint8Array(n);
+                    
+                    while (n--) {
+                        u8arr[n] = bstr.charCodeAt(n);
+                    }
+                    
+                    const blob = new Blob([u8arr], { type: mime });
+                    resolve(blob);
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+    </script>
+</body>
+</html> 
+</html> 
+</html> 
+</html> 
