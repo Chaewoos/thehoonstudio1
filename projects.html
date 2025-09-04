@@ -204,10 +204,10 @@
                     <span class="icon-bar"></span>
                 </div>
                 <div class="menu-items" id="menuItems">
-                    <a href="/thehoonstudio/index.html">HOME</a>
-                    <a href="/thehoonstudio/about.html">ABOUT</a>
-                    <a href="/thehoonstudio/projects.html">PROJECTS</a>
-                    <a href="/thehoonstudio/contact.html">CONTACT</a>
+                    <a href="./index.html">HOME</a>
+                    <a href="./about.html">ABOUT</a>
+                    <a href="./projects.html">PROJECTS</a>
+                    <a href="./contact.html">CONTACT</a>
                                     <a href="https://www.instagram.com/the_hoon_studio/" target="_blank" class="menu-social-link">INSTAGRAM</a>
                 <span class="menu-social-divider">|</span>
                 <a href="https://www.linkedin.com/in/chang-hoon-jeong-219159304" target="_blank" class="menu-social-link">LINKEDIN</a>
@@ -1622,18 +1622,18 @@
                     
                     // Firebase 데이터가 로드된 후에 필터링 적용
                     if (window.loadedProjects && window.loadedProjects.length > 0) {
-                        const filter = this.getAttribute('href').substring(1).replace('-other', '');
+                        const filter = this.getAttribute('href').substring(1).replace('-other', ''); // 'all' | 'architecture' | 'interior' | 'visualization'
                         const rows = document.querySelectorAll('#other-projects-section tbody tr');
                         
                         rows.forEach(row => {
-                            const category = row.getAttribute('data-category-other');
-                            if (filter === 'all-other') {
+                            const category = row.getAttribute('data-project-category');
+                            if (filter === 'all') {
                                 row.style.display = '';
-                            } else if (filter === 'architecture-other' && category === 'architecture') {
+                            } else if (filter === 'architecture' && category === 'architecture') {
                                 row.style.display = '';
-                            } else if (filter === 'interior-other' && category === 'interior') {
+                            } else if (filter === 'interior' && category === 'interior') {
                                 row.style.display = '';
-                            } else if (filter === 'visualization-other' && category === 'visualization') {
+                            } else if (filter === 'visualization' && category === 'visualization') {
                                 row.style.display = '';
                             } else {
                                 row.style.display = 'none';
