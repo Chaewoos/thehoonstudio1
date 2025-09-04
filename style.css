@@ -63,7 +63,7 @@ p,
 }
 
 /* 본문(내용)용 Roboto-Regular 적용 */
-p,
+p:not(.project-detail-container .project-info-section > p):not(.contact-email-section p):not(.contact-description),
 .project-item p,
 .detail-item p,
 .footer-email,
@@ -71,8 +71,7 @@ p,
 .team-member p,
 .studio-section,
 .team-section,
-.project-info-section > p,
-.project-detail-container > .project-info-section > p {
+.project-info-section > p:not(.project-detail-container .project-info-section > p) {
     font-family: 'Roboto-Regular', Arial, sans-serif !important;
     font-weight: normal !important;
 }
@@ -848,6 +847,7 @@ body.about-page .project-sub-menu {
     scrollbar-width: none;
     -ms-overflow-style: none;
     scroll-snap-type: x mandatory;
+    padding-left: 20px; /* 왼쪽 여백 추가 */
 }
 
 .all-projects-grid::-webkit-scrollbar {
@@ -903,6 +903,7 @@ body.about-page .project-sub-menu {
     font-weight: bold;
     margin: 0;
     text-align: left;
+    text-transform: uppercase; /* 프로젝트 타이틀을 대문자로 변환 */
 }
 
 .project-item p {
@@ -922,6 +923,16 @@ body.about-page .project-sub-menu {
 /* HIGHLIGHTS 섹션에서는 타입 표시 */
 .highlights-section .project-item p {
     display: block;
+}
+
+/* 필터링된 프로젝트 그리드 가운데 정렬 (ALL 제외) */
+.project-grid.filtered {
+    justify-content: center;
+}
+
+/* ALL PROJECTS 그리드에서 필터링된 경우 가운데 정렬 */
+.all-projects-grid.filtered {
+    justify-content: center;
 }
 
 /* Projects 페이지 전용 스타일 끝 */
@@ -1033,7 +1044,7 @@ body.about-page .project-sub-menu {
     position: relative;
     z-index: 10;
     padding-right: 0;
-    padding-left: 3vw; /* 뷰포트 너비의 3%로 상대적 패딩 */
+    padding-left: 1.5vw; /* 뷰포트 너비의 1.5%로 상대적 패딩 (절반으로 줄임) */
 }
 
 .project-images-section {
@@ -1057,7 +1068,7 @@ body.about-page .project-sub-menu {
     align-items: stretch;
     justify-content: center;
     position: relative;
-    overflow: hidden;
+    overflow: hidden; /* 가로 스크롤 숨김 유지 */
     background: #f8f8f8;
     margin-left: -10%;
 }
@@ -1067,13 +1078,13 @@ body.about-page .project-sub-menu {
 }
 
 .project-detail-slide {
-    flex: 0 0 auto;
+    flex: 0 0 100%; /* auto에서 100%로 변경하여 한 번에 하나씩만 보이도록 */
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
-    width: auto;
-    min-width: 0;
+    width: 100%; /* auto에서 100%로 변경하여 슬라이더 너비에 맞춤 */
+    min-width: 100%; /* 0에서 100%로 변경하여 최소 너비 보장 */
     background: none;
     border: none;
     outline: none;
@@ -1095,6 +1106,30 @@ body.about-page .project-sub-menu {
     position: relative;
 }
 
+/* 4:3 비율 이미지를 위한 스타일 - 16:9 레이아웃에 맞춰 양옆 여백 추가 */
+.project-detail-slide img[data-aspect-ratio="4:3"] {
+    width: 75% !important; /* 16:9 대비 4:3 비율로 너비 조정 (9/12 = 0.75) */
+    height: 100% !important;
+    object-fit: cover !important; /* 높이 꽉 차게 */
+    margin: 0 auto; /* 좌우 중앙 정렬 */
+}
+
+/* 4:3 비율 이미지를 포함하는 슬라이드 컨테이너에 흰색 배경 적용 */
+.project-detail-slide:has(img[data-aspect-ratio="4:3"]) {
+    background-color: #fff !important; /* 흰색 배경 강제 적용 */
+}
+
+/* 16:9 비율 이미지는 기본 스타일 유지 */
+.project-detail-slide img[data-aspect-ratio="16:9"] {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    margin: 0;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
 .project-detail-slide::before,
 .project-detail-slide::after {
     display: none !important;
@@ -1112,9 +1147,12 @@ body.about-page .project-sub-menu {
     max-width: 100%;
     word-break: break-all;
     box-sizing: border-box;
+    text-transform: uppercase; /* 프로젝트 상세페이지 타이틀을 대문자로 변환 */
 }
 
-.project-detail-container > .project-info-section > p {
+/* 프로젝트 상세페이지 카테고리 텍스트 강제 Syncopate 적용 */
+.project-detail-container > .project-info-section > p,
+html body .project-detail-container > .project-info-section > p {
     font-size: 16px;
     color: #666;
     margin-bottom: 24px; /* 40px에서 24px로 줄여서 카테고리와 상세정보 간격 감소 */
@@ -1132,9 +1170,9 @@ body.about-page .project-sub-menu {
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
-    margin-bottom: 16px;
+    margin-bottom: 24px; /* 16px에서 1.5배로 증가 (16px * 1.5 = 24px) */
     padding-left: 0;
-    padding-bottom: 8px;
+    padding-bottom: 12px; /* 8px에서 1.5배로 증가 (8px * 1.5 = 12px) */
 }
 
 .detail-item:last-child {
@@ -1142,7 +1180,7 @@ body.about-page .project-sub-menu {
 }
 
 .detail-item h3 {
-    font-size: 13.6px;
+    font-size: 17.68px; /* 13.6px에서 1.3배로 증가 (13.6px * 1.3 = 17.68px) */
     color: #111;
     margin-bottom: 0;
     text-transform: uppercase;
@@ -1168,12 +1206,12 @@ body.about-page .project-sub-menu {
 /* 미디어 쿼리 내 ::after 라인도 제거 */
 
 .detail-item p {
-    font-size: 12px;
+    font-size: 15.6px; /* 12px에서 1.3배로 증가 (12px * 1.3 = 15.6px) */
     color: #222;
     line-height: 1.4;
     margin: 0; /* 4px 0 0 0에서 0으로 변경 */
     text-align: right;
-    font-family: 'Syncopate-Regular', sans-serif;
+    font-family: 'Roboto-Regular', Arial, sans-serif;
     font-weight: normal;
     align-self: flex-end;
     max-width: 100%;
@@ -1192,19 +1230,20 @@ body.about-page .project-sub-menu {
     overflow-x: hidden;
     scroll-behavior: smooth;
     gap: 0;
+    align-items: center; /* 세로 중앙 정렬 추가 */
 }
 .project-detail-slides::-webkit-scrollbar {
     display: none;
 }
 
 .project-detail-slide {
-    flex: 0 0 auto;
+    flex: 0 0 100%; /* auto에서 100%로 변경하여 한 번에 하나씩만 보이도록 */
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
-    width: auto;
-    min-width: 0;
+    width: 100%; /* auto에서 100%로 변경하여 슬라이더 너비에 맞춤 */
+    min-width: 100%; /* 0에서 100%로 변경하여 최소 너비 보장 */
     background: none;
 }
 
@@ -1224,7 +1263,7 @@ body.about-page .project-sub-menu {
     transform: translateY(-50%);
     background-color: transparent;
     border: none;
-    color: #fff;
+    color: #ccc; /* 더 연한 회색으로 변경 */
     cursor: pointer;
     padding: 15px;
     font-size: 24px;
@@ -1236,7 +1275,7 @@ body.about-page .project-sub-menu {
 }
 
 .detail-slide-arrow:hover {
-    color: #eee;
+    color: #999; /* 호버 시 약간 진한 회색으로 변경 */
 }
 
 .detail-prev-arrow {
@@ -2728,4 +2767,32 @@ body.index-page .main-bottom-text.left-version::before {
     .square-image {
         max-width: 300px;
     }
+}
+
+/* 프로젝트 상세페이지 카테고리 텍스트 최고 우선순위 Syncopate 강제 적용 */
+html body .project-detail-container .project-info-section > p,
+html body #project-detail-category,
+html body .project-detail-container .project-info-section p {
+    font-family: 'Syncopate-Regular', Arial, sans-serif !important;
+    font-weight: normal !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Contact 페이지 이메일 섹션 텍스트 Roboto-Light 강제 적용 */
+html body .contact-email-section p:not(.contact-email),
+html body .contact-description,
+html body .contact-container .contact-email-section p:not(.contact-email),
+html body .contact-container p.contact-description {
+    font-family: 'Roboto-Light', Arial, sans-serif !important;
+    font-weight: 300 !important;
+    font-size: 16px !important; /* 주소 텍스트와 동일한 크기 */
+    letter-spacing: 0.3px !important;
+}
+
+/* Contact 페이지 이메일 주소 Roboto-Regular 강제 적용 */
+html body .contact-email {
+    font-family: 'Roboto-Regular', Arial, sans-serif !important;
+    font-weight: normal !important;
+    letter-spacing: 0.5px !important;
 }

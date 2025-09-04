@@ -238,21 +238,32 @@
                 mainBottomText.textContent = projectNames[actualIndex].toUpperCase();
             }
             
-            // 슬라이드 인덱스에 따라 번갈아가며 오른쪽/왼쪽 배치
-            if (actualIndex % 2 === 0) { // 짝수 슬라이드 (0, 2, 4...)
-                // 오른쪽 배치 - 기존 스타일
-                mainBottomText.classList.remove('left-version');
-                mainBottomText.style.right = '80px';
-                mainBottomText.style.left = 'auto';
-                mainBottomText.style.textAlign = 'right';
-                console.log('오른쪽 배치:', actualIndex, '텍스트:', projectNames[actualIndex]);
-            } else { // 홀수 슬라이드 (1, 3, 5...)
+            // JAKOB-KLAR-STR. 프로젝트는 항상 왼쪽에 배치
+            const currentProjectName = projectNames[actualIndex];
+            if (currentProjectName && currentProjectName.toUpperCase().includes('JAKOB-KLAR-STR')) {
                 // 왼쪽 배치 - 새로운 스타일
                 mainBottomText.classList.add('left-version');
                 mainBottomText.style.left = '80px';
                 mainBottomText.style.right = 'auto';
                 mainBottomText.style.textAlign = 'left';
-                console.log('왼쪽 배치:', actualIndex, '텍스트:', projectNames[actualIndex]);
+                console.log('JAKOB-KLAR-STR 강제 왼쪽 배치:', actualIndex, '텍스트:', projectNames[actualIndex]);
+            } else {
+                // 슬라이드 인덱스에 따라 번갈아가며 오른쪽/왼쪽 배치
+                if (actualIndex % 2 === 0) { // 짝수 슬라이드 (0, 2, 4...)
+                    // 오른쪽 배치 - 기존 스타일
+                    mainBottomText.classList.remove('left-version');
+                    mainBottomText.style.right = '80px';
+                    mainBottomText.style.left = 'auto';
+                    mainBottomText.style.textAlign = 'right';
+                    console.log('오른쪽 배치:', actualIndex, '텍스트:', projectNames[actualIndex]);
+                } else { // 홀수 슬라이드 (1, 3, 5...)
+                    // 왼쪽 배치 - 새로운 스타일
+                    mainBottomText.classList.add('left-version');
+                    mainBottomText.style.left = '80px';
+                    mainBottomText.style.right = 'auto';
+                    mainBottomText.style.textAlign = 'left';
+                    console.log('왼쪽 배치:', actualIndex, '텍스트:', projectNames[actualIndex]);
+                }
             }
             
             // 강제로 스타일 재계산

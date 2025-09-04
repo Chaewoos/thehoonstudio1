@@ -631,6 +631,7 @@
             <h1 class="admin-title">THE HOON STUDIO - Admin Panel</h1>
             <div style="display: flex; gap: 10px;">
                 <button onclick="migrateMemberImagesToStorage()" class="btn-success" style="font-size: 12px; padding: 8px 16px;">Member Migration</button>
+                <button onclick="migrateProjectImagesToStorage()" class="btn-success" style="font-size: 12px; padding: 8px 16px;">Project Image Migration</button>
                 <button id="logoutBtn" class="logout-btn">Logout</button>
             </div>
         </div>
@@ -763,6 +764,9 @@
             <!-- 프로젝트 목록 -->
             <div class="admin-section">
                 <h2 class="section-title">REGISTERED PROJECTS</h2>
+                
+
+                
                 <div id="projectsLoader" class="hidden" style="text-align: center; padding: 20px;">
                     <div class="loading"></div> LOADING PROJECTS...
                 </div>
@@ -1948,6 +1952,142 @@ service cloud.firestore {
             }
         }
 
+        // 이미지가 없는 프로젝트들 일괄 삭제
+        async function deleteProjectsWithoutImages() {
+            if (!isFirebaseReady) {
+                showAlert('Please check Firebase connection.', 'error');
+                return;
+            }
+
+            try {
+                // 현재 프로젝트 목록 가져오기
+                const projects = await getProjects();
+                const projectsArray = Object.values(projects);
+                
+                // 이미지가 없는 프로젝트들 필터링
+                const projectsWithoutImages = projectsArray.filter(project => {
+                    const hasMainImage = project.mainImage && project.mainImage.trim() !== '';
+                    const hasImages = project.images && project.images.length > 0;
+                    const hasAdditionalImages = project.additionalImages && project.additionalImages.length > 0;
+                    
+                    return !hasMainImage && !hasImages && !hasAdditionalImages;
+                });
+
+                if (projectsWithoutImages.length === 0) {
+                    showAlert('이미지가 없는 프로젝트가 없습니다.', 'info');
+                    return;
+                }
+
+                // 삭제할 프로젝트 목록 표시
+                const projectNames = projectsWithoutImages.map(p => p.name).join('\n');
+                const confirmMessage = `다음 ${projectsWithoutImages.length}개 프로젝트를 삭제하시겠습니까?\n\n${projectNames}\n\n(이미지가 있는 프로젝트는 제외됩니다)`;
+                
+                if (confirm(confirmMessage)) {
+                    let deletedCount = 0;
+                    let failedCount = 0;
+                    
+                    for (const project of projectsWithoutImages) {
+                        try {
+                            await deleteProjectFromFirestore(project.id);
+                            deletedCount++;
+                            console.log(`프로젝트 삭제 성공: ${project.name}`);
+                        } catch (error) {
+                            failedCount++;
+                            console.error(`프로젝트 삭제 실패: ${project.name}`, error);
+                        }
+                    }
+                    
+                    // 결과 표시
+                    const resultMessage = `삭제 완료!\n\n성공: ${deletedCount}개\n실패: ${failedCount}개`;
+                    showAlert(resultMessage, 'success');
+                    
+                    // 프로젝트 목록 새로고침
+                    await loadProjects();
+                }
+                
+            } catch (error) {
+                console.error('일괄 삭제 실패:', error);
+                showAlert('일괄 삭제 중 오류가 발생했습니다: ' + error.message, 'error');
+            }
+        }
+
+        // 특정 프로젝트 이름으로 삭제
+        async function deleteProjectByName(projectName) {
+            if (!isFirebaseReady) {
+                showAlert('Please check Firebase connection.', 'error');
+                return;
+            }
+
+            try {
+                // 현재 프로젝트 목록 가져오기
+                const projects = await getProjects();
+                const project = projects[projectName];
+                
+                if (!project) {
+                    showAlert(`프로젝트 "${projectName}"을 찾을 수 없습니다.`, 'error');
+                    return;
+                }
+
+                if (confirm(`프로젝트 "${projectName}"을 삭제하시겠습니까?`)) {
+                    await deleteProjectFromFirestore(project.id);
+                    showAlert(`프로젝트 "${projectName}"이 삭제되었습니다.`, 'success');
+                    
+                    // 프로젝트 목록 새로고침
+                    await loadProjects();
+                }
+                
+            } catch (error) {
+                console.error('프로젝트 삭제 실패:', error);
+                showAlert('프로젝트 삭제 중 오류가 발생했습니다: ' + error.message, 'error');
+            }
+        }
+
+        // Zavelsteinstr.와 Albanistr. 프로젝트 강제 삭제
+        async function deleteSpecificProjects() {
+            if (!isFirebaseReady) {
+                showAlert('Please check Firebase connection.', 'error');
+                return;
+            }
+
+            const projectsToDelete = ['Zavelsteinstr.', 'Albanistr.'];
+            
+            if (confirm(`다음 프로젝트들을 강제로 삭제하시겠습니까?\n\n${projectsToDelete.join('\n')}\n\n(이미지가 있어도 삭제됩니다)`)) {
+                try {
+                    let deletedCount = 0;
+                    let failedCount = 0;
+                    
+                    for (const projectName of projectsToDelete) {
+                        try {
+                            const projects = await getProjects();
+                            const project = projects[projectName];
+                            
+                            if (project) {
+                                await deleteProjectFromFirestore(project.id);
+                                deletedCount++;
+                                console.log(`프로젝트 삭제 성공: ${projectName}`);
+                            } else {
+                                console.log(`프로젝트를 찾을 수 없음: ${projectName}`);
+                            }
+                        } catch (error) {
+                            failedCount++;
+                            console.error(`프로젝트 삭제 실패: ${projectName}`, error);
+                        }
+                    }
+                    
+                    // 결과 표시
+                    const resultMessage = `삭제 완료!\n\n성공: ${deletedCount}개\n실패: ${failedCount}개`;
+                    showAlert(resultMessage, 'success');
+                    
+                    // 프로젝트 목록 새로고침
+                    await loadProjects();
+                    
+                } catch (error) {
+                    console.error('특정 프로젝트 삭제 실패:', error);
+                    showAlert('프로젝트 삭제 중 오류가 발생했습니다: ' + error.message, 'error');
+                }
+            }
+        }
+
         // 파일 선택 시 파일명 표시
         document.getElementById('projectImage').addEventListener('change', function() {
             const file = this.files[0];
@@ -2361,6 +2501,116 @@ service cloud.firestore {
                     reject(error);
                 }
             });
+        }
+
+        // 팀 멤버 이미지 마이그레이션 함수 기존 위치 아래에 프로젝트 이미지 마이그레이션 추가
+        async function migrateProjectImagesToStorage() {
+            if (!isFirebaseReady) {
+                showAlert('Please check Firebase connection.', 'error');
+                return;
+            }
+
+            try {
+                const { collection, getDocs, doc, updateDoc } = window.firestoreFunctions;
+                showAlert('Project image migration started...', 'success');
+
+                const querySnapshot = await getDocs(collection(window.db, 'projects'));
+                let migratedCount = 0;
+                let skippedCount = 0;
+                let errorCount = 0;
+
+                for (const projectDoc of querySnapshot.docs) {
+                    try {
+                        const project = projectDoc.data();
+                        const updates = {};
+                        let changed = false;
+
+                        // 메인 이미지 처리 (base64 → Storage URL)
+                        if (project.mainImage && typeof project.mainImage === 'string' && project.mainImage.startsWith('data:')) {
+                            try {
+                                const imageBlob = await dataURLToBlob(project.mainImage);
+                                const file = new File([imageBlob], `${project.name || 'project'}_main.jpg`, { type: 'image/jpeg' });
+                                const storageURL = await uploadImageToStorage(file, 'main-images');
+                                updates.mainImage = storageURL;
+                                changed = true;
+                            } catch (e) {
+                                console.error('메인 이미지 마이그레이션 실패:', project.name, e);
+                                errorCount++;
+                            }
+                        }
+
+                        // 추가 이미지 처리
+                        if (Array.isArray(project.additionalImages) && project.additionalImages.length > 0) {
+                            const newAdditional = [];
+                            for (let i = 0; i < project.additionalImages.length; i++) {
+                                const url = project.additionalImages[i];
+                                if (typeof url === 'string' && url.startsWith('data:')) {
+                                    try {
+                                        const imageBlob = await dataURLToBlob(url);
+                                        const file = new File([imageBlob], `${project.name || 'project'}_additional_${i + 1}.jpg`, { type: 'image/jpeg' });
+                                        const storageURL = await uploadImageToStorage(file, 'additional-images');
+                                        newAdditional.push(storageURL);
+                                        changed = true;
+                                    } catch (e) {
+                                        console.error('추가 이미지 마이그레이션 실패:', project.name, i, e);
+                                        errorCount++;
+                                    }
+                                } else if (typeof url === 'string' && url.trim() !== '') {
+                                    newAdditional.push(url);
+                                }
+                            }
+                            if (changed) {
+                                updates.additionalImages = newAdditional;
+                            }
+                        }
+
+                        // 기타 images 배열 처리 (사용 중일 수 있음)
+                        if (Array.isArray(project.images) && project.images.length > 0) {
+                            const newImages = [];
+                            for (let i = 0; i < project.images.length; i++) {
+                                const url = project.images[i];
+                                if (typeof url === 'string' && url.startsWith('data:')) {
+                                    try {
+                                        const imageBlob = await dataURLToBlob(url);
+                                        const file = new File([imageBlob], `${project.name || 'project'}_image_${i + 1}.jpg`, { type: 'image/jpeg' });
+                                        const storageURL = await uploadImageToStorage(file, 'images');
+                                        newImages.push(storageURL);
+                                        changed = true;
+                                    } catch (e) {
+                                        console.error('images 배열 마이그레이션 실패:', project.name, i, e);
+                                        errorCount++;
+                                    }
+                                } else if (typeof url === 'string' && url.trim() !== '') {
+                                    newImages.push(url);
+                                }
+                            }
+                            if (changed) {
+                                updates.images = newImages;
+                            }
+                        }
+
+                        if (changed) {
+                            updates.updatedAt = new Date().toISOString();
+                            await updateDoc(doc(window.db, 'projects', projectDoc.id), updates);
+                            migratedCount++;
+                            console.log('프로젝트 마이그레이션 완료:', project.name || projectDoc.id);
+                        } else {
+                            skippedCount++;
+                            console.log('마이그레이션 불필요:', project.name || projectDoc.id);
+                        }
+                    } catch (err) {
+                        console.error('프로젝트 처리 실패:', projectDoc.id, err);
+                        errorCount++;
+                    }
+                }
+
+                showAlert(`Project migration done. Migrated: ${migratedCount}, Skipped: ${skippedCount}, Failed: ${errorCount}`, 'success');
+                // 목록 갱신
+                await loadProjects();
+            } catch (error) {
+                console.error('프로젝트 이미지 마이그레이션 실패:', error);
+                showAlert('Project image migration failed: ' + error.message, 'error');
+            }
         }
     </script>
 </body>
