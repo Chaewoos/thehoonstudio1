@@ -2548,7 +2548,7 @@ body.index-page .main-bottom-text.left-version::before {
     min-width: 0;
     max-width: none;
     width: auto;
-    font-size: 18px;
+    font-size: 15px;
     line-height: 1.7;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -2564,21 +2564,21 @@ body.index-page .main-bottom-text.left-version::before {
 /* 어바웃 페이지 STUDIO 섹션 반응형 조정 */
 @media (max-width: 1200px) {
     .studio-description {
-        font-size: 17px;
+        font-size: 15px;
         padding: 18px;
     }
 }
 
 @media (max-width: 1024px) {
     .studio-description {
-        font-size: 16px;
+        font-size: 14px;
         padding: 16px;
     }
 }
 
 @media (max-width: 768px) {
     .studio-description {
-        font-size: 15px;
+        font-size: 13px;
         padding: 15px;
     }
     .studio-flex-row {
@@ -2593,7 +2593,7 @@ body.index-page .main-bottom-text.left-version::before {
 
 @media (max-width: 480px) {
     .studio-description {
-        font-size: 14px;
+        font-size: 12px;
         padding: 12px;
     }
     .square-image {
@@ -2649,7 +2649,7 @@ body.index-page .main-bottom-text.left-version::before {
     min-width: 0;
     max-width: none;
     width: auto;
-    font-size: 22px;
+    font-size: 18px;
     line-height: 1.8;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -2668,21 +2668,21 @@ body.index-page .main-bottom-text.left-version::before {
 /* 어바웃 페이지 STUDIO 섹션 반응형 조정 */
 @media (max-width: 1200px) {
     .studio-description {
-        font-size: 20px;
+        font-size: 18px;
         padding: 25px;
     }
 }
 
 @media (max-width: 1024px) {
     .studio-description {
-        font-size: 18px;
+        font-size: 16px;
         padding: 22px;
     }
 }
 
 @media (max-width: 768px) {
     .studio-description {
-        font-size: 16px;
+        font-size: 14px;
         padding: 20px;
     }
     .studio-flex-row {
@@ -2699,7 +2699,7 @@ body.index-page .main-bottom-text.left-version::before {
 
 @media (max-width: 480px) {
     .studio-description {
-        font-size: 15px;
+        font-size: 13px;
         padding: 18px;
     }
     .square-image {
@@ -2712,7 +2712,7 @@ body.index-page .main-bottom-text.left-version::before {
     min-width: 0;
     max-width: none;
     width: auto;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.6;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -2733,21 +2733,21 @@ body.index-page .main-bottom-text.left-version::before {
 /* 어바웃 페이지 STUDIO 섹션 반응형 조정 */
 @media (max-width: 1200px) {
     .studio-description {
-        font-size: 18px;
+        font-size: 16px;
         padding: 22px;
     }
 }
 
 @media (max-width: 1024px) {
     .studio-description {
-        font-size: 16px;
+        font-size: 14px;
         padding: 20px;
     }
 }
 
 @media (max-width: 768px) {
     .studio-description {
-        font-size: 15px;
+        font-size: 13px;
         padding: 18px;
         height: auto;
         overflow: visible;
@@ -2766,7 +2766,7 @@ body.index-page .main-bottom-text.left-version::before {
 
 @media (max-width: 480px) {
     .studio-description {
-        font-size: 14px;
+        font-size: 12px;
         padding: 16px;
     }
     .square-image {
