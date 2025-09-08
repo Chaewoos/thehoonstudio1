@@ -10,8 +10,8 @@
     <div class="overlay" onclick="toggleMenu()"></div>
 
     <div class="fixed-header-bar">
-        <a href="index.html" class="logo-text-link"><div class="logo-text">THE HOON STUDIO</div></a>
-        <img src="image/logo/Logo.png" alt="메뉴 닫기 로고" class="menu-active-logo-icon" id="menuLogoIcon" style="display:block;cursor:pointer;">
+        <a href="./index.html" class="logo-text-link"><div class="logo-text">THE HOON STUDIO</div></a>
+        <img src="./image/logo/Logo.png" alt="메뉴 닫기 로고" class="menu-active-logo-icon" id="menuLogoIcon" style="display:block;cursor:pointer;">
     </div>
 
     <div class="header">
@@ -26,16 +26,16 @@
 
     <div class="menu-overlay-ex" onclick="closeMenuByBg(event)">
         <div class="menu-list" id="menuList">
-            <div class="menu-link-wrap">
-                <a href="about.html" class="menu-link" data-menu="ABOUT">ABOUT</a>
+                        <div class="menu-link-wrap">
+                <a href="./about.html" class="menu-link" data-menu="ABOUT">ABOUT</a>
                 <span class="menu-underline"></span>
             </div>
             <div class="menu-link-wrap">
-                <a href="projects.html" class="menu-link" data-menu="PROJECTS">PROJECTS</a>
+                <a href="./projects.html" class="menu-link" data-menu="PROJECTS">PROJECTS</a>
                 <span class="menu-underline"></span>
-        </div>
+            </div>
             <div class="menu-link-wrap">
-                <a href="contact.html" class="menu-link" data-menu="CONTACT">CONTACT</a>
+                <a href="./contact.html" class="menu-link" data-menu="CONTACT">CONTACT</a>
                 <span class="menu-underline"></span>
             </div>
             <div class="menu-social-wrap">
@@ -76,56 +76,56 @@
                 <div class="project-grid all-projects-grid">
                     <!--
                     <div class="project-item" data-category="all architecture" data-project-name="abc.def">
-                        <img src="image/logod.jpg" alt="Project 1 Title" loading="lazy">
+                        <img src="./image/logod.jpg" alt="Project 1 Title" loading="lazy">
                         <div class="project-info">
                             <h4>abc.def</h4>
                             <p>A</p>
                         </div>
                     </div>
                     <div class="project-item" data-category="all interior" data-project-name="ghi.jkl">
-                        <img src="image/logod.jpg" alt="Project 2 Title" loading="lazy">
+                        <img src="./image/logod.jpg" alt="Project 2 Title" loading="lazy">
                         <div class="project-info">
                             <h4>ghi.jkl</h4>
                             <p>I</p>
                         </div>
                     </div>
                     <div class="project-item" data-category="all architecture" data-project-name="mno.pqr">
-                        <img src="image/logod.jpg" alt="Project 3 Title" loading="lazy">
+                        <img src="./image/logod.jpg" alt="Project 3 Title" loading="lazy">
                         <div class="project-info">
                             <h4>mno.pqr</h4>
                             <p>A</p>
                         </div>
                     </div>
                     <div class="project-item" data-category="all interior" data-project-name="stu.vwx">
-                        <img src="image/logod.jpg" alt="Project 4 Title" loading="lazy">
+                        <img src="./image/logod.jpg" alt="Project 4 Title" loading="lazy">
                         <div class="project-info">
                             <h4>stu.vwx</h4>
                             <p>I</p>
                         </div>
                     </div>
                     <div class="project-item" data-category="all architecture" data-project-name="yza.bcd">
-                        <img src="image/logod.jpg" alt="Project 5 Title" loading="lazy">
+                        <img src="./image/logod.jpg" alt="Project 5 Title" loading="lazy">
                         <div class="project-info">
                             <h4>yza.bcd</h4>
                             <p>A</p>
                         </div>
                     </div>
                     <div class="project-item" data-category="all interior" data-project-name="efg.hij">
-                        <img src="image/logod.jpg" alt="Project 6 Title" loading="lazy">
+                        <img src="./image/logod.jpg" alt="Project 6 Title" loading="lazy">
                         <div class="project-info">
                             <h4>efg.hij</h4>
                             <p>I</p>
                         </div>
                     </div>
                     <div class="project-item" data-category="all architecture" data-project-name="klm.nop">
-                        <img src="image/logod.jpg" alt="Project 7 Title" loading="lazy">
+                        <img src="./image/logod.jpg" alt="Project 7 Title" loading="lazy">
                         <div class="project-info">
                             <h4>klm.nop</h4>
                             <p>A</p>
                         </div>
                     </div>
                     <div class="project-item" data-category="all interior" data-project-name="qrs.tuv">
-                        <img src="image/logod.jpg" alt="Project 8 Title" loading="lazy">
+                        <img src="./image/logod.jpg" alt="Project 8 Title" loading="lazy">
                         <div class="project-info">
                             <h4>qrs.tuv</h4>
                             <p>I</p>
@@ -244,13 +244,13 @@
                     <div class="project-detail-slider">
                         <div class="project-detail-slides" id="projectDetailSlides">
                             <div class="project-detail-slide active">
-                                <img src="image/logod.jpg" alt="Project Image 1">
+                                <img src="./image/logod.jpg" alt="Project Image 1">
                             </div>
                             <div class="project-detail-slide">
-                                <img src="image/logod.jpg" alt="Project Image 2">
+                                <img src="./image/logod.jpg" alt="Project Image 2">
                             </div>
                             <div class="project-detail-slide">
-                                <img src="image/logod.jpg" alt="Project Image 3">
+                                <img src="./image/logod.jpg" alt="Project Image 3">
                             </div>
                         </div>
                         <button class="detail-slide-arrow detail-prev-arrow" onclick="changeDetailSlide(-1)">&#10094;</button>
@@ -348,10 +348,10 @@
             
             if(document.body.classList.contains('menu-active')) {
                 // 메뉴가 열리면 흰색 로고로 변경
-                logoIcon.src = 'image/logo/Logo2.png';
+                logoIcon.src = './image/logo/Logo2.png';
             } else {
                 // 메뉴가 닫히면 다시 검은색 로고로 복원
-                logoIcon.src = 'image/logo/Logo.png';
+                logoIcon.src = './image/logo/Logo.png';
             }
         }
 
@@ -611,23 +611,21 @@
             updateCategoryFiltering();
         }
 
-        // 프로젝트 데이터
-        const projectData = {
-         
-        };
+        // 프로젝트 데이터는 Firebase에서 로드됨 (하드코딩 제거)
+        const projectData = {};
 
         let currentDetailSlide = 0;
         let detailSlideInterval;
         let currentProjectSource = 'highlights'; // 'highlights' 또는 'other-projects'
 
-        // 프로젝트 아이템 클릭 이벤트 추가
+        // 프로젝트 아이템 클릭 이벤트 추가 (Firebase 데이터만 사용)
         function addProjectClickEvents() {
             // 하이라이트 프로젝트 아이템들
             projectItemsInAllGrid.forEach(item => {
                 item.style.cursor = 'pointer';
                 item.addEventListener('click', function() {
                     const projectName = this.dataset.projectName;
-                    if (projectData[projectName]) {
+                    if (projectName) {
                         currentProjectSource = 'highlights';
                         showProjectDetail(projectName);
                     }
@@ -635,11 +633,12 @@
             });
 
             // OTHER PROJECTS 테이블 행들
+            const otherProjectRows = document.querySelectorAll('#other-projects-section tbody tr');
             otherProjectRows.forEach(row => {
                 row.style.cursor = 'pointer';
                 row.addEventListener('click', function() {
                     const projectName = this.dataset.projectName;
-                    if (projectData[projectName]) {
+                    if (projectName) {
                         currentProjectSource = 'other-projects';
                         showProjectDetail(projectName);
                     }
@@ -660,10 +659,10 @@
                 console.log('Firebase에서 프로젝트 찾음:', project);
             }
             
-            // 기존 projectData에서도 찾기 (하드코딩된 프로젝트들)
+            // Firebase 데이터만 사용 (하드코딩된 데이터 제거)
             if (!project) {
-                project = projectData[projectName];
-                console.log('기존 데이터에서 프로젝트 찾음:', project);
+                console.log('Firebase에서 프로젝트를 찾을 수 없습니다:', projectName);
+                return;
             }
             
             if (!project) {
@@ -743,7 +742,7 @@
             
             // 3. 이미지가 없으면 기본 이미지 사용
             if (slidesToUse.length === 0) {
-                slidesToUse = ['image/logod.jpg', 'image/logod.jpg', 'image/logod.jpg'];
+                slidesToUse = ['./image/logod.jpg', './image/logod.jpg', './image/logod.jpg'];
                 console.log('기본 이미지 사용');
             }
             
@@ -771,7 +770,29 @@
             images.forEach((imageSrc, index) => {
                 const slide = document.createElement('div');
                 slide.className = `project-detail-slide ${index === 0 ? 'active' : ''}`;
-                slide.innerHTML = `<img src="${imageSrc}" alt="Project Image ${index + 1}">`;
+                
+                // 이미지 요소 생성
+                const img = document.createElement('img');
+                img.src = imageSrc;
+                img.alt = `Project Image ${index + 1}`;
+                
+                // 이미지 로드 후 비율 감지하여 data-aspect-ratio 속성 추가
+                img.onload = function() {
+                    const aspectRatio = this.naturalWidth / this.naturalHeight;
+                    console.log(`이미지 ${index + 1} 비율:`, aspectRatio);
+                    
+                    // 4:3 비율 감지 (약 1.33, 허용 오차 ±0.1)
+                    if (Math.abs(aspectRatio - 1.33) < 0.1) {
+                        this.setAttribute('data-aspect-ratio', '4:3');
+                        console.log(`이미지 ${index + 1}을 4:3 비율로 설정`);
+                    } else {
+                        // 16:9 또는 기타 비율은 기본 스타일 적용
+                        this.setAttribute('data-aspect-ratio', '16:9');
+                        console.log(`이미지 ${index + 1}을 16:9 비율로 설정`);
+                    }
+                };
+                
+                slide.appendChild(img);
                 slidesContainer.appendChild(slide);
             });
             
@@ -936,11 +957,11 @@
                                 // 이미지 로딩 실패 시 대체 이미지 사용
                                 img.onerror = function() {
                                     console.warn(`이미지 로딩 실패: ${project.mainImage}, 대체 이미지 사용`);
-                                    this.src = 'image/logod.jpg';
+                                    this.src = './image/logod.jpg';
                                 };
                             } else {
                                 console.warn(`프로젝트 "${projectName}": mainImage가 없어서 기본 이미지 사용`);
-                                img.src = 'image/logod.jpg';
+                                img.src = './image/logod.jpg';
                                 img.alt = project.name + ' - 기본 이미지';
                             }
                             
@@ -1075,7 +1096,7 @@
                     let imageUrl = project.mainImage;
                     if (!imageUrl || imageUrl === '') {
                         console.warn(`프로젝트 "${project.name}": mainImage가 없어서 기본 이미지 사용`);
-                        imageUrl = 'image/logod.jpg';
+                        imageUrl = './image/logod.jpg';
                     }
                     
                     // 프로젝트 타입 결정 (A, I, V)
@@ -1089,7 +1110,7 @@
                     }
                     
                     projectItem.innerHTML = `
-                        <img src="${imageUrl}" alt="${project.name}" loading="lazy" onerror="this.src='image/logod.jpg'; console.warn('이미지 로딩 실패: ${imageUrl}')">
+                        <img src="${imageUrl}" alt="${project.name}" loading="lazy" onerror="this.src='./image/logod.jpg'; console.warn('이미지 로딩 실패: ${imageUrl}')">
                         <div class="project-info">
                             <h4>${project.name}</h4>
                             <p>${projectType}</p>
@@ -1319,7 +1340,7 @@
                 // 기본 이미지들로 채우기
                 for (let i = 0; i < 5; i++) {
                     const img = document.createElement('img');
-                    img.src = 'image/logod.jpg';
+                    img.src = './image/logod.jpg';
                     img.alt = `기본 이미지 ${i + 1}`;
                     horizontalContainer.appendChild(img);
                 }
@@ -1393,6 +1414,17 @@
             });
             
             console.log(`카테고리 필터링 완료: ${visibleCount}개 프로젝트 표시됨`);
+            
+            // 카테고리 또는 PROVIDED(알파벳) 필터가 활성화되면 가운데 정렬
+            const projectGrid = document.querySelector('.all-projects-grid');
+            if (projectGrid) {
+                const shouldCenter = !(categoryFilter === 'all' && !alphabetFilter);
+                if (shouldCenter) {
+                    projectGrid.classList.add('filtered');
+                } else {
+                    projectGrid.classList.remove('filtered');
+                }
+            }
             
             // OTHER PROJECTS 테이블도 업데이트
             updateOtherProjectsFiltering();
@@ -1505,33 +1537,49 @@
             });
         }
 
-        // 페이지 로드 시 클릭 이벤트 추가 수정
-        document.addEventListener('DOMContentLoaded', function() {
-            // 현재 페이지 메뉴 활성화
-            const currentPage = 'projects.html';
-            const menuLinks = document.querySelectorAll('.menu-link');
-            menuLinks.forEach(link => {
-                if (link.getAttribute('href') === currentPage) {
-                    link.classList.add('active');
-                }
-            });
-            
-            // 즉시 UI 초기화 (기본 상태)
-            addProjectClickEvents();
-            updateCategoryFiltering();
-            setupLazyLoading();
-            
-            // 초기 히스토리 상태 설정
+                    // 페이지 로드 시 클릭 이벤트 추가 수정
+            document.addEventListener('DOMContentLoaded', function() {
+                // 현재 페이지 메뉴 활성화
+                const currentPage = 'projects.html';
+                const menuLinks = document.querySelectorAll('.menu-link');
+                menuLinks.forEach(link => {
+                    if (link.getAttribute('href') === currentPage) {
+                        link.classList.add('active');
+                    }
+                });
+                
+                // 즉시 UI 초기화 (기본 상태)
+                addProjectClickEvents();
+                updateCategoryFiltering();
+                setupLazyLoading();
+                
+                            // 초기 히스토리 상태 설정 (쿼리스트링 유지)
             if (!window.history.state) {
+                const preserveSearch = window.location.pathname + window.location.search;
                 window.history.replaceState({
                     page: 'project-list',
                     section: 'highlights'
-                }, '', window.location.pathname);
+                }, '', preserveSearch);
             }
-            
-            // 비동기로 Firebase 데이터 로드
-            loadProjectsAsync();
-        });
+                
+                // 비동기로 Firebase 데이터 로드
+                loadProjectsAsync();
+                
+                // 메인에서 쿼리로 넘어온 project 파라미터가 있으면 해당 상세 자동 오픈
+                const params = new URLSearchParams(window.location.search);
+                const targetProject = params.get('project');
+                if (targetProject) {
+                    // Firebase 데이터가 로드된 후 상세 열기 위해 폴링
+                    const openWhenReady = setInterval(() => {
+                        if (window.loadedProjects && window.loadedProjects.length) {
+                            clearInterval(openWhenReady);
+                            showProjectDetail(targetProject);
+                        }
+                    }, 200);
+                    // 안전장치 타임아웃 (6초)
+                    setTimeout(() => clearInterval(openWhenReady), 6000);
+                }
+            });
         
         // 비동기 프로젝트 로딩
         async function loadProjectsAsync() {
@@ -1644,93 +1692,41 @@
             updateCategoryFiltering();
         }
 
-        // OTHER PROJECTS 표에 랜덤 카테고리 할당 및 행 생성
-        const otherProjectsList = [
-          
-        ];
-        const filterCategories = [
-            'Design Development (D)',
-            'Bildingpermit (P)',
-            'Execution Planning (E)',
-            'Heritage Preservation (H)',
-            'New Construction (N)',
-            'Renovation (R)',
-            'Marketing/Graphic Design',
-            'Interior Design/Rendering',
-            'Competition'
-        ];
+        // OTHER PROJECTS 표는 Firebase 데이터만 사용 (하드코딩 제거)
         function renderOtherProjectsTable() {
-            const tbody = document.querySelector('.project-list-container tbody');
-            if (!tbody) return;
-            tbody.innerHTML = '';
-            // 카테고리명 → 이니셜 매핑
-            const categoryInitialMap = {
-                'Design Development (D)': 'D',
-                'Bildingpermit (P)': 'P',
-                'Execution Planning (E)': 'E',
-                'Heritage Preservation (H)': 'H',
-                'New Construction (N)': 'N',
-                'Renovation (R)': 'R',
-                'Marketing/Graphic Design': 'M/G',
-                'Interior Design/Rendering': 'I/R',
-                'Competition': 'C'
-            };
-            otherProjectsList.forEach(project => {
-                // CATEGORY: 필터 리스트 중 1~3개 랜덤 할당
-                const categoryCount = Math.floor(Math.random() * 3) + 1; // 1~3개
-                const shuffled = filterCategories.sort(() => 0.5 - Math.random());
-                const randomCategories = shuffled.slice(0, categoryCount);
-                // 이니셜만 추출
-                const initials = randomCategories.map(cat => categoryInitialMap[cat] || cat).join(' / ');
-                // TYPE: A 또는 I/R
-                const type = project.category === 'ARCHITECTURE' ? 'A' : 'I/R';
-                const tr = document.createElement('tr');
-                tr.setAttribute('data-type', type); // 필터링을 위해 type 속성 추가
-                // projectData의 key를 data-project-name으로 사용
-                tr.setAttribute('data-project-name', project.key);
-                tr.style.cursor = 'pointer';
-                tr.innerHTML = `
-                    <td>${project.title}</td>
-                    <td>${initials}</td>
-                    <td>${type}</td>
-                    <td>${project.ort}</td>
-                    <td>${project.jahr}</td>
-                    <td>${project.status}</td>
-                `;
-                // 클릭 시 상세페이지로 이동
-                tr.addEventListener('click', function() {
-                    showProjectDetail(project.key);
-                });
-                tbody.appendChild(tr);
-            });
+            // Firebase 데이터가 로드되면 자동으로 업데이트됨
+            console.log('OTHER PROJECTS 테이블은 Firebase 데이터로 업데이트됩니다.');
         }
-        document.addEventListener('DOMContentLoaded', renderOtherProjectsTable);
 
-        // OTHER PROJECTS 카테고리 필터링 (TYPE 기준)
+        // OTHER PROJECTS 카테고리 필터링 (Firebase 데이터 기준)
         document.addEventListener('DOMContentLoaded', function() {
-            renderOtherProjectsTable();
             const otherCategoryLinks = document.querySelectorAll('.other-projects-category-menu a');
             otherCategoryLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     otherCategoryLinks.forEach(l => l.classList.remove('active'));
                     this.classList.add('active');
-                    const filter = this.getAttribute('href').substring(1).replace('-other', '');
-                    const rows = document.querySelectorAll('.project-list-container tbody tr');
-                    rows.forEach(row => {
-                        const type = row.getAttribute('data-type');
-                        if (filter === 'all') {
-                            row.style.display = '';
-                        } else if (filter === 'architecture' && type === 'A') {
-                            row.style.display = '';
-                        } else if (filter === 'interior' && type === 'I') {
-                            row.style.display = '';
-                        } else if (filter === 'visualization' && type === 'V') {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
-                    });
+                    
+                    // Firebase 데이터가 로드된 후에 필터링 적용
+                    if (window.loadedProjects && window.loadedProjects.length > 0) {
+                        const filter = this.getAttribute('href').substring(1).replace('-other', ''); // 'all' | 'architecture' | 'interior' | 'visualization'
+                        const rows = document.querySelectorAll('#other-projects-section tbody tr');
+                        
+                        rows.forEach(row => {
+                            const category = row.getAttribute('data-project-category');
+                            if (filter === 'all') {
+                                row.style.display = '';
+                            } else if (filter === 'architecture' && category === 'architecture') {
+                                row.style.display = '';
+                            } else if (filter === 'interior' && category === 'interior') {
+                                row.style.display = '';
+                            } else if (filter === 'visualization' && category === 'visualization') {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        });
+                    }
                 });
             });
         });
