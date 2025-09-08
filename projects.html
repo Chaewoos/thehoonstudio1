@@ -524,14 +524,15 @@
             
             if (targetContainer) {
                 const isVisible = targetContainer.style.display === 'block';
-                // 알파벳 active 모두 해제
-                targetBtns.forEach(btn => btn.classList.remove('active'));
                 if (isVisible) {
+                    // 닫을 때: 버튼 active 해제 → 전체 보기
+                    targetBtns.forEach(btn => btn.classList.remove('active'));
                     targetContainer.style.display = 'none';
                 } else {
+                    // 열 때: 유지 (버튼 상태는 그대로 시작)
                     targetContainer.style.display = 'block';
                 }
-                // 필터링 업데이트 (active가 없으므로 전체 보임)
+                // 필터링 재적용 (active 없으면 전체 표시)
                 if (updateFunction) {
                     updateFunction();
                 }
@@ -1051,6 +1052,46 @@
                     }
                     projectItem.setAttribute('data-category', categoryClasses);
                     
+                    // PROVIDED(서비스) 필터를 위한 data-provided 설정 (service + categoryDetail + category, OR 매칭 + 동의어 매핑)
+                    (function(){
+                        const pickFromArrayLike = (val) => {
+                            if (Array.isArray(val)) return val;
+                            if (typeof val === 'string') return [val];
+                            return [];
+                        };
+                        const valCandidates = [
+                            project.service,
+                            project.provided,
+                            project.providedService,
+                            project.provided_service,
+                            project.services,
+                            ...pickFromArrayLike(project.categoryDetail),
+                            ...pickFromArrayLike(project.category)
+                        ].filter(Boolean).map(v => v.toString());
+                        const raw = valCandidates.length ? valCandidates.join(' / ') : '';
+                        const baseTokens = raw
+                            .split(/[\/,]|\s*,\s*/)      // '/', ',' 모두 분리자로 처리 (여분 공백 제거)
+                            .map(s => s.trim().toLowerCase())
+                            .filter(Boolean)
+                            .map(s => s.replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+                        // 동의어/표현 차이 매핑 → 버튼 키와 동일한 표준 키로 변환
+                        const mapToken = (t) => {
+                            if (t.includes('new-construction') || t === 'n') return 'new-construction';
+                            if (t.includes('renovation') || t.includes('conversion') || t === 'r') return 'renovation-conversion';
+                            if (t.includes('heritage')) return 'heritage-building';
+                            if (t.includes('competition') || t === 'c') return 'competition';
+                            if (t.includes('design-development') || t === 'dd' || t === 'd') return 'design-development';
+                            if (t.includes('building-permit') || t === 'bp' || t.includes('permit') || t === 'p') return 'building-permit';
+                            if (t.includes('execution-planning') || t === 'ep' || t === 'e') return 'execution-planning';
+                            if (t.includes('interior-design') || t === 'id' || t.includes('interior')) return 'interior-design';
+                            if (t.includes('visualization') || t === 'viz' || t === 'v') return 'visualization';
+                            return t;
+                        };
+                        const mapped = baseTokens.map(mapToken);
+                        const uniq = Array.from(new Set(mapped)).join(' ').trim();
+                        projectItem.setAttribute('data-provided', uniq);
+                    })();
+                    
                     // 메인 이미지 사용 (대체 이미지 포함)
                     let imageUrl = project.mainImage;
                     if (!imageUrl || imageUrl === '') {
@@ -1102,8 +1143,8 @@
             // 기존 프로젝트들도 이미지 업데이트
             updateProjectThumbnails(projects);
             
-            // ⭐ 새로 추가된 프로젝트들을 포함하여 필터링 함수들 업데이트
-            updateFilteringSystem();
+            // ⭐ 새로 추가된 프로젝트들을 포함하여 현재 활성 필터 재적용
+            updateCategoryFiltering();
         }
 
         // 전체 프로젝트 개수 계산 함수
@@ -1172,6 +1213,19 @@
                         if (project.categoryDetail.includes('V')) categoryOther = 'visualization';
                     }
                     row.setAttribute('data-project-category', categoryOther);
+                    
+                    // PROVIDED(서비스) 필터를 위한 data-provided 설정
+                    (function(){
+                        const raw = (project.service || '').toString().trim();
+                        // 토큰 분리를 위해 '/'는 공백으로, 다중 공백은 하나로 정규화
+                        const normalizedTokens = raw
+                            .toLowerCase()
+                            .replace(/\s*\/\s*/g, ' ')  // 슬래시를 공백으로
+                            .replace(/\s+/g, ' ')         // 다중 공백 정리
+                            .replace(/[^a-z0-9\-\s]/g, '') // 영숫자/하이픈/공백만 유지
+                            .trim();
+                        row.setAttribute('data-provided', normalizedTokens);
+                    })();
                     
                     // 타입 필터링을 위한 data-type 속성 추가
                     let type = '';
@@ -1304,7 +1358,7 @@
             const activeCategory = document.querySelector('.highlights-section .category-menu a.active');
             const categoryFilter = activeCategory ? activeCategory.getAttribute('href').substring(1) : 'all';
             
-            // 현재 활성화된 알파벳 필터 확인
+            // 현재 활성화된 알파벳 필터 확인 (PROVIDED 필터)
             const activeAlphabetBtn = document.querySelector('.highlights-alphabet-filter .alphabet-btn.active');
             const alphabetFilter = activeAlphabetBtn ? activeAlphabetBtn.dataset.letter : null;
             
@@ -1318,14 +1372,13 @@
                 const projectName = item.getAttribute('data-project-name') || '';
                 const categories = item.getAttribute('data-category') ? item.getAttribute('data-category').split(' ') : [];
                 
-                // 카테고리 필터 확인
+                // 카테고리 필터 확인 (ALL, ARCHITECTURE, INTERIOR, VISUALIZATION)
                 const categoryMatch = (function() {
                     if (categoryFilter === 'all') return true;
                     let categoryValue = '';
                     if (item.dataset && item.dataset.category) {
                         categoryValue = item.dataset.category.toLowerCase().replace(/[\s_-]/g, '');
                     }
-                    // 배열 지원 및 유연한 비교
                     return (
                         (categoryFilter === 'architecture' && categoryValue.includes('architecture')) ||
                         (categoryFilter === 'interior' && categoryValue.includes('interior')) ||
@@ -1333,18 +1386,26 @@
                     );
                 })();
                 
-                // 카테고리 필터 확인 (새로운 필터 시스템)
-                let categoryFilterMatch = true;
+                // PROVIDED(알파벳) 필터 확인: data-provided 기준으로 비교
+                let providedFilterMatch = true;
                 if (alphabetFilter) {
-                    // 프로젝트의 카테고리 정보를 확인
-                    const projectCategory = item.getAttribute('data-project-category') || '';
-                    categoryFilterMatch = projectCategory.toLowerCase().includes(alphabetFilter.toLowerCase());
+                    const norm = (s) => s.toLowerCase()
+                        .replace(/\s*\/\s*/g, ' ')
+                        .replace(/\s+/g, '-')
+                        .replace(/[^a-z0-9-]/g, '');
+                    const provided = (item.getAttribute('data-provided') || '').toLowerCase();
+                    const tokens = provided.split(/\s+/).filter(Boolean);
+                    const key = norm(alphabetFilter);
+                    providedFilterMatch = tokens.some(t => {
+                        const tt = norm(t);
+                        return tt === key || tt.replace(/-/g, ' ') === key.replace(/-/g, ' ');
+                    });
                 }
                 
-                console.log(`프로젝트 "${projectName}": 카테고리="${categories.join(' ')}", 카테고리매치=${categoryMatch}, 필터매치=${categoryFilterMatch}`);
+                console.log(`프로젝트 "${projectName}": 카테고리="${categories.join(' ')}", 카테고리매치=${categoryMatch}, 제공매치=${providedFilterMatch}`);
                 
                 // 둘 다 만족하는 경우에만 표시
-                if (categoryMatch && categoryFilterMatch) {
+                if (categoryMatch && providedFilterMatch) {
                     item.style.display = 'block';
                     visibleCount++;
                 } else {
@@ -1354,13 +1415,14 @@
             
             console.log(`카테고리 필터링 완료: ${visibleCount}개 프로젝트 표시됨`);
             
-            // ALL이 아닌 필터를 선택했을 때 가운데 정렬을 위한 클래스 추가
+            // 카테고리 또는 PROVIDED(알파벳) 필터가 활성화되면 가운데 정렬
             const projectGrid = document.querySelector('.all-projects-grid');
             if (projectGrid) {
-                if (categoryFilter === 'all') {
-                    projectGrid.classList.remove('filtered');
-                } else {
+                const shouldCenter = !(categoryFilter === 'all' && !alphabetFilter);
+                if (shouldCenter) {
                     projectGrid.classList.add('filtered');
+                } else {
+                    projectGrid.classList.remove('filtered');
                 }
             }
             
@@ -1373,8 +1435,8 @@
             const activeOtherCategory = document.querySelector('.other-projects-category-menu a.active');
             const otherCategoryFilter = activeOtherCategory ? activeOtherCategory.getAttribute('href').substring(1).replace('-other', '').toLowerCase().trim() : 'all';
             
-            const activeOtherAlphabetBtn = document.querySelector('#alphabetFilterContainer .alphabet-btn.active');
-            const otherAlphabetFilter = activeOtherAlphabetBtn ? activeOtherAlphabetBtn.dataset.letter : 'all';
+            const activeOtherAlphabetBtn = document.querySelector('.other-projects-alphabet-filter .alphabet-btn.active');
+            const otherAlphabetFilter = activeOtherAlphabetBtn ? activeOtherAlphabetBtn.dataset.letter : null;
             
             const otherProjectRows = document.querySelectorAll('#other-projects-section tbody tr');
             let visibleOtherCount = 0;
@@ -1397,9 +1459,18 @@
                 
                 // 알파벳 필터 확인 (새로운 필터 시스템)
                 let alphabetFilterMatch = true;
-                if (otherAlphabetFilter !== 'all') {
-                    const projectCategory = row.getAttribute('data-project-category') || '';
-                    alphabetFilterMatch = projectCategory.toLowerCase().includes(otherAlphabetFilter.toLowerCase());
+                if (otherAlphabetFilter) {
+                    const norm = (s) => s.toLowerCase()
+                        .replace(/\s*\/\s*/g, ' ')
+                        .replace(/\s+/g, '-')
+                        .replace(/[^a-z0-9-]/g, '');
+                    const provided = (row.getAttribute('data-provided') || '').toLowerCase();
+                    const tokens = provided.split(/\s+/).filter(Boolean);
+                    const key = norm(otherAlphabetFilter);
+                    alphabetFilterMatch = tokens.some(t => {
+                        const tt = norm(t);
+                        return tt === key || tt.replace(/-/g, ' ') === key.replace(/-/g, ' ');
+                    });
                 }
                 
                 // 둘 다 만족하는 경우에만 표시
@@ -1466,33 +1537,49 @@
             });
         }
 
-        // 페이지 로드 시 클릭 이벤트 추가 수정
-        document.addEventListener('DOMContentLoaded', function() {
-            // 현재 페이지 메뉴 활성화
-            const currentPage = 'projects.html';
-            const menuLinks = document.querySelectorAll('.menu-link');
-            menuLinks.forEach(link => {
-                if (link.getAttribute('href') === currentPage) {
-                    link.classList.add('active');
-                }
-            });
-            
-            // 즉시 UI 초기화 (기본 상태)
-            addProjectClickEvents();
-            updateCategoryFiltering();
-            setupLazyLoading();
-            
-            // 초기 히스토리 상태 설정
+                    // 페이지 로드 시 클릭 이벤트 추가 수정
+            document.addEventListener('DOMContentLoaded', function() {
+                // 현재 페이지 메뉴 활성화
+                const currentPage = 'projects.html';
+                const menuLinks = document.querySelectorAll('.menu-link');
+                menuLinks.forEach(link => {
+                    if (link.getAttribute('href') === currentPage) {
+                        link.classList.add('active');
+                    }
+                });
+                
+                // 즉시 UI 초기화 (기본 상태)
+                addProjectClickEvents();
+                updateCategoryFiltering();
+                setupLazyLoading();
+                
+                            // 초기 히스토리 상태 설정 (쿼리스트링 유지)
             if (!window.history.state) {
+                const preserveSearch = window.location.pathname + window.location.search;
                 window.history.replaceState({
                     page: 'project-list',
                     section: 'highlights'
-                }, '', window.location.pathname);
+                }, '', preserveSearch);
             }
-            
-            // 비동기로 Firebase 데이터 로드
-            loadProjectsAsync();
-        });
+                
+                // 비동기로 Firebase 데이터 로드
+                loadProjectsAsync();
+                
+                // 메인에서 쿼리로 넘어온 project 파라미터가 있으면 해당 상세 자동 오픈
+                const params = new URLSearchParams(window.location.search);
+                const targetProject = params.get('project');
+                if (targetProject) {
+                    // Firebase 데이터가 로드된 후 상세 열기 위해 폴링
+                    const openWhenReady = setInterval(() => {
+                        if (window.loadedProjects && window.loadedProjects.length) {
+                            clearInterval(openWhenReady);
+                            showProjectDetail(targetProject);
+                        }
+                    }, 200);
+                    // 안전장치 타임아웃 (6초)
+                    setTimeout(() => clearInterval(openWhenReady), 6000);
+                }
+            });
         
         // 비동기 프로젝트 로딩
         async function loadProjectsAsync() {
@@ -1735,6 +1822,34 @@
             
             return false;
         }
+    </script>
+    <div id="cookieBanner" class="cookie-banner" style="display:none;">
+      <div class="cookie-row">
+        <img src="./image/logo/Logo.png" alt="cookie" class="cookie-icon">
+        <p class="cookie-text">Diese Website verwendet Cookies, um sicherzustellen, dass Sie die beste Erfahrung auf unserer Website erhalten.</p>
+      </div>
+      <div class="cookie-actions">
+        <button id="cookieAccept" class="cookie-btn accept">Akzeptieren</button>
+        <button id="cookieDecline" class="cookie-btn decline">Ablehnen</button>
+      </div>
+    </div>
+    <script>
+    (function(){
+      const KEY = 'ths_cookie_consent_v1';
+      const banner = document.getElementById('cookieBanner');
+      const accept = document.getElementById('cookieAccept');
+      const decline = document.getElementById('cookieDecline');
+      try {
+        const saved = localStorage.getItem(KEY);
+        if (!saved) banner.style.display = 'block';
+        accept && accept.addEventListener('click', function(){ localStorage.setItem(KEY,'accepted'); banner.style.display='none'; });
+        decline && decline.addEventListener('click', function(){ localStorage.setItem(KEY,'declined'); banner.style.display='none'; });
+      } catch(e) {
+        banner.style.display='block';
+        accept && accept.addEventListener('click', function(){ banner.style.display='none'; });
+        decline && decline.addEventListener('click', function(){ banner.style.display='none'; });
+      }
+    })();
     </script>
 </body>
 </html>

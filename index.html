@@ -73,6 +73,13 @@
                         div.className = 'slide';
                         div.style.backgroundImage = `url('${p.image}')`;
                         div.style.color = p.color;
+                        // 클릭 시 해당 프로젝트 상세로 이동
+                        if (p.name) {
+                            div.style.cursor = 'pointer';
+                            div.addEventListener('click', () => {
+                                window.location.href = `./projects.html?project=${encodeURIComponent(p.name)}`;
+                            });
+                        }
                         slidesContainer.appendChild(div);
                     });
                     
@@ -386,5 +393,43 @@
     }
     </script>
 
+<div id="cookieBanner" class="cookie-banner" style="display:none;">
+  <div class="cookie-row">
+    <img src="./image/logo/Logo.png" alt="cookie" class="cookie-icon">
+    <p class="cookie-text">Diese Website verwendet Cookies, um sicherzustellen, dass Sie die beste Erfahrung auf unserer Website erhalten.</p>
+  </div>
+  <div class="cookie-actions">
+    <button id="cookieAccept" class="cookie-btn accept">Akzeptieren</button>
+    <button id="cookieDecline" class="cookie-btn decline">Ablehnen</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const KEY = 'ths_cookie_consent_v2';
+  const banner = document.getElementById('cookieBanner');
+  const accept = document.getElementById('cookieAccept');
+  const decline = document.getElementById('cookieDecline');
+  try {
+    const saved = localStorage.getItem(KEY);
+    if (!saved) {
+      banner.style.display = 'block';
+    }
+    accept && accept.addEventListener('click', function(){
+      localStorage.setItem(KEY, 'accepted');
+      banner.style.display = 'none';
+    });
+    decline && decline.addEventListener('click', function(){
+      localStorage.setItem(KEY, 'declined');
+      banner.style.display = 'none';
+    });
+  } catch(e) {
+    // localStorage 불가 시 배너만 닫기 동작
+    banner.style.display = 'block';
+    accept && accept.addEventListener('click', function(){ banner.style.display = 'none'; });
+    decline && decline.addEventListener('click', function(){ banner.style.display = 'none'; });
+  }
+})();
+</script>
 </body>
 </html>
