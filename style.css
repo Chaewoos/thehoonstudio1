@@ -81,7 +81,7 @@ p:not(.project-detail-container .project-info-section > p):not(.contact-email-se
 .studio-section strong,
 .team-section strong {
     font-weight: 800 !important;
-    font-family: 'Roboto-Bold', Arial, sans-serif !important;
+    font-family: 'Roboto-Medium', Arial, sans-serif !important;
     text-shadow: 0.4px 0 0 currentColor !important;
     letter-spacing: 0.45px !important;
 }
@@ -233,8 +233,8 @@ body {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
     image-rendering: pixelated;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+    -webkit-backface-color: transparent !important; font-size: 0 !important; line-height: 0 !important;
+    backface-color: transparent !important; font-size: 0 !important; line-height: 0 !important;
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
 }
@@ -713,7 +713,7 @@ body.about-page .project-sub-menu {
     font-size: 16px;
     color: #ccc;
     background: none;
-    border: none;
+    
     padding: 8px 0;
     cursor: pointer;
     text-decoration: none;
@@ -748,7 +748,7 @@ body.about-page .project-sub-menu {
     padding: 15px 0;
     flex-wrap: nowrap;
     width: 100%;
-    max-width: 100%;
+    max-width: none !important; width: 100%;
     overflow-x: auto;
     margin-left: -18px;
     margin-right: -18px;
@@ -795,7 +795,7 @@ body.about-page .project-sub-menu {
 
 .slide-arrow {
     background-color: transparent;
-    border: none;
+    
     color: #fff;
     cursor: pointer;
     padding: 10px;
@@ -1009,7 +1009,7 @@ body.about-page .project-sub-menu {
     font-size: 16px;
     color: #555555;
     background: none;
-    border: none;
+    
     font-family: 'Syncopate-Regular', Arial, sans-serif;
     font-weight: normal;
     cursor: pointer;
@@ -1091,7 +1091,7 @@ body.about-page .project-sub-menu {
     width: 100%; /* auto에서 100%로 변경하여 슬라이더 너비에 맞춤 */
     min-width: 100%; /* 0에서 100%로 변경하여 최소 너비 보장 */
     background: none;
-    border: none;
+    
     outline: none;
     z-index: 10;
     position: relative;
@@ -1105,7 +1105,7 @@ body.about-page .project-sub-menu {
     margin: 0;
     box-shadow: none;
     background: none;
-    border: none;
+    
     outline: none;
     z-index: 10;
     position: relative;
@@ -1148,9 +1148,9 @@ body.about-page .project-sub-menu {
 .project-detail-container h1 {
     margin-top: 20px;
     margin-bottom: 8px !important;
-    font-size: 2.43rem; /* 2.7rem에서 10% 감소 (2.7 * 0.9 = 2.43) */
-    max-width: 100%;
-    word-break: break-all;
+    font-size: 2.55rem; /* 2.43rem에서 5% 증가 (2.43 * 1.05 = 2.55) */
+    max-width: none !important; width: 100%;
+    white-space: nowrap !important; overflow: visible !important;
     box-sizing: border-box;
     text-transform: uppercase; /* 프로젝트 상세페이지 타이틀을 대문자로 변환 */
 }
@@ -1164,6 +1164,7 @@ html body .project-detail-container > .project-info-section > p {
     text-transform: uppercase;
     font-family: 'Syncopate-Regular', Arial, sans-serif !important;
     letter-spacing: 0.5px !important;
+    line-height: 3 !important;
 }
 
 .project-details {
@@ -1193,7 +1194,7 @@ html body .project-detail-container > .project-info-section > p {
     font-weight: bold;
     text-align: left;
     font-family: 'Syncopate-Bold', sans-serif;
-    max-width: 100%;
+    max-width: none !important; width: 100%;
     overflow: visible;
     text-overflow: unset;
     white-space: normal;
@@ -1219,7 +1220,7 @@ html body .project-detail-container > .project-info-section > p {
     font-family: 'Roboto-Regular', Arial, sans-serif;
     font-weight: normal;
     align-self: flex-end;
-    max-width: 100%;
+    max-width: none !important; width: 100%;
     overflow: visible;
     text-overflow: unset;
     white-space: normal;
@@ -1267,7 +1268,7 @@ html body .project-detail-container > .project-info-section > p {
     top: 50%;
     transform: translateY(-50%);
     background-color: transparent;
-    border: none;
+    
     color: #ccc; /* 더 연한 회색으로 변경 */
     cursor: pointer;
     padding: 15px;
@@ -1302,7 +1303,7 @@ html body .project-detail-container > .project-info-section > p {
     
     .project-info-section {
         flex: none;
-        max-width: 100%;
+        max-width: none !important; width: 100%;
         min-width: auto;
         order: 1;
         padding-left: 2vw;
@@ -1561,7 +1562,7 @@ body.menu-active .menu-overlay-ex,
     margin-top: 24px;
     box-sizing: border-box;
     background: none;
-    border: none;
+    
     text-align: left;
 }
 .menu-social-link {
@@ -1813,16 +1814,16 @@ body.menu-active .navbar-toggle .burger-icon-container {
     height: 2px;
     background: #222;
     margin: 6px 0 6px 0;
-    border: none;
+    
     display: block;
 }
 
 #project-detail-title {
     margin-top: 20px;
     margin-bottom: 8px !important;
-    font-size: 2.43rem; /* 2.7rem에서 10% 감소 (2.7 * 0.9 = 2.43) */
-    max-width: 100%;
-    word-break: break-all;
+    font-size: 2.55rem; /* 2.43rem에서 5% 증가 (2.43 * 1.05 = 2.55) */
+    max-width: none !important; width: 100%;
+    white-space: nowrap !important; overflow: visible !important;
     box-sizing: border-box;
 }
 #project-detail-category {
@@ -1901,7 +1902,7 @@ body, .about-content, .projects-main-content, .about-footer {
 
 .image-gallery, .team-grid, .project-detail-container, .footer-left, .footer-right {
     width: 100%;
-    max-width: 100%;
+    max-width: none !important; width: 100%;
     box-sizing: border-box;
 }
 
@@ -1930,7 +1931,7 @@ body, .about-content, .projects-main-content, .about-footer {
     position: relative;
     left: 50%;
     margin-left: -50vw;
-    border: none;
+    
     margin-top: 0;
     margin-bottom: 0;
     z-index: 10;
@@ -1943,7 +1944,7 @@ body, .about-content, .projects-main-content, .about-footer {
     position: relative;
     left: 50%;
     margin-left: -50vw;
-    border: none;
+    
     margin-top: 30px;
     margin-bottom: 40px;
     z-index: 1;
@@ -2252,7 +2253,7 @@ body.index-page #menuLogoIcon {
     font-size: 16px;
     color: #ccc;
     background: none;
-    border: none;
+    
     padding: 8px 16px;
     cursor: pointer;
     text-decoration: none;
@@ -2376,6 +2377,7 @@ nav.category-menu.other-projects-category-menu {
 /* 프로젝트 상세페이지 카테고리 텍스트 글자 간격 강제 적용 */
 .project-detail-container .project-info-section > p {
     letter-spacing: 0.5px !important;
+    line-height: 3 !important;
 }
 
 
@@ -2782,6 +2784,7 @@ html body .project-detail-container .project-info-section p {
     font-weight: normal !important;
     text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
+    line-height: 3 !important;
 }
 
 /* Contact 페이지 이메일 섹션 텍스트 Roboto-Light 강제 적용 */
@@ -2800,6 +2803,7 @@ html body .contact-email {
     font-family: 'Roboto-Regular', Arial, sans-serif !important;
     font-weight: normal !important;
     letter-spacing: 0.5px !important;
+    line-height: 3 !important;
 }
 
 /* Cookie consent banner */
@@ -2838,3 +2842,152 @@ html body .contact-email {
 .cookie-btn.decline { border-color: #bbb; color: #666; }
 .cookie-btn:hover { background: #f7f7f7; }
 /* End cookie consent banner */
+
+/* studio-section 이미지 */
+.studio-image {
+    flex: 1;
+    aspect-ratio: 1/1;
+    min-width: 380px;
+    max-width: 700px;
+    width: 100%;
+    object-fit: cover;
+    box-sizing: border-box;
+}
+
+/* ALL PROJECTS 테이블에서 Category와 Type 컬럼 숨김 처리 */
+#other-projects-section table th:nth-child(2),
+#other-projects-section table th:nth-child(3),
+#other-projects-section table td:nth-child(2),
+#other-projects-section table td:nth-child(3) {
+    color: transparent !important; font-size: 0 !important; line-height: 0 !important;
+    width: 0;
+    padding: 0;
+    
+}
+
+/* ALL PROJECTS 표 헤더 선이 끊어지지 않도록 수정 */
+#other-projects-section table thead tr {
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+}
+
+#other-projects-section table th:nth-child(2),
+#other-projects-section table th:nth-child(3) {
+    border-top: 1px solid #999 !important;
+    border-bottom: 1px solid #999 !important;
+    border-left: 1px solid transparent !important;
+    border-right: 1px solid transparent !important;
+}
+
+/* ALL PROJECTS 표 행 구분선이 끊어지지 않도록 수정 */
+#other-projects-section table tbody tr {
+    border-bottom: 1px dashed #ccc;
+}
+
+#other-projects-section table td:nth-child(2),
+#other-projects-section table td:nth-child(3) {
+    border-bottom: 1px dashed #ccc !important;
+    border-left: 1px solid transparent !important;
+    border-right: 1px solid transparent !important;
+}
+
+/* 마지막 행의 하단 테두리 제거 */
+#other-projects-section table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+#other-projects-section table tbody tr:last-child td:nth-child(2),
+#other-projects-section table tbody tr:last-child td:nth-child(3) {
+    border-bottom: none !important;
+}
+
+/* 프로젝트 상세페이지 설명 텍스트 Syncopate-Regular 강제 적용 */
+html body .project-detail-container .project-info-section p,
+html body .project-detail-container .project-info-section > p,
+html body .project-detail-container .project-info-section div p {
+    font-family: 'Syncopate-Regular', Arial, sans-serif !important;
+    font-weight: normal !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    line-height: 3 !important;
+}
+
+/* 프로젝트 상세페이지 타이틀 확장 - 이미지 영역까지 */
+.project-detail-container h1 {
+    position: relative;
+    z-index: 10;
+    margin-right: -50% !important; /* 오른쪽으로 확장 */
+    padding-right: 2rem !important; /* 오른쪽 패딩 추가 */
+    background: white; /* 배경색으로 겹침 방지 */
+}
+
+/* 프로젝트 상세페이지 타이틀 한 줄 확장 강화 */
+.project-detail-container h1 {
+    font-size: 2.8rem !important; /* 더 큰 폰트 크기 */
+    margin-right: -60% !important; /* 더 많이 오른쪽으로 확장 */
+    padding-right: 3rem !important; /* 더 큰 오른쪽 패딩 */
+    
+}
+
+}
+
+}
+
+}
+
+}
+
+}
+
+/* 프로젝트 상세페이지 내용을 아래로 이동하여 이미지 하단과 정렬 */
+.project-info-section {
+    margin-top: 0 !important; /* 섹션 마진 제거 */
+}
+
+/* 프로젝트 상세페이지 타이틀은 그대로 유지 */
+.project-detail-container h1 {
+    margin-top: 0 !important; /* 타이틀 상단 마진 제거 */
+}
+
+/* 프로젝트 상세페이지 타이틀 아래 내용만 아래로 이동 */
+.project-info-section .detail-item:first-child {
+    margin-top: 180px !important; /* 첫 번째 detail-item을 180px 아래로 */
+}
+
+/* 타이틀은 원래 위치 유지 */
+.project-detail-container h1 {
+    margin-top: 20px !important; /* 타이틀 원래 마진 복원 */
+}
+
+/* 모든 버튼의 테두리 제거 */
+button,
+input[type="button"],
+input[type="submit"],
+.btn,
+.button {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* 버튼 포커스 시 테두리 제거 */
+button:focus,
+input[type="button"]:focus,
+input[type="submit"]:focus,
+.btn:focus,
+.button:focus {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* 버튼 호버 시 테두리 제거 */
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+.btn:hover,
+.button:hover {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}

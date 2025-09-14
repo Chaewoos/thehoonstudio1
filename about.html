@@ -40,7 +40,7 @@
                         // 쉼표를 &로 변경
                         const displayName = member.name.replace(',', ' &');
                         div.innerHTML = `
-                            <img src="${member.image}" alt="${displayName}">
+                            <img src="${member.image || './image/Basic Image_2.png'}" alt="${displayName}">
                             <div class="member-info">
                                 <h3 class="member-name">${displayName}</h3>
                                 <p class="member-position">${member.position}</p>
@@ -119,7 +119,7 @@
                 <h2>STUDIO</h2>
             </div>
             <div class="studio-flex-row">
-                <div class="studio-image-placeholder square-image">이미지</div>
+                <img src="./image/Basic Image_2.png" alt="Studio Image" class="studio-image">
                 <div class="studio-description">
                     <p style="margin-bottom: 1.5em; text-align: justify;"><strong>The Hoon studio</strong> was established in Munich in 2020 as an atelier-style architectural design studio led by Korean architects with academic and professional backgrounds in both Germany and South Korea.</p>
                     <p style="margin-bottom: 1.5em; text-align: justify;">We focus on <strong>residential architecture</strong>, designing a wide range of housing typologies — from new construction to thoughtful renovations and extensions. A particular characteristic of our work is the reinterpretation of historically layered homes, including projects involving heritage-protected properties (Denkmalschutz). In these projects, we aim to preserve architectural integrity and comply with both contemporary building codes and heritage conservation regulations, while gently introducing modern ways of living that bring renewed relevance and character to each space.</p>
@@ -152,7 +152,7 @@
                     <p class="footer-address">BERGSTRASSE 12A</p>
                     <p class="footer-address">GAUTING 82131</p>
                 </div>
-                <p class="footer-copyright">@2025 THE HOON STUDIO</p>
+                <p class="footer-copyright">©2025 THE HOON STUDIO</p>
             </div>
             <div class="footer-right">
                 <p class="footer-email-label">EMAIL</p>
